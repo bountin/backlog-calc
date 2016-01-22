@@ -99,25 +99,25 @@ class Calculator extends Component {
 			if (result && result.reachable === true) {
 				resultIconElement = <Icon className={Styles.icon} name="check-circle" />;
 				resultTextElement = <div className={Styles.status}>
-					<span>Looks good!</span>;
+					<span>Looks good!</span>
 					<br />
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 					<br/>
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
 					<br />
-					Maximal successful Backlog Size <b>{result.maximalBacklogSize}</b>.
+					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
 				</div>;
 				resultStyle = Styles.success;
 			} else if (result && result.reachable === false) {
 				resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
 				resultTextElement = <div className={Styles.status}>
-					<span>You will not finish in time!</span>;
+					<span>You will not finish in time!</span>
 					<br />
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 					<br/>
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
 					<br />
-					Maximal successful Backlog Size <b>{result.maximalBacklogSize}</b>.
+					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
 				</div>;
 				resultStyle = Styles.failure;
 			}
