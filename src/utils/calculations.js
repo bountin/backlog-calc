@@ -1,7 +1,9 @@
-export default function successfulProject(startDate, endDate, velocity, backlogSize) {
+import moment from 'moment';
+
+export function successfulProject(startDate, endDate, velocity, backlogSize) {
 	// parameters, fixed for now
-	var blSizeReal = 0.4; // Puffer für realistischen zusätzlichen Backlogumfang
-	var blSizePess = 3.0; // Puffer für pessimistischen zusätzlichen Backlogumfang
+	var blSizeReal = 0.15; // Puffer für realistischen zusätzlichen Backlogumfang
+	var blSizePess = 0.40; // Puffer für pessimistischen zusätzlichen Backlogumfang
 	var velRed = -0.15; // Velocity Einbruch-Faktor
 	var velAdd = 0.15; // Velocity Steigerungsfaktor
 	var minPercent = 0.8;
@@ -15,6 +17,25 @@ export default function successfulProject(startDate, endDate, velocity, backlogS
 		endDate.diff(startDate, 'days')
 	);
 	return p >= minPercent;
+}
+
+export function projectDuration(startDate, endDate, velocity, backlogSize) {
+	// parameters, fixed for now
+	var blSizeReal = 0.15; // Puffer für realistischen zusätzlichen Backlogumfang
+	var blSizePess = 0.40; // Puffer für pessimistischen zusätzlichen Backlogumfang
+	var velRed = -0.15; // Velocity Einbruch-Faktor
+	var velAdd = 0.15; // Velocity Steigerungsfaktor
+	var minPercent = 0.8;
+	var d = reliableScrumDurationByProbability(
+		backlogSize,
+		backlogSize * (1 + blSizeReal),
+		backlogSize * (1 + blSizePess),
+		Math.round(velocity * (1 + velAdd)) / 7,
+		velocity / 7,
+		Math.round(velocity * (1 + velRed)) / 7,
+		minPercent
+	);
+	return moment(startDate).add(d, 'day');
 }
 
 const STEPS = 1000;
@@ -49,4 +70,23 @@ function reliableScrumProbabilityByDuration(backlogSizeOpt,
 		if (duration >= time) return probRel / probRel100;
 	}
 	throw "Invalid State, no Probability for given Duration found";
+}
+
+function reliableScrumDurationByProbability(backlogSizeOpt,
+                                            backlogSizeReal,
+                                            backlogSizePess,
+                                            velocityOpt,
+                                            velocityReal,
+                                            velodityPess,
+                                            probability) {
+	var probRel = 0, probRel100 = ((STEPS - 2) * STEPS) / (6 * (STEPS - 1));
+	for (var i = 0; i < STEPS; ++i) {
+		probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
+		var probAbs = probRel / probRel100;
+		if (probAbs >= probability) return v3P(backlogSizeOpt, backlogSizeReal,
+					backlogSizePess, (i / (STEPS - 1))) /
+				v3P(velodityPess, velocityReal,
+					velocityOpt, (1 - (i / (STEPS - 1))));
+	}
+	throw "Invalid State, no Duration for given Probability found";
 }
