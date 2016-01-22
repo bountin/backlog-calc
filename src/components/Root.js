@@ -6,6 +6,9 @@ import Calculator from './Calculator';
 import Header from './Header';
 import Footer from './Footer';
 
+import './resources/stratum.css';
+import './styles/Root.less';
+
 /**
  * @TODO doc
  */
