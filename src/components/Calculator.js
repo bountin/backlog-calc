@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/lib/Button';
 
 import Styles from './styles/Calculator.less';
 
-import successfulProject from '../utils/Calculations'
+import successfulProject from '../utils/calculations'
 
 const messages = defineMessages({
 	projectNameLabel : {
