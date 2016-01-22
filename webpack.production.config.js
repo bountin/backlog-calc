@@ -21,7 +21,8 @@ module.exports = {
 			{ test : /\.js$/, loader : 'babel', exclude : /node_modules/ },
 			{ test : /\.css$/, loader : xt('style', 'css?minimize') },
 			{ test : /\.less$/, loader : xt('style', 'css?modules&minimize&importLoaders=1!autoprefixer?browsers=last 2 version!less-loader') },
-			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' }
+			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
+			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' }
 		],
 	},
 
