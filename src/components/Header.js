@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
+import Styles from './styles/Header.less';
+import logo from './resources/logo.png';
+
 /**
  * @TODO doc
  */
@@ -10,9 +13,12 @@ class Header extends Component {
 	static propTypes = {};
 
 	render() {
-		return <header>
+		return <header className={Styles.header}>
 			<div className="container">
-				<h1>Ze Boris Gloger Backlog Calculator</h1>
+				<h1>
+					<img src={logo} className={Styles.logo} alt="Boris Gloger" />
+					Backlog Calculator
+				</h1>
 			</div>
 		</header>;
 	}

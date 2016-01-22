@@ -120,7 +120,7 @@ class Calculator extends Component {
 				/>
 
 				<Input wrapperClassName="col-xs-12 col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
-					<Button type="submit">
+					<Button type="submit" bsStyle="primary">
 						<FormattedMessage {...messages.submitLabel} />
 					</Button>
 
