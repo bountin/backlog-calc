@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Styles from './styles/Calculator.less';
 
 import {successfulProject, projectDuration} from '../utils/calculations';
+import {validateProjectDates, validateBacklogSize} from '../utils/validators';
 
 const messages = defineMessages({
 	projectNameLabel : {
@@ -70,7 +71,10 @@ class Calculator extends Component {
 		intl : PropTypes.object.isRequired,
 	};
 
-	state = {};
+	state = {
+		errors: {},
+		result: null
+	};
 
 	render() {
 		const { intl } = this.props;
@@ -85,10 +89,10 @@ class Calculator extends Component {
 			} = this.state;
 
 		let resultTextElement = null, resultIconElement = null, resultStyle = null;
-		if (errors != null) {
+		if (errors.overall) {
 			resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
 			resultTextElement = <div className={Styles.status}>
-				{errors}
+				{errors.overall}
 			</div>;
 			resultStyle = Styles.failure;
 		} else if (result != null) {
@@ -116,6 +120,17 @@ class Calculator extends Component {
 					{resultTextElement}
 				</div>
 			</span>;
+
+		let invalidDatesComponent = errors.dates ? <div className="form-group"><span
+			className="col-xs-offset-12 col-sm-offset-3 col-lg-offset-2 col-xs-12 col-sm-6 col-lg-8">
+			Invalid Dates!
+		</span></div> : null;
+
+		let invalidBacklogSizeComponent = errors.backlogSize ? <div className="form-group"><span
+			className="col-xs-offset-12 col-sm-offset-3 col-lg-offset-2 col-xs-12 col-sm-6 col-lg-8">
+			Invalid Backlog Size or Velocity!
+		</span></div> : null;
+
 		return <section className="container">
 			<Row>
 				<Col xs={12} sm={6} lg={8} smOffset={3} lgOffset={2} className={Styles.intro}>
@@ -152,7 +167,7 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-6 col-lg-8">
 					<DatePicker
 						ref="startDate"
-						className="form-control"
+						className={classNames("form-control", errors.dates ? Styles.invalidField : "")}
 						locale={intl.locale}
 						selected={startDate}
 						maxDate={endDate}
@@ -167,12 +182,14 @@ class Calculator extends Component {
 					<DatePicker
 						ref="endDate"
 						locale={intl.locale}
-						className="form-control"
+						className={classNames("form-control", errors.dates ? Styles.invalidField : "")}
 						selected={endDate}
 						minDate={startDate}
 						onChange={::this.reset}
 					/>
 				</Input>
+
+				{invalidDatesComponent}
 
 				<Input
 					type="number"
@@ -184,6 +201,7 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
 					onChange={::this.reset}
 					min="0"
+					className={classNames(errors.backlogSize ? Styles.invalidField : "")}
 				/>
 
 				<Input
@@ -196,7 +214,10 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
 					onChange={::this.reset}
 					min="0"
+					className={classNames(errors.backlogSize ? Styles.invalidField : "")}
 				/>
+
+				{invalidBacklogSizeComponent}
 
 				<Input wrapperClassName="col-xs-12 col-sm-6 col-lg-8 col-sm-offset-3 col-lg-offset-2">
 					{(result != null) &&
@@ -222,7 +243,7 @@ class Calculator extends Component {
 		const velocity = parseInt(this.refs.velocity.getValue());
 		const backlogSize = parseInt(this.refs.backlogSize.getValue());
 		const result = null;
-		const errors = null;
+		const errors = {};
 
 		this.setState({
 			projectName,
@@ -243,20 +264,36 @@ class Calculator extends Component {
 		const endDate = this.refs.endDate.getValue();
 		const velocity = parseInt(this.refs.velocity.getValue());
 		const backlogSize = parseInt(this.refs.backlogSize.getValue());
+		let errors = {}, hasErrors = false;
+		let result = null;
 
-		try {
-			this.setState({
-				result : {
+		if (!validateProjectDates(startDate, endDate)) {
+			errors.dates = 1;
+			hasErrors = true;
+			console.log("invalid dates");
+		}
+		if (!validateBacklogSize(backlogSize, velocity)) {
+			errors.backlogSize = 1;
+			hasErrors = true;
+		}
+
+		if (!hasErrors) {
+			try {
+				result = {
 					reachable : successfulProject(startDate, endDate, velocity, backlogSize),
 					expected  : projectDuration(startDate, endDate, velocity, backlogSize)
-				},
-			});
-		} catch (e) {
-			this.setState({
-				result : null,
-				errors : e,
-			})
+				};
+			} catch (e) {
+				errors.overall = e;
+				result = null;
+				hasErrors = true;
+			}
 		}
+
+		this.setState({
+			result,
+			errors,
+		});
 	}
 
 	print() {
