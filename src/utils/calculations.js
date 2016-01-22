@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function minimalBacklogSize(startDate, endDate, velocity, backlogSize) {
+export function maximalBacklogSize(startDate, endDate, velocity, backlogSize) {
 	// Fixed parameter for now
 	var minPercent = 0.8;
 	var p = successProbability(startDate, endDate, velocity, backlogSize);
@@ -19,7 +19,7 @@ export function minimalBacklogSize(startDate, endDate, velocity, backlogSize) {
 			if (p < minPercent) return backlogSize - 1;
 		}
 	}
-	throw "Could not find minimal Backlog Size";
+	throw "Could not find maximal Backlog Size";
 }
 
 export function successfulProject(startDate, endDate, velocity, backlogSize) {
