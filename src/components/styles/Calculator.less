@@ -1,3 +1,13 @@
+@media print {
+	.intro {
+		display: none;
+	}
+
+	.printHide {
+		display: none;
+	}
+}
+
 .result {
 	margin-left: 1em;
 
@@ -15,4 +25,9 @@
 		margin-right: 1ex;
 	}
 
+	@media print {
+		display: block;
+		margin-top: 1em;
+		font-size: 150%;
+	}
 }

@@ -50,8 +50,13 @@ const messages = defineMessages({
 		defaultMessage : 'Total Story Points',
 	},
 
+	printLabel : {
+		id             : 'calculator.printLabel',
+		defaultMessage : 'Print',
+	},
+
 	submitLabel : {
-		id             : 'calculator.submit',
+		id             : 'calculator.submitLabel',
 		defaultMessage : 'Calculate',
 	}
 });
@@ -99,7 +104,7 @@ class Calculator extends Component {
 
 		return <section className="container">
 			<Row>
-				<Col xs={12} sm={6} lg={8} smOffset={3} lgOffset={2}>
+				<Col xs={12} sm={6} lg={8} smOffset={3} lgOffset={2} className={Styles.intro}>
 					<p>
 						Dear ProductOwner,
 					</p>
@@ -179,8 +184,12 @@ class Calculator extends Component {
 					min="0"
 				/>
 
-				<Input wrapperClassName="col-xs-12 col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
-					<Button type="submit" bsStyle="default">
+				<Input wrapperClassName="col-xs-12 col-sm-6 col-lg-8 col-sm-offset-3 col-lg-offset-2">
+					{(result != null) && <Button bsStyle="default" className={classNames("pull-right", Styles.printHide)} onClick={::this.print}>
+						<FormattedMessage {...messages.printLabel} />
+					</Button>}
+
+					<Button type="submit" bsStyle="default" className={Styles.printHide}>
 						<FormattedMessage {...messages.submitLabel} />
 					</Button>
 
@@ -229,6 +238,10 @@ class Calculator extends Component {
 				errors : e,
 			})
 		}
+	}
+
+	print() {
+		window.print();
 	}
 
 }
