@@ -1,5 +1,27 @@
 import moment from 'moment';
 
+export function minimalBacklogSize(startDate, endDate, velocity, backlogSize) {
+	// Fixed parameter for now
+	var minPercent = 0.8;
+	var p = successProbability(startDate, endDate, velocity, backlogSize);
+	if (p < minPercent) {
+		for (; backlogSize > 0; --backlogSize) {
+			try {
+				p = successProbability(startDate, endDate, velocity, backlogSize);
+			} catch (e) { }
+			if (p >= minPercent) return backlogSize;
+		}
+	} else {
+		for (; backlogSize < 1000; ++backlogSize) {
+			try {
+				p = successProbability(startDate, endDate, velocity, backlogSize);
+			} catch (e) { }
+			if (p < minPercent) return backlogSize - 1;
+		}
+	}
+	throw "Could not find minimal Backlog Size";
+}
+
 export function successfulProject(startDate, endDate, velocity, backlogSize) {
 	// Fixed parameter for now
 	var minPercent = 0.8;

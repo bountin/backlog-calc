@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/lib/Button';
 
 import Styles from './styles/Calculator.less';
 
-import {successfulProject, projectDuration, successProbability} from '../utils/calculations';
+import {successfulProject, projectDuration, successProbability, minimalBacklogSize} from '../utils/calculations';
 import {validateProjectDates, validateBacklogSize} from '../utils/validators';
 
 const messages = defineMessages({
@@ -104,6 +104,8 @@ class Calculator extends Component {
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 					<br/>
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
+					<br />
+					Minimal successful Backlog Size <b>{result.minimalBacklogSize}</b>.
 				</div>;
 				resultStyle = Styles.success;
 			} else if (result && result.reachable === false) {
@@ -114,6 +116,8 @@ class Calculator extends Component {
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 					<br/>
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
+					<br />
+					Minimal successful Backlog Size <b>{result.minimalBacklogSize}</b>.
 				</div>;
 				resultStyle = Styles.failure;
 			}
@@ -286,7 +290,8 @@ class Calculator extends Component {
 				result = {
 					reachable : successfulProject(startDate, endDate, velocity, backlogSize),
 					expected  : projectDuration(startDate, endDate, velocity, backlogSize),
-					probability: successProbability(startDate, endDate, velocity, backlogSize)
+					probability: successProbability(startDate, endDate, velocity, backlogSize),
+					minimalBacklogSize: minimalBacklogSize(startDate, endDate, velocity, backlogSize)
 				};
 			} catch (e) {
 				errors.overall = e;
