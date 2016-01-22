@@ -69,7 +69,14 @@ class Calculator extends Component {
 
 	render() {
 		const { intl } = this.props;
-		const { startDate, endDate, result } = this.state;
+		const {
+			projectName,
+			startDate = moment(),
+			endDate = moment().add(1, 'month'),
+			velocity,
+			backlogSize,
+			result
+		} = this.state;
 
 		let resultElement = null;
 		if (result === true) {
@@ -107,6 +114,7 @@ class Calculator extends Component {
 				<Input
 					type="text"
 					ref="projectName"
+					value={projectName}
 					label={intl.formatMessage(messages.projectNameLabel)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
@@ -121,7 +129,7 @@ class Calculator extends Component {
 						ref="startDate"
 						className="form-control"
 						locale={intl.locale}
-						selected={startDate || moment()}
+						selected={startDate}
 						maxDate={endDate}
 						onChange={::this.reset}
 					/>
@@ -135,7 +143,7 @@ class Calculator extends Component {
 						ref="endDate"
 						locale={intl.locale}
 						className="form-control"
-						selected={endDate || moment().add(1, 'month')}
+						selected={endDate}
 						minDate={startDate}
 						onChange={::this.reset}
 					/>
@@ -144,6 +152,7 @@ class Calculator extends Component {
 				<Input
 					type="number"
 					ref="velocity"
+					value={velocity}
 					label={intl.formatMessage(messages.velocityLabel)}
 					placeholder={intl.formatMessage(messages.velocityPlaceholder)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
@@ -155,6 +164,7 @@ class Calculator extends Component {
 				<Input
 					type="number"
 					ref="backlogSize"
+					value={backlogSize}
 					label={intl.formatMessage(messages.backlogSizeLabel)}
 					placeholder={intl.formatMessage(messages.backlogSizePlaceholder)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
@@ -175,14 +185,22 @@ class Calculator extends Component {
 	}
 
 	reset() {
+		const projectName = this.refs.projectName.getValue();
 		const startDate = this.refs.startDate.getValue();
 		const endDate = this.refs.endDate.getValue();
+		const velocity = parseInt(this.refs.velocity.getValue());
+		const backlogSize = parseInt(this.refs.backlogSize.getValue());
 		const result = null;
+		const errors = {};
 
 		this.setState({
-			startDate,
-			endDate,
+			projectName,
+			startDate   : startDate < endDate ? startDate : endDate,
+			endDate     : endDate < startDate ? startDate : endDate,
+			velocity    : Math.max(0, velocity),
+			backlogSize : Math.max(0, backlogSize),
 			result,
+			errors,
 		});
 	}
 
