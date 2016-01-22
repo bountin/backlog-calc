@@ -30,6 +30,7 @@
     "font-awesome": "~4.4",
     "html-webpack-plugin": "~1.7",
     "intl": "~1.0",
+    "jasmine-reporters": "^1.0.0",
     "jest-cli": "*",
     "jsx-loader": "~0.13",
     "keymirror": "~0.1",
@@ -67,6 +68,7 @@
   },
   "jest": {
     "scriptPreprocessor": "./node_modules/babel-jest",
+    "setupTestFrameworkScriptFile": "./setup-jasmine-env.js",
     "unmockedModulePathPatterns": [
       "./node_modules/react",
       "./node_modules/react-dom",
