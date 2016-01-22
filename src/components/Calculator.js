@@ -82,26 +82,40 @@ class Calculator extends Component {
 			backlogSize,
 			result,
 			errors,
-		} = this.state;
+			} = this.state;
 
-		let resultElement = null;
+		let resultTextElement = null, resultIconElement = null, resultStyle = null;
 		if (errors != null) {
-			resultElement = <span className={classNames(Styles.result, Styles.error)}>
-				<Icon className={Styles.icon} name="times-circle" />
+			resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
+			resultTextElement = <div className={Styles.status}>
 				{errors}
-			</span>;
-		} else if (result && result.reachable === true) {
-			resultElement = <span className={classNames(Styles.result, Styles.success)}>
-				<Icon className={Styles.icon} name="check-circle" />
-				Looks good! Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-			</span>;
-		} else if (result && result.reachable === false) {
-			resultElement = <span className={classNames(Styles.result, Styles.failure)}>
-				<Icon className={Styles.icon} name="times-circle" />
-				You will not finish in time! Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-			</span>;
+			</div>;
+			resultStyle = Styles.failure;
+		} else if (result != null) {
+			if (result && result.reachable === true) {
+				resultIconElement = <Icon className={Styles.icon} name="check-circle" />;
+				resultTextElement = <div className={Styles.status}>
+					<span>Looks good!</span>;
+					<br />
+					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
+				</div>;
+				resultStyle = Styles.success;
+			} else if (result && result.reachable === false) {
+				resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
+				resultTextElement = <div className={Styles.status}>
+					<span>You will not finish in time!</span>;
+					<br />
+					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
+				</div>;
+				resultStyle = Styles.failure;
+			}
 		}
-
+		let resultElement = <span className={classNames(Styles.result, resultStyle, Styles.status)}>
+				<div className={Styles.statusParent}>
+					{resultIconElement}
+					{resultTextElement}
+				</div>
+			</span>;
 		return <section className="container">
 			<Row>
 				<Col xs={12} sm={6} lg={8} smOffset={3} lgOffset={2} className={Styles.intro}>
@@ -185,11 +199,13 @@ class Calculator extends Component {
 				/>
 
 				<Input wrapperClassName="col-xs-12 col-sm-6 col-lg-8 col-sm-offset-3 col-lg-offset-2">
-					{(result != null) && <Button bsStyle="default" className={classNames("pull-right", Styles.printHide)} onClick={::this.print}>
+					{(result != null) &&
+					<Button bsStyle="default" className={classNames("pull-right", Styles.printHide)}
+					        onClick={::this.print}>
 						<FormattedMessage {...messages.printLabel} />
 					</Button>}
 
-					<Button type="submit" bsStyle="default" className={Styles.printHide}>
+					<Button type="submit" bsStyle="default" className={classNames(Styles.printHide, Styles.calculate)}>
 						<FormattedMessage {...messages.submitLabel} />
 					</Button>
 
@@ -231,8 +247,8 @@ class Calculator extends Component {
 		try {
 			this.setState({
 				result : {
-					reachable: successfulProject(startDate, endDate, velocity, backlogSize),
-					expected: projectDuration(startDate, endDate, velocity, backlogSize)
+					reachable : successfulProject(startDate, endDate, velocity, backlogSize),
+					expected  : projectDuration(startDate, endDate, velocity, backlogSize)
 				},
 			});
 		} catch (e) {
