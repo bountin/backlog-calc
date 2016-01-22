@@ -1,0 +1,12 @@
+FROM node
+
+# Installing development dependencies
+ADD ./package.json /tmp/
+RUN cd /tmp && \
+	npm install
+
+COPY . /app
+WORKDIR /app
+RUN cp -R /tmp/node_modules/ /app/node_modules/
+
+CMD ["npm", "run", "build", "--production"]
