@@ -2,6 +2,11 @@
 import 'babel-polyfill';
 import './support/Headers';
 
+// Third party styles
+import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.css';
+import 'react-datepicker/dist/react-datepicker.css';
+
 // Internationalization
 import { addLocaleData } from 'react-intl/lib/locale-data-registry';
 import patchIntl from './support/PatchIntl';
