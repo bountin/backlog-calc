@@ -90,15 +90,15 @@ class Calculator extends Component {
 				<Icon className={Styles.icon} name="times-circle" />
 				{errors}
 			</span>;
-		} else if (result === true) {
+		} else if (result && result.reachable === true) {
 			resultElement = <span className={classNames(Styles.result, Styles.success)}>
 				<Icon className={Styles.icon} name="check-circle" />
-				Looks good!
+				Looks good! Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 			</span>;
-		} else if (result === false) {
+		} else if (result && result.reachable === false) {
 			resultElement = <span className={classNames(Styles.result, Styles.failure)}>
 				<Icon className={Styles.icon} name="times-circle" />
-				You will not finish in time!
+				You will not finish in time! Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
 			</span>;
 		}
 
@@ -115,7 +115,7 @@ class Calculator extends Component {
 						necessary in order to find out if you can deliver within the given timeframe.
 					</p>
 					<p>
-						We wish you a lot of success with your Product development, <br />
+						We wish you a lot of success with your product development, <br />
 						Your borisgloger-Team
 					</p>
 					<p>&nbsp;</p>
@@ -230,7 +230,10 @@ class Calculator extends Component {
 
 		try {
 			this.setState({
-				result : successfulProject(startDate, endDate, velocity, backlogSize),
+				result : {
+					reachable: successfulProject(startDate, endDate, velocity, backlogSize),
+					expected: projectDuration(startDate, endDate, velocity, backlogSize)
+				},
 			});
 		} catch (e) {
 			this.setState({
