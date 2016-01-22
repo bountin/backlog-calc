@@ -3,6 +3,7 @@ import { injectIntl, defineMessages, FormattedMessage, FormattedNumber } from 'r
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 
+import Icon from 'react-fontawesome';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 
@@ -47,8 +48,18 @@ class Calculator extends Component {
 		intl : PropTypes.object.isRequired,
 	};
 
+	state = {};
+
 	render() {
 		const { intl } = this.props;
+		const { result } = this.state;
+
+		let resultElement = null;
+		if (result === true) {
+			resultElement = <Icon name="check-circle" />;
+		} else if (result === false) {
+			resultElement = <Icon name="times-circle" />;
+		}
 
 		return <section className="container">
 			<form className="form-horizontal" onSubmit={::this.recalculate}>
@@ -58,6 +69,7 @@ class Calculator extends Component {
 					label={intl.formatMessage(messages.projectNameLabel)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10"
+					onChange={::this.reset}
 				/>
 
 				<Input
@@ -66,6 +78,7 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10">
 					<DatePicker
 						ref="startDate"
+						onChange={::this.reset}
 					/>
 				</Input>
 
@@ -75,6 +88,7 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10">
 					<DatePicker
 						ref="endDate"
+						onChange={::this.reset}
 					/>
 				</Input>
 
@@ -84,6 +98,7 @@ class Calculator extends Component {
 					label={intl.formatMessage(messages.velocityLabel)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10"
+					onChange={::this.reset}
 				/>
 
 				<Input
@@ -92,25 +107,38 @@ class Calculator extends Component {
 					label={intl.formatMessage(messages.backlogSizeLabel)}
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10"
+					onChange={::this.reset}
 				/>
 
-				<Button type="submit">
-					<FormattedMessage {...messages.submitLabel} />
-				</Button>
+				<Input wrapperClassName="col-xs-12 col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
+					<Button type="submit">
+						<FormattedMessage {...messages.submitLabel} />
+					</Button>
+
+					{resultElement}
+				</Input>
 			</form>
 		</section>;
 	}
 
+	reset() {
+		this.setState({
+			result: null,
+		});
+	}
 
 	recalculate(e) {
 		e.preventDefault();
+
 		const projectName = this.refs.projectName.getValue();
 		const startDate = this.refs.startDate.getValue();
 		const endDate = this.refs.endDate.getValue();
 		const velocity = this.refs.velocity.getValue();
 		const backlogSize = this.refs.backlogSize.getValue();
 
-		// TODO: Calculate.
+		this.setState({
+			result: true,
+		});
 	}
 
 }
