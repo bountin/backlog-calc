@@ -8,6 +8,8 @@ import Icon from 'react-fontawesome';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 
+import Styles from './styles/Calculator.less';
+
 const messages = defineMessages({
 	projectNameLabel : {
 		id             : 'calculator.projectNameLabel',
@@ -57,9 +59,15 @@ class Calculator extends Component {
 
 		let resultElement = null;
 		if (result === true) {
-			resultElement = <Icon name="check-circle" />;
+			resultElement = <span className={classNames(Styles.result, Styles.success)}>
+				<Icon className={Styles.icon} name="check-circle" />
+				Looks good!
+			</span>;
 		} else if (result === false) {
-			resultElement = <Icon name="times-circle" />;
+			resultElement = <span className={classNames(Styles.result, Styles.failure)}>
+				<Icon className={Styles.icon} name="times-circle" />
+				You will not finish in time!
+			</span>;
 		}
 
 		return <section className="container">
@@ -120,7 +128,7 @@ class Calculator extends Component {
 				/>
 
 				<Input wrapperClassName="col-xs-12 col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
-					<Button type="submit" bsStyle="primary">
+					<Button type="submit" bsStyle="default">
 						<FormattedMessage {...messages.submitLabel} />
 					</Button>
 
