@@ -58,14 +58,14 @@ function reliableScrumProbabilityByDuration(backlogSizeOpt,
                                             backlogSizePess,
                                             velocityOpt,
                                             velocityReal,
-                                            velodityPess,
+                                            velocityPess,
                                             time) {
 	var probRel = 0, probRel100 = ((STEPS - 2) * STEPS) / (6 * (STEPS - 1));
 	for (var i = 0; i < STEPS; ++i) {
 		probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
 		var duration = v3P(backlogSizeOpt, backlogSizeReal,
 				backlogSizePess, (i / (STEPS - 1))) /
-			v3P(velodityPess, velocityReal,
+			v3P(velocityPess, velocityReal,
 				velocityOpt, (1 - (i / (STEPS - 1))));
 		if (duration >= time) return probRel / probRel100;
 	}
@@ -77,15 +77,18 @@ function reliableScrumDurationByProbability(backlogSizeOpt,
                                             backlogSizePess,
                                             velocityOpt,
                                             velocityReal,
-                                            velodityPess,
+                                            velocityPess,
                                             probability) {
+	if (probability < 0 || probability > 1) throw "Invalid State, Probability " + probability + " out of bounds";
+	if (probability < 0.005) return backlogSizeOpt / velocityOpt;
+	if (probability > 0.995) return backlogSizePess / velocityPess;
 	var probRel = 0, probRel100 = ((STEPS - 2) * STEPS) / (6 * (STEPS - 1));
 	for (var i = 0; i < STEPS; ++i) {
 		probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
 		var probAbs = probRel / probRel100;
 		if (probAbs >= probability) return v3P(backlogSizeOpt, backlogSizeReal,
 					backlogSizePess, (i / (STEPS - 1))) /
-				v3P(velodityPess, velocityReal,
+				v3P(velocityPess, velocityReal,
 					velocityOpt, (1 - (i / (STEPS - 1))));
 	}
 	throw "Invalid State, no Duration for given Probability found";
