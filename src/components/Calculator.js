@@ -75,11 +75,17 @@ class Calculator extends Component {
 			endDate = moment().add(1, 'month'),
 			velocity,
 			backlogSize,
-			result
+			result,
+			errors,
 		} = this.state;
 
 		let resultElement = null;
-		if (result === true) {
+		if (errors != null) {
+			resultElement = <span className={classNames(Styles.result, Styles.error)}>
+				<Icon className={Styles.icon} name="times-circle" />
+				{errors}
+			</span>;
+		} else if (result === true) {
 			resultElement = <span className={classNames(Styles.result, Styles.success)}>
 				<Icon className={Styles.icon} name="check-circle" />
 				Looks good!
@@ -191,7 +197,7 @@ class Calculator extends Component {
 		const velocity = parseInt(this.refs.velocity.getValue());
 		const backlogSize = parseInt(this.refs.backlogSize.getValue());
 		const result = null;
-		const errors = {};
+		const errors = null;
 
 		this.setState({
 			projectName,
@@ -213,9 +219,16 @@ class Calculator extends Component {
 		const velocity = parseInt(this.refs.velocity.getValue());
 		const backlogSize = parseInt(this.refs.backlogSize.getValue());
 
-		this.setState({
-			result : successfulProject(startDate, endDate, velocity, backlogSize),
-		});
+		try {
+			this.setState({
+				result : successfulProject(startDate, endDate, velocity, backlogSize),
+			});
+		} catch (e) {
+			this.setState({
+				result : null,
+				errors : e,
+			})
+		}
 	}
 
 }
