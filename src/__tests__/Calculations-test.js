@@ -7,5 +7,8 @@ const successfulProject = require('../utils/calculations').default;
 describe('Calculations', () => {
 	it('calculates the same output with the example inputs', () => {
 		expect(successfulProject(moment("2015-11-24"), moment("2016-06-17"), 9, 200)).toEqual(false);
-	})
+	});
+	it('should calculate success with modified inputs', () => {
+		expect(successfulProject(moment("2015-11-24"), moment("2016-06-17"), 9, 100)).toEqual(true);
+	});
 });
