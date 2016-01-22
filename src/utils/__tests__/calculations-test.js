@@ -2,7 +2,7 @@ jest.dontMock('../calculations');
 jest.dontMock('moment');
 
 import moment from 'moment';
-const {successfulProject, projectDuration, successProbability} = require('../calculations');
+const {successfulProject, projectDuration, successProbability, minimalBacklogSize} = require('../calculations');
 
 describe('calculations', () => {
 	describe('successfulProject', () => {
@@ -36,5 +36,20 @@ describe('calculations', () => {
 		it('should be quite devastating', () => {
 			expect(successProbability(moment("2015-11-30"), moment("2016-03-17"), 8, 130)).toEqual(.8);
 		});
-	})
+	});
+
+	describe('minimalBacklogSize', () => {
+		it('should calculate back from invalid projects', () => {
+			expect(minimalBacklogSize(moment("2015-11-24"), moment("2016-03-10"), 9, 120)).toEqual(108);
+		});
+		it('should calculate forward from valid projects', () => {
+			expect(minimalBacklogSize(moment("2015-11-24"), moment("2016-03-10"), 9, 100)).toEqual(108);
+		});
+		it('should calculate back from invalid projects too', () => {
+			expect(minimalBacklogSize(moment("2015-12-24"), moment("2016-04-30"), 8, 130)).toEqual(115);
+		});
+		it('should calculate forward from valid projects too', () => {
+			expect(minimalBacklogSize(moment("2015-12-24"), moment("2016-04-30"), 8, 100)).toEqual(115);
+		});
+	});
 });
