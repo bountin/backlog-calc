@@ -25,16 +25,16 @@ describe('calculations', () => {
 
 	describe('successProbability', () => {
 		it('should be quite sure', () => {
-			expect(successProbability(moment("2015-11-24"), moment("2016-06-17"), 10, 300)).toEqual(0.99);
+			expect(successProbability(moment("2015-11-24"), moment("2016-06-17"), 10, 200)).toBeCloseTo(1, 0.005);
 		});
 		it('should be a bit positive', () => {
-			expect(successProbability(moment("2015-11-24"), moment("2016-06-17"), 8, 300)).toEqual(.09);
+			expect(successProbability(moment("2015-11-24"), moment("2016-03-10"), 9, 108)).toBeCloseTo(.82, 0.005);
 		});
 		it('should be a bit negative', () => {
-			expect(successProbability(moment("2015-11-24"), moment("2016-03-17"), 8, 150)).toEqual(.58);
+			expect(successProbability(moment("2015-11-24"), moment("2016-06-17"), 8, 200)).toBeCloseTo(.50, 0.005);
 		});
 		it('should be quite devastating', () => {
-			expect(successProbability(moment("2015-11-30"), moment("2016-03-17"), 8, 130)).toEqual(.8);
+			expect(successProbability(moment("2015-11-24"), moment("2016-06-17"), 10, 300)).toBeCloseTo(.05, 0.005);
 		});
 	});
 
