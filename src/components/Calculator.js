@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { injectIntl, defineMessages, FormattedMessage, FormattedNumber } from 'react-intl';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
+import moment from 'moment';
 
 import Icon from 'react-fontawesome';
 import Input from 'react-bootstrap/lib/Input';
@@ -52,7 +53,7 @@ class Calculator extends Component {
 
 	render() {
 		const { intl } = this.props;
-		const { result } = this.state;
+		const { startDate, endDate, result } = this.state;
 
 		let resultElement = null;
 		if (result === true) {
@@ -78,6 +79,9 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10">
 					<DatePicker
 						ref="startDate"
+						locale={intl.locale}
+						selected={startDate || moment()}
+						maxDate={endDate}
 						onChange={::this.reset}
 					/>
 				</Input>
@@ -88,6 +92,9 @@ class Calculator extends Component {
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10">
 					<DatePicker
 						ref="endDate"
+						locale={intl.locale}
+						selected={endDate || moment().add(1, 'month')}
+						minDate={startDate}
 						onChange={::this.reset}
 					/>
 				</Input>
@@ -99,6 +106,7 @@ class Calculator extends Component {
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10"
 					onChange={::this.reset}
+					min="0"
 				/>
 
 				<Input
@@ -108,6 +116,7 @@ class Calculator extends Component {
 					labelClassName="col-xs-12 col-sm-3 col-lg-2"
 					wrapperClassName="col-xs-12 col-sm-9 col-lg-10"
 					onChange={::this.reset}
+					min="0"
 				/>
 
 				<Input wrapperClassName="col-xs-12 col-sm-9 col-lg-10 col-sm-offset-3 col-lg-offset-2">
@@ -122,8 +131,14 @@ class Calculator extends Component {
 	}
 
 	reset() {
+		const startDate = this.refs.startDate.getValue();
+		const endDate = this.refs.endDate.getValue();
+		const result = null;
+
 		this.setState({
-			result: null,
+			startDate,
+			endDate,
+			result,
 		});
 	}
 
