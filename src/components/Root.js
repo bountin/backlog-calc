@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
+import { IntlProvider } from 'react-intl';
+import messages from '../messages';
+
+import Calculator from './Calculator';
+import Header from './Header';
+import Footer from './Footer';
 
 /**
  * @TODO doc
@@ -9,8 +14,25 @@ class Root extends Component {
 
 	static propTypes = {};
 
+	state = {};
+
 	render() {
-		return <h1>Test</h1>;
+		const locale = this.state.locale
+			|| navigator.language
+			|| navigator.browserLanguage;
+
+		const intlData = {
+			locale   : locale,
+			messages : messages[locale] || messages[locale.match(/\w+/)[0]],
+		};
+
+		return <IntlProvider key="intl" {...intlData}>
+			<div>
+				<Header />
+				<Calculator />
+				<Footer />
+			</div>
+		</IntlProvider>;
 	}
 
 }
