@@ -1,12 +1,17 @@
 import moment from 'moment';
 
 export function successfulProject(startDate, endDate, velocity, backlogSize) {
+	// Fixed parameter for now
+	var minPercent = 0.8;
+	return successProbability(startDate, endDate, velocity, backlogSize) >= minPercent;
+}
+
+export function successProbability(startDate, endDate, velocity, backlogSize) {
 	// parameters, fixed for now
 	var blSizeReal = 0.15; // Puffer für realistischen zusätzlichen Backlogumfang
 	var blSizePess = 0.40; // Puffer für pessimistischen zusätzlichen Backlogumfang
 	var velRed = -0.15; // Velocity Einbruch-Faktor
 	var velAdd = 0.15; // Velocity Steigerungsfaktor
-	var minPercent = 0.8;
 	var p = reliableScrumProbabilityByDuration(
 		backlogSize,
 		backlogSize * (1 + blSizeReal),
@@ -16,7 +21,7 @@ export function successfulProject(startDate, endDate, velocity, backlogSize) {
 		Math.round(velocity * (1 + velRed)) / 7,
 		endDate.diff(startDate, 'days')
 	);
-	return p >= minPercent;
+	return p;
 }
 
 export function projectDuration(startDate, endDate, velocity, backlogSize) {
