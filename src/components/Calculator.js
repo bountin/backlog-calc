@@ -12,6 +12,8 @@ import Button from 'react-bootstrap/lib/Button';
 
 import Styles from './styles/Calculator.less';
 
+import successfulProject from '../utils/Calculations'
+
 const messages = defineMessages({
 	projectNameLabel : {
 		id             : 'calculator.projectNameLabel',
@@ -190,11 +192,11 @@ class Calculator extends Component {
 		const projectName = this.refs.projectName.getValue();
 		const startDate = this.refs.startDate.getValue();
 		const endDate = this.refs.endDate.getValue();
-		const velocity = this.refs.velocity.getValue();
-		const backlogSize = this.refs.backlogSize.getValue();
+		const velocity = parseInt(this.refs.velocity.getValue());
+		const backlogSize = parseInt(this.refs.backlogSize.getValue());
 
 		this.setState({
-			result : true,
+			result : successfulProject(startDate, endDate, velocity, backlogSize),
 		});
 	}
 
