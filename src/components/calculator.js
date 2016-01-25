@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { injectIntl, defineMessages, FormattedMessage, FormattedNumber } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/lib/Col';
 import Icon from 'react-fontawesome';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
+import Results from './results';
 
 import Styles from './styles/calculator.less';
 
@@ -18,11 +19,7 @@ import {
 	successProbability,
 	successBacklogSize,
 } from '../utils/calculations';
-
-import {
-	validateProjectDates,
-	validateBacklogSize,
-} from '../utils/validators';
+import { validateInputs } from '../utils/validators';
 
 const messages = defineMessages({
 	projectNameLabel : {
@@ -81,76 +78,25 @@ class Calculator extends Component {
 	};
 
 	state = {
-		errors : {},
-		result : null
+		inputs  : {
+			startDate : moment(),
+			endDate   : moment().add(1, 'month'),
+		},
+		errors  : {},
+		results : null,
 	};
 
 	render() {
 		const { intl } = this.props;
 		const {
-			projectName,
-			startDate = moment(),
-			endDate = moment().add(1, 'month'),
-			velocity,
-			backlogSize,
-			result,
+			inputs,
+			results,
 			errors,
 			} = this.state;
 
-		let resultTextElement = null, resultIconElement = null, resultStyle = null;
-		if (errors.overall) {
-			resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
-			resultTextElement = <div className={Styles.status}>
-				{errors.overall}
-			</div>;
-			resultStyle = Styles.failure;
-		} else if (result != null) {
-			if (result && result.reachable === true) {
-				resultIconElement = <Icon className={Styles.icon} name="check-circle" />;
-				resultTextElement = <div className={Styles.status}>
-					<span>Looks good!</span>
-					<br />
-					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-					<br />
-					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
-					<br />
-					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
-				</div>;
-				resultStyle = Styles.success;
-			} else if (result && result.reachable === false) {
-				resultIconElement = <Icon className={Styles.icon} name="times-circle" />;
-				resultTextElement = <div className={Styles.status}>
-					<span>You will not finish in time!</span>
-					<br />
-					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-					<br />
-					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
-					<br />
-					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
-				</div>;
-				resultStyle = Styles.failure;
-			}
-		}
-		let resultElement = <span className={classNames(Styles.result, resultStyle, Styles.status)}>
-				<div className={Styles.statusParent}>
-					{resultIconElement}
-					{resultTextElement}
-				</div>
-			</span>;
-
-		let invalidDatesComponent = errors.dates ? <div className="form-group"><span
-			className="col-xs-offset-12 col-sm-offset-3 col-lg-offset-2 col-xs-12 col-sm-6 col-lg-8">
-			Invalid Dates!
-		</span></div> : null;
-
-		let invalidBacklogSizeComponent = errors.backlogSize ? <div className="form-group"><span
-			className="col-xs-offset-12 col-sm-offset-3 col-lg-offset-2 col-xs-12 col-sm-6 col-lg-8">
-			Invalid Backlog Size or Velocity!
-		</span></div> : null;
-
 		return <section className="container">
 			<Row>
-				<Col xs={12} sm={6} lg={8} smOffset={3} lgOffset={2} className={Styles.intro}>
+				<Col xs={12} sm={9} md={10} lg={8} smOffset={3} mdOffset={2} className={Styles.intro}>
 					<p>
 						Dear ProductOwner,
 					</p>
@@ -167,160 +113,159 @@ class Calculator extends Component {
 					<p>&nbsp;</p>
 				</Col>
 			</Row>
-			<form className="form-horizontal" onSubmit={::this.recalculate}>
+			<form className="form-horizontal" onSubmit={::this._recalculate} noValidate>
 				<Input
 					type="text"
 					ref="projectName"
-					value={projectName}
+					value={inputs.projectName}
 					label={intl.formatMessage(messages.projectNameLabel)}
-					labelClassName="col-xs-12 col-sm-3 col-lg-2"
-					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
-					onChange={::this.reset}
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8"
+					onChange={::this._resetResults}
 				/>
 
 				<Input
 					label={intl.formatMessage(messages.startDateLabel)}
-					labelClassName="col-xs-12 col-sm-3 col-lg-2"
-					wrapperClassName="col-xs-12 col-sm-6 col-lg-8">
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8"
+					help={renderErrors(errors.startDate)}
+					hasFeedback={!!errors.startDate}
+					bsStyle={!!errors.startDate ? 'error' : null}>
 					<DatePicker
 						ref="startDate"
-						className={classNames("form-control", errors.dates ? Styles.invalidField : "")}
-						locale={intl.locale}
-						selected={startDate}
-						maxDate={endDate}
-						onChange={::this.reset}
+						className="form-control"
+						selected={inputs.startDate}
+						onChange={::this._resetResults}
 					/>
 				</Input>
 
 				<Input
 					label={intl.formatMessage(messages.endDateLabel)}
-					labelClassName="col-xs-12 col-sm-3 col-lg-2"
-					wrapperClassName="col-xs-12 col-sm-6 col-lg-8">
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8"
+					help={renderErrors(errors.endDate)}
+					hasFeedback={!!errors.endDate}
+					bsStyle={!!errors.endDate ? 'error' : null}>
 					<DatePicker
 						ref="endDate"
 						locale={intl.locale}
-						className={classNames("form-control", errors.dates ? Styles.invalidField : "")}
-						selected={endDate}
-						minDate={startDate}
-						onChange={::this.reset}
+						className="form-control"
+						selected={inputs.endDate}
+						minDate={inputs.startDate}
+						onChange={::this._resetResults}
 					/>
 				</Input>
-
-				{invalidDatesComponent}
 
 				<Input
 					type="number"
 					ref="velocity"
-					value={velocity}
+					value={inputs.velocity}
 					label={intl.formatMessage(messages.velocityLabel)}
 					placeholder={intl.formatMessage(messages.velocityPlaceholder)}
-					labelClassName="col-xs-12 col-sm-3 col-lg-2"
-					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
-					onChange={::this.reset}
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8"
+					onChange={::this._resetResults}
 					min="0"
-					className={classNames(errors.backlogSize ? Styles.invalidField : "")}
+					help={renderErrors(errors.velocity)}
+					hasFeedback={!!errors.velocity}
+					bsStyle={!!errors.velocity ? 'error' : null}
 				/>
 
 				<Input
 					type="number"
 					ref="backlogSize"
-					value={backlogSize}
+					value={inputs.backlogSize}
 					label={intl.formatMessage(messages.backlogSizeLabel)}
 					placeholder={intl.formatMessage(messages.backlogSizePlaceholder)}
-					labelClassName="col-xs-12 col-sm-3 col-lg-2"
-					wrapperClassName="col-xs-12 col-sm-6 col-lg-8"
-					onChange={::this.reset}
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8"
+					onChange={::this._resetResults}
 					min="0"
-					className={classNames(errors.backlogSize ? Styles.invalidField : "")}
+					help={renderErrors(errors.backlogSize)}
+					hasFeedback={!!errors.backlogSize}
+					bsStyle={!!errors.backlogSize ? 'error' : null}
 				/>
 
-				{invalidBacklogSizeComponent}
-
-				<Input wrapperClassName="col-xs-12 col-sm-6 col-lg-8 col-sm-offset-3 col-lg-offset-2">
-					{(result != null) &&
-					<Button bsStyle="default" className={classNames("pull-right", Styles.printHide)}
-						onClick={::this.print}>
-						<FormattedMessage {...messages.printLabel} />
-					</Button>}
-
-					<Button type="submit" bsStyle="default" className={classNames(Styles.printHide, Styles.calculate)}>
+				<Input label="&nbsp;"
+					labelClassName="col-xs-12 col-sm-3 col-md-2"
+					wrapperClassName="col-xs-12 col-sm-9 col-md-10 col-md-8">
+					<Button
+						type="submit"
+						bsStyle="default"
+						className={classNames('pull-left', Styles.printHide, Styles.action)}>
 						<FormattedMessage {...messages.submitLabel} />
 					</Button>
 
-					{resultElement}
+					{(results != null) && <Button
+						bsStyle="default"
+						className={classNames('pull-right', Styles.printHide, Styles.action)}
+						onClick={::this._print}>
+						<FormattedMessage {...messages.printLabel} />
+					</Button>}
+
+					<div className={Styles.nobreak}>
+						{results && <Results {...results} />}
+					</div>
 				</Input>
 			</form>
 		</section>;
 	}
 
-	reset() {
-		const projectName = this.refs.projectName.getValue();
-		const startDate = this.refs.startDate.getValue();
-		const endDate = this.refs.endDate.getValue();
-		const velocity = parseInt(this.refs.velocity.getValue());
-		const backlogSize = parseInt(this.refs.backlogSize.getValue());
-		const result = null;
-		const errors = {};
+	_getInputs() {
+		return {
+			projectName : this.refs.projectName.getValue(),
+			startDate   : this.refs.startDate.getValue(),
+			endDate     : this.refs.endDate.getValue(),
+			velocity    : parseInt(this.refs.velocity.getValue()),
+			backlogSize : parseInt(this.refs.backlogSize.getValue()),
+		};
+	}
 
+	_resetResults() {
 		this.setState({
-			projectName,
-			startDate   : startDate < endDate ? startDate : endDate,
-			endDate     : endDate < startDate ? startDate : endDate,
-			velocity    : Math.max(0, velocity),
-			backlogSize : Math.max(0, backlogSize),
-			result,
-			errors,
+			inputs  : this._getInputs(),
+			results : null
 		});
 	}
 
-	recalculate(e) {
+	_recalculate(e) {
 		e.preventDefault();
 
-		const projectName = this.refs.projectName.getValue();
-		const startDate = this.refs.startDate.getValue();
-		const endDate = this.refs.endDate.getValue();
-		const velocity = parseInt(this.refs.velocity.getValue());
-		const backlogSize = parseInt(this.refs.backlogSize.getValue());
-
-		let errors = {}, hasErrors = false;
-		let result = null;
-		let duration = endDate.diff(startDate, 'days');
-
-		if (!validateProjectDates(startDate, endDate)) {
-			errors.dates = 1;
-			hasErrors = true;
-			console.log("invalid dates");
-		}
-		if (!validateBacklogSize(backlogSize, velocity)) {
-			errors.backlogSize = 1;
-			hasErrors = true;
+		const inputs = this._getInputs();
+		const errors = validateInputs(inputs);
+		if (Object.keys(errors).length) {
+			return this.setState({ errors });
 		}
 
-		if (!hasErrors) {
-			try {
-				result = {
-					reachable          : isSuccessful(backlogSize, velocity, duration),
-					expected           : startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
-					probability        : successProbability(backlogSize, velocity, duration),
-					maximalBacklogSize : successBacklogSize(velocity, duration),
-				};
-			} catch (e) {
-				errors.overall = e;
-				result = null;
-				hasErrors = true;
-			}
-		}
+		const { backlogSize, velocity, startDate, endDate } = inputs;
+		const duration = endDate.diff(startDate, 'days');
+		const results = {
+			isSuccessful   : isSuccessful(backlogSize, velocity, duration),
+			completionDate : startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
+			probability    : successProbability(backlogSize, velocity, duration),
+			backlogSize    : successBacklogSize(velocity, duration),
+		};
 
-		this.setState({
-			result,
-			errors,
-		});
+		this.setState({ results, errors });
 	}
 
-	print() {
+	_print() {
 		window.print();
 	}
 
+}
+
+function renderErrors(errors = []) {
+	if (!errors.length) {
+		return null;
+	}
+
+	return <span>
+		{errors.map(message => <span>
+			<FormattedMessage {...message} />
+			<br />
+		</span>)}
+	</span>
 }
 
 export default injectIntl(Calculator);
