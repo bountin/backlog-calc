@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import Styles from './styles/Footer.less';
+import Styles from './styles/footer.less';
 
 /**
  * @TODO doc

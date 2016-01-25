@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import Styles from './styles/Header.less';
+import Styles from './styles/header.less';
 import logo from './resources/logo.png';
 
 /**

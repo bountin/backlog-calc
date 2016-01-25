@@ -10,7 +10,7 @@ import Icon from 'react-fontawesome';
 import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 
-import Styles from './styles/Calculator.less';
+import Styles from './styles/calculator.less';
 
 import {successfulProject, projectDuration, successProbability, maximalBacklogSize} from '../utils/calculations';
 import {validateProjectDates, validateBacklogSize} from '../utils/validators';

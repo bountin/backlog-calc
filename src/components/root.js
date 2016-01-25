@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { IntlProvider } from 'react-intl';
 import messages from '../messages';
 
-import Calculator from './Calculator';
-import Header from './Header';
-import Footer from './Footer';
+import Calculator from './calculator';
+import Header from './header';
+import Footer from './footer';
 
 import './resources/stratum.css';
-import './styles/Root.less';
+import './styles/root.less';
 
 /**
  * @TODO doc
