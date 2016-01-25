@@ -1,38 +1,85 @@
-
+/* globals jest, expect, beforeEach, it */
 jest.dontMock('../validators');
 
 import moment from 'moment';
-const {validateProjectDates, validateBacklogSize} = require('../validators');
+const { validateInputs } = require('../validators');
 
-describe('validators', () => {
-    describe ('validateProjectDates', () => {
-        it('should accept a valid input', () => {
-            let result = validateProjectDates(moment("2015-01-04"), moment("2015-10-31"));
+describe('input validation', () => {
 
-            expect(result).toEqual(true);
-        });
-        it('should not accept an invalid input', () => {
-            let result = validateProjectDates(moment("2016-01-01"), moment("2015-01-01"));
+	let inputs;
 
-            expect(result).toEqual(false);
-        });
-    });
+	beforeEach(() => {
+		inputs = {
+			startDate   : moment(),
+			endDate     : moment().add(1, 'month'),
+			backlogSize : 17,
+			velocity    : 5,
+		};
+	});
 
-    describe ('validateBacklogSize', () => {
-        it('should not allow negative backlog size', () => {
-            expect(validateBacklogSize(-42, 2)).toEqual(false);
-        });
-        it('should not allow negative weekly performance', () => {
-            expect(validateBacklogSize(42, -3)).toEqual(false);
-        });
-        it('should not allow a zero performance', () => {
-            expect(validateBacklogSize(42, 0)).toEqual(false);
-        });
-        it('should not allow a performance that is bigger than the total workload', () => {
-            expect(validateBacklogSize(42, 60)).toEqual(false);
-        });
-        it('should allow at least something', () => {
-            expect(validateBacklogSize(200, 14)).toEqual(true);
-        });
-    });
+	it('should accept valid inputs', () => {
+		expect(validateInputs(inputs)).toEqual({});
+	});
+
+	it('should reject an empty end date', () => {
+		inputs.startDate = undefined;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('startDate');
+		expect(errors.startDate.map(e => e.id)).toContain('validators.startDateRequired');
+	});
+
+	it('should reject an empty end date', () => {
+		inputs.endDate = undefined;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('endDate');
+		expect(errors.endDate.map(e => e.id)).toContain('validators.endDateRequired');
+	});
+
+	it('should reject an end date before the start date', () => {
+		inputs.endDate = inputs.startDate.clone().subtract(1, 'days');
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('endDate');
+		expect(errors.endDate.map(e => e.id)).toContain('validators.endDate');
+	});
+
+	it('should reject a negative backlog size', () => {
+		inputs.backlogSize = -42;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('backlogSize');
+		expect(errors.backlogSize.map(e => e.id)).toContain('validators.backlogSizePositive');
+	});
+
+	it('should reject backlog size of zero', () => {
+		inputs.backlogSize = 0;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('backlogSize');
+		expect(errors.backlogSize.map(e => e.id)).toContain('validators.backlogSizePositive');
+	});
+
+	it('should reject a negative velocity', () => {
+		inputs.velocity = -42;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('velocity');
+		expect(errors.velocity.map(e => e.id)).toContain('validators.velocityPositive');
+	});
+
+	it('should reject a velocity of zero', () => {
+		inputs.velocity = 0;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('velocity');
+		expect(errors.velocity.map(e => e.id)).toContain('validators.velocityPositive');
+	});
+
+	it('should reject a velocity bigger than the backlog', () => {
+		inputs.velocity = inputs.backlogSize + 1;
+		const errors = validateInputs(inputs);
+		expect(errors).toHaveArray('velocity');
+		expect(errors.velocity.map(e => e.id)).toContain('validators.velocityMax');
+	});
+
+	it('should accept a velocity equal to the backlog size', () => {
+		inputs.velocity = inputs.backlogSize;
+		expect(validateInputs(inputs).velocity).toBeFalsy();
+	});
+
 });
