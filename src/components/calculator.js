@@ -12,8 +12,17 @@ import Button from 'react-bootstrap/lib/Button';
 
 import Styles from './styles/calculator.less';
 
-import {successfulProject, projectDuration, successProbability, maximalBacklogSize} from '../utils/calculations';
-import {validateProjectDates, validateBacklogSize} from '../utils/validators';
+import {
+	isSuccessful,
+	successDuration,
+	successProbability,
+	successBacklogSize,
+} from '../utils/calculations';
+
+import {
+	validateProjectDates,
+	validateBacklogSize,
+} from '../utils/validators';
 
 const messages = defineMessages({
 	projectNameLabel : {
@@ -72,8 +81,8 @@ class Calculator extends Component {
 	};
 
 	state = {
-		errors: {},
-		result: null
+		errors : {},
+		result : null
 	};
 
 	render() {
@@ -102,7 +111,7 @@ class Calculator extends Component {
 					<span>Looks good!</span>
 					<br />
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-					<br/>
+					<br />
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
 					<br />
 					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
@@ -114,7 +123,7 @@ class Calculator extends Component {
 					<span>You will not finish in time!</span>
 					<br />
 					Expected project completion on <b>{result.expected.format("YYYY-MM-DD")}</b>.
-					<br/>
+					<br />
 					Probability of success: <b><FormattedNumber value={result.probability} style="percent" /></b>
 					<br />
 					Maximal successful Backlog Size: <b>{result.maximalBacklogSize}</b>
@@ -230,7 +239,7 @@ class Calculator extends Component {
 				<Input wrapperClassName="col-xs-12 col-sm-6 col-lg-8 col-sm-offset-3 col-lg-offset-2">
 					{(result != null) &&
 					<Button bsStyle="default" className={classNames("pull-right", Styles.printHide)}
-					        onClick={::this.print}>
+						onClick={::this.print}>
 						<FormattedMessage {...messages.printLabel} />
 					</Button>}
 
@@ -272,8 +281,10 @@ class Calculator extends Component {
 		const endDate = this.refs.endDate.getValue();
 		const velocity = parseInt(this.refs.velocity.getValue());
 		const backlogSize = parseInt(this.refs.backlogSize.getValue());
+
 		let errors = {}, hasErrors = false;
 		let result = null;
+		let duration = endDate.diff(startDate, 'days');
 
 		if (!validateProjectDates(startDate, endDate)) {
 			errors.dates = 1;
@@ -288,10 +299,10 @@ class Calculator extends Component {
 		if (!hasErrors) {
 			try {
 				result = {
-					reachable : successfulProject(startDate, endDate, velocity, backlogSize),
-					expected  : projectDuration(startDate, endDate, velocity, backlogSize),
-					probability: successProbability(startDate, endDate, velocity, backlogSize),
-					maximalBacklogSize: maximalBacklogSize(startDate, endDate, velocity, backlogSize)
+					reachable          : isSuccessful(backlogSize, velocity, duration),
+					expected           : startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
+					probability        : successProbability(backlogSize, velocity, duration),
+					maximalBacklogSize : successBacklogSize(velocity, duration),
 				};
 			} catch (e) {
 				errors.overall = e;
