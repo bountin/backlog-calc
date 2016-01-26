@@ -1,9 +1,22 @@
+@import './variables';
+
 :global {
 	body {
-		font-family: stratum2light, sans-serif;
+		background: @body-bg;
+		color: @body-color;
+		font-family: @body-font;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		font-family: stratum2medium, sans-serif;
+		font-family: @heading-font;
+	}
+
+	a:link {
+		color: @highlight-color;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 }
