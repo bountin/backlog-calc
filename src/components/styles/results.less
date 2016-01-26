@@ -7,10 +7,13 @@
 		display: block;
 		margin-top: 1em;
 		font-size: 150%;
+		*, *:before, *:after {
+			color: inherit !important;
+		}
 	}
 
 	&.success {
-		color: @highlight-color;
+		color: @highlight-color !important;
 	}
 
 	&.failure {
