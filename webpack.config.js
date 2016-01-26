@@ -47,7 +47,8 @@ module.exports = {
 	plugins : [
 		new Webpack.NoErrorsPlugin(),
 		new Webpack.HotModuleReplacementPlugin(),
-		new HtmlWebpackPlugin({ filename : 'index.html', template : 'index.html' })
+		new HtmlWebpackPlugin({ filename : 'index.html', template : 'index.html' }),
+		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/])
 	],
 
 	devServer : {
