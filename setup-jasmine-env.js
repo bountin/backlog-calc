@@ -2,10 +2,10 @@
 jasmine.VERBOSE = true;
 
 require('jasmine-expect');
-require('jasmine-reporters');
+let jasmineReporters = require('jasmine-reporters');
 
 // Enable Teamcity Reporter if a Teamcity environment is detected
 if (process.env.TEAMCITY_VERSION) {
-	var teamcity = new jasmine.TeamcityReporter();
+	var teamcity = new jasmineReporters.TeamCityReporter();
 	jasmine.getEnv().addReporter(teamcity);
 }
