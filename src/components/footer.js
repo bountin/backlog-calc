@@ -1,10 +1,40 @@
 import React, { Component, PropTypes } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 import Styles from './styles/footer.less';
+
+const messages = defineMessages({
+
+	disclaimerMessage : {
+		id             : 'footer.disclaimerMessage',
+		defaultMessage : '{disclaimer}: We are not saving any data you insert on the website.',
+	},
+
+	disclaimer : {
+		id             : 'footer.disclaimer',
+		defaultMessage : 'Disclaimer',
+	},
+
+	contactMessage : {
+		id             : 'footer.contactMessage',
+		defaultMessage : 'If you wish to contact us, please feel free to {contactLink} &ndash; We are happy to answer your questions.',
+	},
+
+	contact : {
+		id             : 'footer.contact',
+		defaultMessage : 'get in touch with us',
+	},
+
+	floorMessage : {
+		id             : 'footer.floorMessage',
+		defaultMessage : 'This Backlog Calculator was developed in cooperation with {floorLink}.',
+	},
+
+});
 
 /**
  * @TODO doc
@@ -19,11 +49,17 @@ class Footer extends Component {
 			<div className="container">
 				<Row>
 					<Col xs={12} sm={9} md={10} lg={8} smOffset={3} mdOffset={2}>
-						<p><strong>Disclaimer:</strong> We are not saving any data you insert on the website.</p>
+						<p>
+							<FormattedMessage {...messages.disclaimerMessage} values={{
+								disclaimer : <strong><FormattedMessage {...messages.disclaimer} /></strong>,
+							}} />
+						</p>
 						<p className={Styles.printHide}>
-							If you wish to contact us, please feel free to {' '}
-							<a href="mailto:office@borisgloger.com?subject=Backlog%20Calculator">get in touch with us</a>
-							{' '} &ndash; We are happy to answer your questions.
+							<FormattedMessage {...messages.contactMessage} values={{
+								contactLink : <a href="mailto:office@borisgloger.com?subject=Backlog%20Calculator">
+									<FormattedMessage {...messages.contact} />
+								</a>,
+							}} />
 						</p>
 					</Col>
 				</Row>
@@ -70,7 +106,9 @@ class Footer extends Component {
 						</svg>
 					</Col>
 					<Col xs={12} sm={9} md={10} lg={8}>
-						This Backlog Calculator was developed in cooperation with <a href="http://25th-floor.com">25th-floor</a>.
+						<FormattedMessage {...messages.floorMessage} values={{
+							floorLink : <a href="http://25th-floor.com" target="_blank">25th-floor</a>,
+						}} />
 					</Col>
 				</Row>
 			</div>
