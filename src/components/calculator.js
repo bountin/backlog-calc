@@ -79,8 +79,8 @@ class Calculator extends Component {
 
 	state = {
 		inputs  : {
-			startDate : moment(),
-			endDate   : moment().add(1, 'month'),
+			startDate : moment().startOf('day'),
+			endDate   : moment().startOf('day').add(1, 'month'),
 		},
 		errors  : {},
 		results : null,
