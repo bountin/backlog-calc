@@ -27,6 +27,7 @@ module.exports = {
 	},
 
 	plugins : [
+		new Webpack.DefinePlugin({ 'process.env' : { 'NODE_ENV' : '"production"' } }),
 		new Webpack.optimize.OccurenceOrderPlugin(),
 		new Webpack.optimize.UglifyJsPlugin({ compressor : { warnings : false } }),
 		new ExtractTextPlugin('[name].css?[hash]', { allChunks : true }),
