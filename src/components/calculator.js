@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import moment from 'moment';
@@ -22,6 +22,24 @@ import {
 import { validateInputs } from '../utils/validators';
 
 const messages = defineMessages({
+	introMessage : {
+		id             : 'calculator.introMessage',
+		defaultMessage : `Dear ProductOwner,
+<br />
+<br />
+On this page you have the possibility to calculate, if you will be able to keep your commitment
+towards your stakeholders. If you have an estimated backlog, the velocity of the team per week,
+the start date of the project and the choosen date of delivery, you have everything that is
+necessary in order to find out if you can deliver within the given timeframe.
+<br />
+<br />
+We wish you a lot of success with your product development,
+<br />
+Your borisgloger-Team
+<br />
+<br />`,
+	},
+
 	projectNameLabel : {
 		id             : 'calculator.projectNameLabel',
 		defaultMessage : 'Project Name',
@@ -92,25 +110,12 @@ class Calculator extends Component {
 			inputs,
 			results,
 			errors,
-			} = this.state;
+		} = this.state;
 
 		return <section className="container">
 			<Row>
 				<Col xs={12} sm={9} md={10} lg={8} smOffset={3} mdOffset={2} className={Styles.intro}>
-					<p>
-						Dear ProductOwner,
-					</p>
-					<p>
-						On this page you have the possibility to calculate, if you will be able to keep your commitment
-						towards your stakeholders. If you have an estimated backlog, the velocity of the team per week,
-						the start date of the project and the choosen date of delivery, you have everything that is
-						necessary in order to find out if you can deliver within the given timeframe.
-					</p>
-					<p>
-						We wish you a lot of success with your product development, <br />
-						Your borisgloger-Team
-					</p>
-					<p>&nbsp;</p>
+					<FormattedHTMLMessage {...messages.introMessage} />
 				</Col>
 			</Row>
 			<form className="form-horizontal" onSubmit={::this._recalculate} noValidate>
