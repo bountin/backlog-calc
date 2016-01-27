@@ -36,7 +36,7 @@ module.exports = {
 
 	module : {
 		loaders : [
-			{ test : /\.js$/, loader : 'react-hot!babel', exclude : /node_modules/ },
+			{ test : /\.js$/, loader : 'babel', exclude : /node_modules/ },
 			{ test : /\.css$/, loader : 'style!css?sourceMap' },
 			{ test : /\.less$/, loader : 'style!css?sourceMap&modules&localIdentName=[name]__[local]&importLoaders=1!autoprefixer?browsers=last 2 version!less-loader?sourceMap' },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
