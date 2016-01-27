@@ -8,9 +8,8 @@
     "build": "webpack --config webpack.production.config.js",
     "test": "jest"
   },
-  "dependencies": {},
   "devDependencies": {
-    "autoprefixer-loader": "~3.2",
+    "autoprefixer": "~6.3",
     "babel-core": "~6.3",
     "babel-loader": "~6.2",
     "babel-jest": "*",
@@ -30,16 +29,17 @@
     "font-awesome": "~4.4",
     "html-webpack-plugin": "~1.7",
     "intl": "~1.0",
-    "jasmine" : "~2.4",
-    "jasmine-expect" : "~1.22",
+    "jasmine": "~2.4",
+    "jasmine-expect": "~1.22",
     "jasmine-reporters": "~2.1",
     "jest-cli": "~0.8",
     "jsx-loader": "~0.13",
     "keymirror": "~0.1",
     "less": "~2.5",
     "less-loader": "~2.2",
-    "lodash" : "~4.0",
+    "lodash": "~4.0",
     "object-assign": "~4.0",
+    "postcss-loader": "~0.8",
     "react": "~0.14",
     "react-addons-test-utils": "~0.14",
     "react-bootstrap": "~0.27",
@@ -68,7 +68,9 @@
     ],
     "env": {
       "development": {
-        "presets": ["react-hmre"]
+        "presets": [
+          "react-hmre"
+        ]
       }
     }
   },

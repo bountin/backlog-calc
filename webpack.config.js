@@ -31,7 +31,7 @@ module.exports = {
 		loaders : [
 			{ test : /\.js$/, loader : 'babel', exclude : /node_modules/ },
 			{ test : /\.css$/, loader : 'style!css?sourceMap' },
-			{ test : /\.less$/, loader : 'style!css?sourceMap&modules&localIdentName=[name]__[local]&importLoaders=1!autoprefixer?browsers=last 2 version!less?sourceMap' },
+			{ test : /\.less$/, loader : 'style!css?sourceMap&modules&localIdentName=[name]__[local]!less?sourceMap' },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
 			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' },
 		],

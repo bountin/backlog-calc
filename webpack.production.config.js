@@ -3,6 +3,7 @@
 const path = require('path');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
 
@@ -22,7 +23,7 @@ module.exports = {
 		loaders : [
 			{ test : /\.js$/, loader : 'babel', exclude : /node_modules/ },
 			{ test : /\.css$/, loader : xt('style', 'css?minimize') },
-			{ test : /\.less$/, loader : xt('style', 'css?modules&minimize&importLoaders=1!autoprefixer?browsers=last 2 version!less-loader') },
+			{ test : /\.less$/, loader : xt('style', 'css?modules&minimize!postcss!less') },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
 			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' },
 		],
@@ -36,5 +37,7 @@ module.exports = {
 		new HtmlWebpackPlugin({ filename : 'index.html', template : 'index.html' }),
 		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
 	],
+
+	postcss : () => [Autoprefixer({ browsers : ['last 2 versions'] })],
 
 };
