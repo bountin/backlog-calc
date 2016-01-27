@@ -1,11 +1,13 @@
-var path = require('path');
-var entries = require('./entry.json');
-var Webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
+'use strict';
 
-var ASSETS_PATH = path.resolve(__dirname, 'build');
+const path = require('path');
+const Webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
+
+const ASSETS_PATH = path.resolve(__dirname, 'build');
+const entries = require('./entry.json');
 
 module.exports = {
 
@@ -13,7 +15,7 @@ module.exports = {
 
 	output : {
 		path     : ASSETS_PATH,
-		filename : '[name].js?[hash]'
+		filename : '[name].js?[hash]',
 	},
 
 	module : {
@@ -22,7 +24,7 @@ module.exports = {
 			{ test : /\.css$/, loader : xt('style', 'css?minimize') },
 			{ test : /\.less$/, loader : xt('style', 'css?modules&minimize&importLoaders=1!autoprefixer?browsers=last 2 version!less-loader') },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
-			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' }
+			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' },
 		],
 	},
 
@@ -32,7 +34,7 @@ module.exports = {
 		new Webpack.optimize.UglifyJsPlugin({ compressor : { warnings : false } }),
 		new ExtractTextPlugin('[name].css?[hash]', { allChunks : true }),
 		new HtmlWebpackPlugin({ filename : 'index.html', template : 'index.html' }),
-		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/])
+		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
 	],
 
 };
