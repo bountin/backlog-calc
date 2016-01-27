@@ -1,6 +1,7 @@
 //import { defineMessages } from 'react-intl';
 import moment from 'moment';
-import _ from 'lodash';
+import mapValues from 'lodash/mapValues';
+import pickBy from 'lodash/pickBy';
 
 function defineMessages(foo) { return foo }
 const messages = defineMessages({
@@ -60,20 +61,19 @@ export function validateInputs(inputs) {
 }
 
 function runValidators(descriptor, inputs) {
-	return _.chain(descriptor)
-		.mapValues(validators => {
-			let messages = [];
-			for (let [validate, message={}, abort=false] of validators) {
-				if (validate(inputs)) {
-					continue;
-				}
-				messages.push(message);
-				if (abort) {
-					break;
-				}
+	const errors = mapValues(descriptor, validators => {
+		let messages = [];
+		for (let [validate, message={}, abort=false] of validators) {
+			if (validate(inputs)) {
+				continue;
 			}
-			return messages.filter(message => !!message);
-		})
-		.pickBy(errors => !!errors.length)
-		.value();
+			messages.push(message);
+			if (abort) {
+				break;
+			}
+		}
+		return messages;
+	});
+
+	return pickBy(errors, errors => !!errors.length);
 }
