@@ -1,9 +1,8 @@
-//import { defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
 import moment from 'moment';
 import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
 
-function defineMessages(foo) { return foo }
 const messages = defineMessages({
 	startDateRequired : {
 		id             : 'validators.startDateRequired',

@@ -1,4 +1,5 @@
 /* globals jest, expect, beforeEach, it */
+jest.mock('react-intl');
 jest.dontMock('../validators');
 
 import moment from 'moment';
