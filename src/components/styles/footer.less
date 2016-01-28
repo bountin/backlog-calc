@@ -9,14 +9,21 @@
 	margin: auto;
 	display: block;
 	padding: 5px;
-	float: right;
+
+	@media (min-width: @screen-sm-min) {
+		float: right;
+	}
 }
 
 .floor {
-	line-height: 3em;
+	line-height: 1.5em;
 	margin-top: 2em;
 	padding-top: 2em;
 	border-top: 1px solid @separator-light;
+
+	@media (min-width: @screen-sm-min) {
+		line-height: 3em;
+	}
 }
 
 @media print {

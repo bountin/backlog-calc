@@ -21,7 +21,7 @@ const messages = defineMessages({
 
 	contactMessage : {
 		id             : 'footer.contactMessage',
-		defaultMessage : 'If you wish to contact us, please feel free to {contactLink} &ndash; We are happy to answer your questions.',
+		defaultMessage : 'If you wish to contact us, please feel free to {contactLink} – We are happy to answer your questions.',
 	},
 
 	contact : {
@@ -64,7 +64,7 @@ class Footer extends Component {
 					</Col>
 				</Row>
 				<Row className={Styles.floor}>
-					<Col sm={3} md={2}>
+					<Col xs={4} sm={3} md={2}>
 						<svg className={Styles.logo} viewBox="0 0 319.9 137.9">
 							<path className="st0" d="M177.7,63.3c0-11.4,14.8-13.3,14.8-19.6c0-2.8-2.1-4.4-4.8-4.4c-2.3,0-3.9,1.4-4.7,2.4
 							c-0.8,0.8-1.7,1.2-2.6,0.4l-1.2-0.9c-0.9-0.7-1.2-1.6-0.5-2.5c1.4-1.8,4.3-4.8,9.5-4.8c5.5,0,10.3,3.4,10.3,9.4
@@ -105,7 +105,7 @@ class Footer extends Component {
 							l0,21.7c0,1.1,0.9,2,2,2h2.8c1.1,0,2-0.9,2-2L157.4,36.1z"></path>
 						</svg>
 					</Col>
-					<Col xs={12} sm={9} md={10} lg={8}>
+					<Col xs={8} sm={9} md={10} lg={8}>
 						<FormattedMessage {...messages.floorMessage} values={{
 							floorLink : <a href="http://25th-floor.com" target="_blank">25th-floor</a>,
 						}} />

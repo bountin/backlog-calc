@@ -4,11 +4,19 @@
 	background: @logo-bg;
 	color: @logo-color;
 	margin-bottom: 3em;
-	padding: 2em;
+	padding: .5em;
+
+	@media (min-width: @screen-sm-min) {
+		padding: 2em;
+	}
 }
 
 .logo {
 	display: inline;
 	max-height: 40px;
-	margin-right: 1em;
+	margin-right: .5em;
+
+	@media (min-width: @screen-sm-min) {
+		margin-right: 1em;
+	}
 }
