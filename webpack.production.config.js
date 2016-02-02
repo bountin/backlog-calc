@@ -34,7 +34,7 @@ module.exports = {
 		new Webpack.optimize.OccurenceOrderPlugin(),
 		new Webpack.optimize.UglifyJsPlugin({ compressor : { warnings : false } }),
 		new ExtractTextPlugin('[name].css?[hash]', { allChunks : true }),
-		new HtmlWebpackPlugin({ filename : 'index.html', template : 'index.html' }),
+		new HtmlWebpackPlugin({ template : 'assets/index.html', favicon : 'assets/favicon.ico', inject : 'body' }),
 		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
 	],
 
