@@ -61,7 +61,7 @@ export function validateInputs(inputs) {
 
 function runValidators(descriptor, inputs) {
 	const errors = mapValues(descriptor, validators => {
-		let messages = [];
+		const messages = [];
 		for (let [validate, message={}, abort=false] of validators) {
 			if (validate(inputs)) {
 				continue;

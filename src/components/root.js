@@ -25,7 +25,7 @@ class Root extends Component {
 			|| navigator.browserLanguage;
 
 		const intlData = {
-			locale   : locale,
+			locale,
 			messages : messages[locale] || messages[locale.match(/\w+/)[0]],
 		};
 

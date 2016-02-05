@@ -104,7 +104,7 @@ export function successBacklogSize(velocity, duration) {
 	let backlogSize = (minBacklogSize + maxBacklogSize) / 2;
 
 	while (step >= 1) {
-		let sign = isSuccessful(backlogSize, velocity, duration) ? 1 : -1;
+		const sign = isSuccessful(backlogSize, velocity, duration) ? 1 : -1;
 		backlogSize += step * sign;
 		step /= 2;
 	}
