@@ -75,14 +75,16 @@
     "scriptPreprocessor": "./node_modules/babel-jest",
     "setupTestFrameworkScriptFile": "./setup-jasmine-env.js",
     "unmockedModulePathPatterns": [
-      "./node_modules/jasmine",
-      "./node_modules/react",
-      "./node_modules/react-dom",
-      "./node_modules/react-addons-test-utils",
-      "./node_modules/fbjs",
-      "./node_modules/lodash",
-      "./node_modules/moment",
-      "./node_modules/classnames"
+      "<rootDir>/node_modules/jasmine",
+      "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-addons-test-utils",
+      "<rootDir>/node_modules/fbjs",
+      "<rootDir>/node_modules/babel-runtime",
+      "<rootDir>/node_modules/core-js",
+      "<rootDir>/node_modules/lodash",
+      "<rootDir>/node_modules/moment",
+      "<rootDir>/node_modules/classnames"
     ],
     "moduleNameMapper": {
       "[A-z]+\\.(css|less|sass|scss)$": "style-stub",
