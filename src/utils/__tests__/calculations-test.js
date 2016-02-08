@@ -1,7 +1,6 @@
 /* globals jest, expect, beforeEach, it */
 jest.dontMock('../calculations');
 
-import moment from 'moment';
 const {
 	isSuccessful,
 	successDuration,
