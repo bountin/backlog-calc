@@ -74,6 +74,7 @@
   "jest": {
     "scriptPreprocessor": "./node_modules/babel-jest",
     "setupTestFrameworkScriptFile": "./setup-jasmine-env.js",
+    "testRunner": "./node_modules/jest-cli/src/testRunners/jasmine/jasmine2.js",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/jasmine",
       "<rootDir>/node_modules/react",
