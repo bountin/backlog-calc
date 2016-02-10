@@ -39,7 +39,7 @@
     "file-loader": "~0.8",
     "harmony-reflect": "~1.4",
     "html-webpack-plugin": "~1.7",
-    "inspect-react-element": "^1.1.1",
+    "inspect-react-element": "~1.1",
     "jasmine": "~2.4",
     "jasmine-expect": "~2.0",
     "jasmine-reporters": "~2.1",
