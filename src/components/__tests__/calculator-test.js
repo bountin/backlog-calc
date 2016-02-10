@@ -8,8 +8,7 @@ const ReactDOM = require('react-dom');
 const TestUtils = require('../../utils/test-utils');
 const moment = require('moment');
 
-const { ['default'] : Calculator, Internal } = require('../calculator');
-
+const Calculator = require('../calculator');
 const Results = require('../results').default;
 const { isSuccessful, successDuration, successProbability, successBacklogSize } = require('../../utils/calculations');
 const { validateInputs } = require('../../utils/validators');
@@ -27,8 +26,8 @@ describe('Calculator component', () => {
 		successBacklogSize.mockClear();
 		validateInputs.mockClear();
 
-		decorator = TestUtils.renderIntoDocument(<Calculator />);
-		calculator = TestUtils.findRenderedComponentWithType(decorator, Internal);
+		decorator = TestUtils.renderIntoDocument(<Calculator.default />);
+		calculator = TestUtils.findRenderedComponentWithType(decorator, Calculator.Calculator);
 		node = ReactDOM.findDOMNode(calculator);
 	});
 

@@ -89,7 +89,7 @@ Your borisgloger-Team
 /**
  * @TODO doc
  */
-class Calculator extends Component {
+export class Calculator extends Component {
 
 	static propTypes = {
 		intl : PropTypes.object.isRequired,
@@ -274,4 +274,3 @@ function renderErrors(errors = []) {
 }
 
 export default injectIntl(Calculator);
-export const Internal = (process.env.NODE_ENV === 'test') && Calculator;
