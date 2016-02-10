@@ -15,3 +15,10 @@ export function injectIntl(Component) {
 		render() { return <Component intl={intl} {...this.props} />; }
 	};
 }
+
+export const FormattedDate = 'div';
+export const FormattedTime = 'div';
+export const FormattedRelative = 'div';
+export const FormattedNumber = 'div';
+export const FormattedMessage = ({ id }) => <span>{id}</span>;
+export const FormattedHTMLMessage = ({ id }) => <span>{id}</span>;
