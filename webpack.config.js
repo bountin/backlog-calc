@@ -34,6 +34,7 @@ module.exports = {
 			{ test : /\.less$/, loader : 'style!css?sourceMap&modules&localIdentName=[name]__[local]!less?sourceMap' },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
 			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' },
+			{ test : /\.json$/, loader : 'json', exclude : /node_modules/ },
 		],
 	},
 

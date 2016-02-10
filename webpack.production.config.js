@@ -26,6 +26,7 @@ module.exports = {
 			{ test : /\.less$/, loader : xt('style', 'css?modules&minimize!postcss!less') },
 			{ test : /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/, loader : 'url-loader?limit=8192' },
 			{ test : /\.(gif|jpg|jpeg|png)(\?]?.*)?$/, loader : 'url-loader?limit=1024' },
+			{ test : /\.json$/, loader : 'json', exclude : /node_modules/ },
 		],
 	},
 

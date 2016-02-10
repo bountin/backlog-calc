@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { IntlProvider } from 'react-intl';
-import messages from '../messages';
+import * as messages from '../messages';
 
 import Calculator from './calculator';
 import Header from './header';
