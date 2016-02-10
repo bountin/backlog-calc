@@ -39,6 +39,7 @@
     "file-loader": "~0.8",
     "harmony-reflect": "~1.4",
     "html-webpack-plugin": "~1.7",
+    "inspect-react-element": "^1.1.1",
     "jasmine": "~2.4",
     "jasmine-expect": "~2.0",
     "jasmine-reporters": "~2.1",
@@ -85,7 +86,8 @@
       "<rootDir>/node_modules/core-js",
       "<rootDir>/node_modules/lodash",
       "<rootDir>/node_modules/moment",
-      "<rootDir>/node_modules/classnames"
+      "<rootDir>/node_modules/classnames",
+      "<rootDir>/src/jasmine"
     ],
     "moduleNameMapper": {
       "[A-z]+\\.(css|less|sass|scss)$": "style-stub",
