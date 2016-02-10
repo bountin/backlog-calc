@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { injectIntl, defineMessages, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
-import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import moment from 'moment';
 
+import DatePicker from 'react-datepicker';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Icon from 'react-fontawesome';
@@ -246,8 +246,8 @@ class Calculator extends Component {
 		const duration = endDate.diff(startDate, 'days');
 		const results = {
 			isSuccessful   : isSuccessful(backlogSize, velocity, duration),
-			completionDate : startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
 			probability    : successProbability(backlogSize, velocity, duration),
+			completionDate : startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
 			backlogSize    : successBacklogSize(velocity, duration),
 		};
 
@@ -266,7 +266,7 @@ function renderErrors(errors = []) {
 	}
 
 	return <span>
-		{errors.map(message => <span>
+		{errors.map(message => <span key={message.id}>
 			<FormattedMessage {...message} />
 			<br />
 		</span>)}
@@ -274,3 +274,4 @@ function renderErrors(errors = []) {
 }
 
 export default injectIntl(Calculator);
+export const Internal = (process.env.NODE_ENV === 'test') && Calculator;
