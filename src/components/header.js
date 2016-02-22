@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
 import Styles from './styles/header.less';
-import logo from './resources/logo.png';
+import logo from './assets/logo.png';
 
 /**
  * @TODO doc

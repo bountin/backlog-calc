@@ -6,7 +6,7 @@ import Calculator from './calculator';
 import Header from './header';
 import Footer from './footer';
 
-import './resources/stratum.css';
+import './assets/stratum.css';
 import './styles/root.less';
 
 /**
