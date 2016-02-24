@@ -62,8 +62,7 @@
     "style-loader": "~0.13",
     "url-loader": "~0.5",
     "webpack": "~1.12",
-    "webpack-dev-server": "~1.14",
-    "webpack-fail-plugin": "~1.0"
+    "webpack-dev-server": "~1.14"
   },
   "babel": {
     "presets": [

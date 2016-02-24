@@ -5,7 +5,7 @@ const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const FailPlugin = require('webpack-fail-plugin');
+const TeamCityWebpackPlugin = require('./teamcity-webpack-plugin');
 const xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
 
 const ASSETS_PATH = path.resolve(__dirname, 'build');
@@ -41,7 +41,7 @@ module.exports = {
 		new ExtractTextPlugin('[name].css?[hash]', { allChunks : true }),
 		new HtmlWebpackPlugin({ template : 'assets/index.html', favicon : 'assets/favicon.ico', inject : 'body' }),
 		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-		FailPlugin,
+		new TeamCityWebpackPlugin(),
 	],
 
 	postcss : () => [autoprefixer({ browsers : ['last 2 versions'] })],
