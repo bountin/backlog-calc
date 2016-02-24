@@ -16,7 +16,7 @@ addLocaleData(en);
 addLocaleData(de);
 
 // Start up the application
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import Root from './components/root';
 

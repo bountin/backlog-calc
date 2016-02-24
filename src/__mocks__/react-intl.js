@@ -2,8 +2,8 @@ import React from 'react';
 
 const intl = {
 	formatMessage(message) {
-		return '' + message.id;
-	}
+		return String(message.id);
+	},
 };
 
 export function defineMessages(messages) {

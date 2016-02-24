@@ -3,8 +3,9 @@
 const path = require('path');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Autoprefixer = require('autoprefixer');
+const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const FailPlugin = require('webpack-fail-plugin');
 const xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
 
 const ASSETS_PATH = path.resolve(__dirname, 'build');
@@ -20,6 +21,9 @@ module.exports = {
 	},
 
 	module : {
+		preLoaders : [
+			{ test : /\.js$/, loader : 'eslint', exclude : /node_modules/ },
+		],
 		loaders : [
 			{ test : /\.js$/, loader : 'babel', exclude : /node_modules/ },
 			{ test : /\.css$/, loader : xt('style', 'css?minimize') },
@@ -31,14 +35,17 @@ module.exports = {
 	},
 
 	plugins : [
-		new Webpack.DefinePlugin({ 'process.env' : { 'NODE_ENV' : '"production"' } }),
+		new Webpack.DefinePlugin({ 'process.env' : { NODE_ENV : '"production"' } }),
 		new Webpack.optimize.OccurenceOrderPlugin(),
 		new Webpack.optimize.UglifyJsPlugin({ compressor : { warnings : false } }),
 		new ExtractTextPlugin('[name].css?[hash]', { allChunks : true }),
 		new HtmlWebpackPlugin({ template : 'assets/index.html', favicon : 'assets/favicon.ico', inject : 'body' }),
 		new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+		FailPlugin,
 	],
 
-	postcss : () => [Autoprefixer({ browsers : ['last 2 versions'] })],
+	postcss : () => [autoprefixer({ browsers : ['last 2 versions'] })],
+
+	eslint : { failOnError : true },
 
 };

@@ -63,6 +63,8 @@ export function successDuration(backlogSize, velocity) {
 			return Math.ceil(probableDuration(backlogSize, velocity, i / (STEPS - 1)));
 		}
 	}
+
+	return NaN;
 }
 
 /**
@@ -72,7 +74,7 @@ export function successDuration(backlogSize, velocity) {
  * @param {number} velocity    - The weekly velocity in story points.
  * @param {number} duration    - The full project duration in days.
  *
- * @returns {boolean}
+ * @returns {boolean} True if the project can be completed in time.
  */
 export function isSuccessful(backlogSize, velocity, duration) {
 	return successProbability(backlogSize, velocity, duration) >= SUCCESS_THRESHOLD;
@@ -82,9 +84,8 @@ export function isSuccessful(backlogSize, velocity, duration) {
  * Calculates the maximum amount of storypoints the backlog could contain within
  * the given duration.
  *
- * @param {number} backlogSize - The total number of story points in the backlog.
- * @param {number} velocity    - The weekly velocity in story points.
- * @param {number} duration    - The full project duration in days.
+ * @param {number} velocity - The weekly velocity in story points.
+ * @param {number} duration - The full project duration in days.
  *
  * @returns {number} An estimate on the biggest backlog, a team could handle with
  * the given velocity in the given time frame. Unit: Story Points.
@@ -128,7 +129,7 @@ export function successBacklogSize(velocity, duration) {
  * @param {number} pess - The most pessimistic data point
  * @param {number} p    - A value between 0 (optimistic) and 1 (pessimistic)
  *
- * @returns {number}
+ * @returns {number} The estimated value between opt and pess.
  */
 function threePointValue(opt, real, pess, p) {
 	const k = (real - opt) / (pess - opt);
@@ -146,7 +147,8 @@ function threePointValue(opt, real, pess, p) {
  * @param {number} backlogSize - The total number of story points in the backlog.
  * @param {number} velocity    - The weekly velocity in story points.
  * @param {number} p           - A value between 0 (optimistic) and 1 (pessimistic)
- * @returns {number}
+ *
+ * @returns {number} The most likely duration of the given workload in days.
  */
 function probableDuration(backlogSize, velocity, p) {
 	const backlogSizeOpt = backlogSize;
