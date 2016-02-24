@@ -10,6 +10,8 @@ const moment = require('moment');
 
 const Calculator = require('../calculator');
 const Results = require('../results').default;
+const Container = require('../container').default;
+const FormattedMultiLine = require('../formatted-multi-line').default;
 const { isSuccessful, successDuration, successProbability, successBacklogSize } = require('../../utils/calculations');
 const { validateInputs } = require('../../utils/validators');
 
@@ -19,6 +21,8 @@ describe('Calculator component', () => {
 
 	beforeEach(() => {
 		TestUtils.mockComponent(Results);
+		TestUtils.mockComponent(Container);
+		TestUtils.mockComponent(FormattedMultiLine);
 
 		isSuccessful.mockClear();
 		successDuration.mockClear();
