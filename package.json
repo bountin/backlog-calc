@@ -9,7 +9,7 @@
     "messages": "node scripts/messages.js src src/messages en",
     "lint": "eslint src || true",
     "fix": "eslint --fix src || true",
-    "test": "NODE_ENV=test node --harmony-proxies `npm bin`/jest"
+    "test": "NODE_ENV=test node --harmony-proxies `npm bin`/jest --no-cache"
   },
   "dependencies": {
     "babel-polyfill": "~6.3",
