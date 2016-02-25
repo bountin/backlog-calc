@@ -12,41 +12,41 @@ const forceLanguage = process.argv[4];
 
 let messages = [];
 walk.walkSync(sourceDirectory, (baseDir, fileName, stat) => {
-	const filePath = path.resolve(baseDir, fileName);
-	if (!util.canCompile(filePath)) {
-		return;
-	}
+    const filePath = path.resolve(baseDir, fileName);
+    if (!util.canCompile(filePath)) {
+        return;
+    }
 
-	const result = babel.transformFileSync(filePath, { plugins : ['react-intl'] });
-	messages = messages.concat(result.metadata['react-intl'].messages);
+    const result = babel.transformFileSync(filePath, { plugins: ['react-intl'] });
+    messages = messages.concat(result.metadata['react-intl'].messages);
 });
 
 messages = messages.reduce((object, message) => {
-	object[message.id] = message.defaultMessage;
-	return object;
+    object[message.id] = message.defaultMessage;
+    return object;
 }, {});
 
 walk.walkSync(messagesDirectory, (baseDir, fileName, stat) => {
-	if (!fileName.match(/\.json$/)) {
-		return;
-	}
+    if (!fileName.match(/\.json$/)) {
+        return;
+    }
 
-	const filePath = path.resolve(baseDir, fileName);
-	const oldMessages = require(filePath);
+    const filePath = path.resolve(baseDir, fileName);
+    const oldMessages = require(filePath);
 
-	const fileLanguage = path.basename(fileName, '.json');
-	const shouldNotOverwrite = (forceLanguage !== fileLanguage);
+    const fileLanguage = path.basename(fileName, '.json');
+    const shouldNotOverwrite = (forceLanguage !== fileLanguage);
 
-	const newMessages = {};
-	for (const key in messages) {
-		newMessages[key] = (shouldNotOverwrite && oldMessages[key]) || messages[key];
-	}
+    const newMessages = {};
+    for (const key in messages) {
+        newMessages[key] = (shouldNotOverwrite && oldMessages[key]) || messages[key];
+    }
 
-	const hasChanged = JSON.stringify(newMessages) !== JSON.stringify(oldMessages);
-	if (hasChanged) {
-		fs.writeFileSync(filePath, JSON.stringify(newMessages, null, '\t'));
-		console.log('[\u2713]', fileName, 'updated');
-	} else {
-		console.log('[ ]', fileName, 'unchanged');
-	}
+    const hasChanged = JSON.stringify(newMessages) !== JSON.stringify(oldMessages);
+    if (hasChanged) {
+        fs.writeFileSync(filePath, JSON.stringify(newMessages, null, '\t'));
+        console.log('[\u2713]', fileName, 'updated');
+    } else {
+        console.log('[ ]', fileName, 'unchanged');
+    }
 });

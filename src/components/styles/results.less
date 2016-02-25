@@ -1,31 +1,31 @@
 @import './variables';
 
 .result {
-	margin-left: 1em;
+    margin-left: 1em;
 
-	@media print {
-		display: block;
-		margin-top: 1em;
-		font-size: 150%;
-		*, *:before, *:after {
-			color: inherit !important;
-		}
-	}
+    @media print {
+        display: block;
+        margin-top: 1em;
+        font-size: 150%;
+        *, *:before, *:after {
+            color: inherit !important;
+        }
+    }
 
-	&.success {
-		color: @highlight-color !important;
-	}
+    &.success {
+        color: @highlight-color !important;
+    }
 
-	&.failure {
-	}
+    &.failure {
+    }
 }
 
 .icon {
-	float: left;
-	font-size: 160%;
-	margin-top: 3px;
+    float: left;
+    font-size: 160%;
+    margin-top: 3px;
 }
 
 .description {
-	margin-left: 2em;
+    margin-left: 2em;
 }

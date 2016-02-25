@@ -4,5 +4,5 @@
 
 import 'harmony-reflect';
 export default new Proxy({}, {
-	get : (target, name) => target[name] = target[name] || name + Math.random(),
+    get: (target, name) => target[name] = target[name] || name + Math.random(),
 });
