@@ -4,35 +4,35 @@ import mapValues from 'lodash/mapValues';
 import pickBy from 'lodash/pickBy';
 
 const messages = defineMessages({
-	startDateRequired: {
-		id: 'validators.startDateRequired',
-		defaultMessage: 'Please choose a project start date.',
-	},
+    startDateRequired: {
+        id: 'validators.startDateRequired',
+        defaultMessage: 'Please choose a project start date.',
+    },
 
-	endDateRequired: {
-		id: 'validators.endDateRequired',
-		defaultMessage: 'Please choose a project target date.',
-	},
+    endDateRequired: {
+        id: 'validators.endDateRequired',
+        defaultMessage: 'Please choose a project target date.',
+    },
 
-	endDate: {
-		id: 'validators.endDate',
-		defaultMessage: 'The project target date must be after the start date.',
-	},
+    endDate: {
+        id: 'validators.endDate',
+        defaultMessage: 'The project target date must be after the start date.',
+    },
 
-	backlogSizePositive: {
-		id: 'validators.backlogSizePositive',
-		defaultMessage: 'The backlog size must be a positive number.',
-	},
+    backlogSizePositive: {
+        id: 'validators.backlogSizePositive',
+        defaultMessage: 'The backlog size must be a positive number.',
+    },
 
-	velocityPositive: {
-		id: 'validators.velocityPositive',
-		defaultMessage: 'The velocity must be a positive number.',
-	},
+    velocityPositive: {
+        id: 'validators.velocityPositive',
+        defaultMessage: 'The velocity must be a positive number.',
+    },
 
-	velocityMax: {
-		id: 'validators.velocityMax',
-		defaultMessage: 'The velocity must be smaller than the backlog size.',
-	},
+    velocityMax: {
+        id: 'validators.velocityMax',
+        defaultMessage: 'The velocity must be smaller than the backlog size.',
+    },
 });
 
 /**
@@ -50,27 +50,27 @@ const messages = defineMessages({
  * empty, all inputs were valid.
  */
 export function validateInputs(inputs) {
-	const descriptor = {
-		startDate: [
-			[({ startDate }) => moment.isMoment(startDate), messages.startDateRequired],
-		],
+    const descriptor = {
+        startDate: [
+            [({ startDate }) => moment.isMoment(startDate), messages.startDateRequired],
+        ],
 
-		endDate: [
-			[({ endDate }) => moment.isMoment(endDate), messages.endDateRequired, true],
-			[({ startDate, endDate }) => endDate.isAfter(startDate), messages.endDate],
-		],
+        endDate: [
+            [({ endDate }) => moment.isMoment(endDate), messages.endDateRequired, true],
+            [({ startDate, endDate }) => endDate.isAfter(startDate), messages.endDate],
+        ],
 
-		backlogSize: [
-			[({ backlogSize }) => backlogSize > 0, messages.backlogSizePositive],
-		],
+        backlogSize: [
+            [({ backlogSize }) => backlogSize > 0, messages.backlogSizePositive],
+        ],
 
-		velocity: [
-			[({ velocity }) => velocity > 0, messages.velocityPositive],
-			[({ backlogSize, velocity }) => velocity <= backlogSize, messages.velocityMax],
-		],
-	};
+        velocity: [
+            [({ velocity }) => velocity > 0, messages.velocityPositive],
+            [({ backlogSize, velocity }) => velocity <= backlogSize, messages.velocityMax],
+        ],
+    };
 
-	return runValidators(descriptor, inputs);
+    return runValidators(descriptor, inputs);
 }
 
 /**
@@ -112,15 +112,15 @@ export function validateInputs(inputs) {
  * empty, all inputs were valid.
  */
 function runValidators(descriptor, inputs) {
-	const errors = mapValues(descriptor, validators => {
-		const errorMessages = [];
-		for (const [validate, message = {}, abort = false] of validators) {
-			if (!validate || validate(inputs)) continue;
-			errorMessages.push(message);
-			if (abort) break;
-		}
-		return errorMessages;
-	});
+    const errors = mapValues(descriptor, validators => {
+        const errorMessages = [];
+        for (const [validate, message = {}, abort = false] of validators) {
+            if (!validate || validate(inputs)) continue;
+            errorMessages.push(message);
+            if (abort) break;
+        }
+        return errorMessages;
+    });
 
-	return pickBy(errors, e => !!e.length);
+    return pickBy(errors, e => !!e.length);
 }

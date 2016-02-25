@@ -9,12 +9,12 @@
  * @see http://formatjs.io/guides/runtime-environments/#client
  */
 export default function patchIntl(run) {
-	if (global.Intl) return run();
-	require.ensure([], require => {
-		require('intl');
-		require('intl/locale-data/jsonp/en.js');
-		require('intl/locale-data/jsonp/de.js');
-		run();
-	}, 'IntlBundle');
-	/* eslint consistent-return:0 */
+    if (global.Intl) return run();
+    require.ensure([], require => {
+        require('intl');
+        require('intl/locale-data/jsonp/en.js');
+        require('intl/locale-data/jsonp/de.js');
+        run();
+    }, 'IntlBundle');
+    /* eslint consistent-return:0 */
 }

@@ -21,30 +21,30 @@ import './styles/root.less';
 export default
 class Root extends Component {
 
-	state = {};
+    state = {};
 
-	/**
-	 * @inheritDoc
-	 */
-	render() {
-		const locale = this.state.locale
-			|| navigator.language
-			|| navigator.browserLanguage;
+    /**
+     * @inheritDoc
+     */
+    render() {
+        const locale = this.state.locale
+            || navigator.language
+            || navigator.browserLanguage;
 
-		const intlData = {
-			locale,
-			messages: messages[locale] || messages[locale.match(/\w+/)[0]],
-		};
+        const intlData = {
+            locale,
+            messages: messages[locale] || messages[locale.match(/\w+/)[0]],
+        };
 
-		return <IntlProvider key="intl" {...intlData}>
+        return <IntlProvider key="intl" {...intlData}>
 
-			<div>
-				<Header />
-				<Calculator />
-				<Footer />
-			</div>
+            <div>
+                <Header />
+                <Calculator />
+                <Footer />
+            </div>
 
-		</IntlProvider>;
-	}
+        </IntlProvider>;
+    }
 
 }

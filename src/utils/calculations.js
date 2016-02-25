@@ -25,19 +25,19 @@ const PROB_REL_SUM = ((STEPS - 2) * STEPS) / (6 * (STEPS - 1));
  * indicates a probable project success.
  */
 export function successProbability(backlogSize, velocity, duration) {
-	let probRel = 0;
+    let probRel = 0;
 
-	// Calculates a fraction of the area under (x * (1 - x))
-	// PROB_REL_SUM should be the complete area, which is (1 / 6)
-	for (let i = 0; i < STEPS; ++i) {
-		probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
+    // Calculates a fraction of the area under (x * (1 - x))
+    // PROB_REL_SUM should be the complete area, which is (1 / 6)
+    for (let i = 0; i < STEPS; ++i) {
+        probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
 
-		if (probableDuration(backlogSize, velocity, i / (STEPS - 1)) >= duration) {
-			return probRel / PROB_REL_SUM;
-		}
-	}
+        if (probableDuration(backlogSize, velocity, i / (STEPS - 1)) >= duration) {
+            return probRel / PROB_REL_SUM;
+        }
+    }
 
-	return 1;
+    return 1;
 }
 
 /**
@@ -51,20 +51,20 @@ export function successProbability(backlogSize, velocity, duration) {
  * planned project duration.
  */
 export function successDuration(backlogSize, velocity) {
-	let probRel = 0;
+    let probRel = 0;
 
-	// calculates a fraction of the area under x * (1 - x)
-	// PROB_REL_SUM should be the complete area, which is (1 / 6)
-	for (let i = 0; i < STEPS; ++i) {
-		probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
+    // calculates a fraction of the area under x * (1 - x)
+    // PROB_REL_SUM should be the complete area, which is (1 / 6)
+    for (let i = 0; i < STEPS; ++i) {
+        probRel += (i / (STEPS - 1)) * (1 - i / (STEPS - 1));
 
-		const probability = probRel / PROB_REL_SUM;
-		if (probability >= SUCCESS_THRESHOLD) {
-			return Math.ceil(probableDuration(backlogSize, velocity, i / (STEPS - 1)));
-		}
-	}
+        const probability = probRel / PROB_REL_SUM;
+        if (probability >= SUCCESS_THRESHOLD) {
+            return Math.ceil(probableDuration(backlogSize, velocity, i / (STEPS - 1)));
+        }
+    }
 
-	return NaN;
+    return NaN;
 }
 
 /**
@@ -77,7 +77,7 @@ export function successDuration(backlogSize, velocity) {
  * @returns {boolean} True if the project can be completed in time.
  */
 export function isSuccessful(backlogSize, velocity, duration) {
-	return successProbability(backlogSize, velocity, duration) >= SUCCESS_THRESHOLD;
+    return successProbability(backlogSize, velocity, duration) >= SUCCESS_THRESHOLD;
 }
 
 /**
@@ -93,32 +93,32 @@ export function isSuccessful(backlogSize, velocity, duration) {
  * TODO: Refactor the backlogSize parameter - replace with closed formula.
  */
 export function successBacklogSize(velocity, duration) {
-	let minBacklogSize = 0;
-	let maxBacklogSize = 8; // _must_ be power of 2!
+    let minBacklogSize = 0;
+    let maxBacklogSize = 8; // _must_ be power of 2!
 
-	while (isSuccessful(maxBacklogSize, velocity, duration)) {
-		minBacklogSize = maxBacklogSize;
-		maxBacklogSize *= 2;
-	}
+    while (isSuccessful(maxBacklogSize, velocity, duration)) {
+        minBacklogSize = maxBacklogSize;
+        maxBacklogSize *= 2;
+    }
 
-	let step = (maxBacklogSize - minBacklogSize) / 4;
-	let backlogSize = (minBacklogSize + maxBacklogSize) / 2;
+    let step = (maxBacklogSize - minBacklogSize) / 4;
+    let backlogSize = (minBacklogSize + maxBacklogSize) / 2;
 
-	while (step >= 1) {
-		const sign = isSuccessful(backlogSize, velocity, duration) ? 1 : -1;
-		backlogSize += step * sign;
-		step /= 2;
-	}
+    while (step >= 1) {
+        const sign = isSuccessful(backlogSize, velocity, duration) ? 1 : -1;
+        backlogSize += step * sign;
+        step /= 2;
+    }
 
-	if (!isSuccessful(backlogSize, velocity, duration)) {
-		return backlogSize - 1;
-	}
+    if (!isSuccessful(backlogSize, velocity, duration)) {
+        return backlogSize - 1;
+    }
 
-	if (isSuccessful(backlogSize + 1, velocity, duration)) {
-		return backlogSize + 1;
-	}
+    if (isSuccessful(backlogSize + 1, velocity, duration)) {
+        return backlogSize + 1;
+    }
 
-	return backlogSize;
+    return backlogSize;
 }
 
 /**
@@ -132,13 +132,13 @@ export function successBacklogSize(velocity, duration) {
  * @returns {number} The estimated value between opt and pess.
  */
 function threePointValue(opt, real, pess, p) {
-	const k = (real - opt) / (pess - opt);
-	if (p <= k) {
-		return opt + Math.sqrt(p * (real - opt) * (pess - opt));
-	} else {
-		const x = (p - 1) * (opt - pess) * (pess - real);
-		return x < 1E-6 ? pess : pess - Math.sqrt(x);
-	}
+    const k = (real - opt) / (pess - opt);
+    if (p <= k) {
+        return opt + Math.sqrt(p * (real - opt) * (pess - opt));
+    } else {
+        const x = (p - 1) * (opt - pess) * (pess - real);
+        return x < 1E-6 ? pess : pess - Math.sqrt(x);
+    }
 }
 
 /**
@@ -151,16 +151,16 @@ function threePointValue(opt, real, pess, p) {
  * @returns {number} The most likely duration of the given workload in days.
  */
 function probableDuration(backlogSize, velocity, p) {
-	const backlogSizeOpt = backlogSize;
-	const backlogSizeReal = backlogSize * (1 + BACKLOG_INCREASE_REALISTIC);
-	const backlogSizePess = backlogSize * (1 + BACKLOG_INCREASE_PESSIMISTIC);
+    const backlogSizeOpt = backlogSize;
+    const backlogSizeReal = backlogSize * (1 + BACKLOG_INCREASE_REALISTIC);
+    const backlogSizePess = backlogSize * (1 + BACKLOG_INCREASE_PESSIMISTIC);
 
-	const velocityOpt = Math.round(velocity * (1 + VELOCITY_INCREASE)) / 7;
-	const velocityReal = velocity / 7;
-	const velocityPess = Math.round(velocity * (1 + VELOCITY_REDUCTION)) / 7;
+    const velocityOpt = Math.round(velocity * (1 + VELOCITY_INCREASE)) / 7;
+    const velocityReal = velocity / 7;
+    const velocityPess = Math.round(velocity * (1 + VELOCITY_REDUCTION)) / 7;
 
-	const probableBacklogSize = threePointValue(backlogSizeOpt, backlogSizeReal, backlogSizePess, p);
-	const probableVelocity = threePointValue(velocityPess, velocityReal, velocityOpt, 1 - p);
+    const probableBacklogSize = threePointValue(backlogSizeOpt, backlogSizeReal, backlogSizePess, p);
+    const probableVelocity = threePointValue(velocityPess, velocityReal, velocityOpt, 1 - p);
 
-	return probableBacklogSize / probableVelocity;
+    return probableBacklogSize / probableVelocity;
 }

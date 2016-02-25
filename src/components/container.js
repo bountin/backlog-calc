@@ -8,22 +8,22 @@ import React, { Component, PropTypes } from 'react';
 export default
 class Container extends Component {
 
-	static propTypes = {
+    static propTypes = {
 
-		/**
-		 * Any child elements that will be wrapped by the container.
-		 */
-		children: PropTypes.any,
+        /**
+         * Any child elements that will be wrapped by the container.
+         */
+        children: PropTypes.any,
 
-	};
+    };
 
-	/**
-	 * @inheritDoc
-	 */
-	render() {
-		return <div className="container">
-			{this.props.children}
-		</div>;
-	}
+    /**
+     * @inheritDoc
+     */
+    render() {
+        return <div className="container">
+            {this.props.children}
+        </div>;
+    }
 
 }

@@ -9,5 +9,5 @@
 // See `npm info whatwg-fetch` for more information on the polyfill.
 //
 if (window.Headers && !window.Headers.prototype.forEach) {
-	delete window.fetch;
+    delete window.fetch;
 }
