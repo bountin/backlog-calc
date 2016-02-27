@@ -115,7 +115,6 @@ const WRAPPER_CLASS_NAME = 'col-xs-12 col-sm-9 col-md-10 col-md-8';
  * This component is not pure.
  */
 export class Calculator extends Component {
-
     static propTypes = {
         /**
          * Injected internationalization by react-intl's injectIntl().
@@ -148,12 +147,19 @@ export class Calculator extends Component {
         results: null,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleFormSubmit = ::this.handleFormSubmit;
+        this.handleInputChange = ::this.handleInputChange;
+        this.handlePrint = ::this.handlePrint;
+    }
+
     /**
      * Parses all input values and removes results from the state.
      *
      * @private
      */
-    _handleInputChange() {
+    handleInputChange() {
         this.setState({
             inputs: this._getInputs(),
             results: null,
@@ -167,7 +173,7 @@ export class Calculator extends Component {
      * @returns {boolean} false.
      * @private
      */
-    _handleFormSubmit(e) {
+    handleFormSubmit(e) {
         e.preventDefault();
         this._recalculate();
         return false;
@@ -178,7 +184,7 @@ export class Calculator extends Component {
      *
      * @private
      */
-    _handlePrint() {
+    handlePrint() {
         window.print();
     }
 
@@ -253,7 +259,7 @@ export class Calculator extends Component {
 
             <form
                 className="form-horizontal"
-                onSubmit={::this._handleFormSubmit}
+                onSubmit={this.handleFormSubmit}
                 noValidate={true}>
 
                 <Input
@@ -263,7 +269,7 @@ export class Calculator extends Component {
                     label={intl.formatMessage(messages.projectNameLabel)}
                     labelClassName={LABEL_CLASS_NAME}
                     wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={::this._handleInputChange}
+                    onChange={this.handleInputChange}
                 />
 
                 <Input
@@ -278,7 +284,7 @@ export class Calculator extends Component {
                         ref="startDate"
                         className="form-control"
                         selected={inputs.startDate}
-                        onChange={::this._handleInputChange}
+                        onChange={this.handleInputChange}
                     />
 
                 </Input>
@@ -297,7 +303,7 @@ export class Calculator extends Component {
                         className="form-control"
                         selected={inputs.endDate}
                         minDate={inputs.startDate}
-                        onChange={::this._handleInputChange}
+                        onChange={this.handleInputChange}
                     />
 
                 </Input>
@@ -310,7 +316,7 @@ export class Calculator extends Component {
                     placeholder={intl.formatMessage(messages.velocityPlaceholder)}
                     labelClassName={LABEL_CLASS_NAME}
                     wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={::this._handleInputChange}
+                    onChange={this.handleInputChange}
                     min="0"
                     help={<FormattedMultiLine lines={errors.velocity} />}
                     hasFeedback={!!errors.velocity}
@@ -325,7 +331,7 @@ export class Calculator extends Component {
                     placeholder={intl.formatMessage(messages.backlogSizePlaceholder)}
                     labelClassName={LABEL_CLASS_NAME}
                     wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={::this._handleInputChange}
+                    onChange={this.handleInputChange}
                     min="0"
                     help={<FormattedMultiLine lines={errors.backlogSize} />}
                     hasFeedback={!!errors.backlogSize}
@@ -349,7 +355,7 @@ export class Calculator extends Component {
                     {(results != null) && <Button
                         bsStyle="default"
                         className={classNames('pull-right', Styles.printHide, Styles.action)}
-                        onClick={::this._handlePrint}>
+                        onClick={this.handlePrint}>
 
                         <FormattedMessage {...messages.printLabel} />
 
@@ -364,7 +370,6 @@ export class Calculator extends Component {
             </form>
         </Container>;
     }
-
 }
 
 export default injectIntl(Calculator);
