@@ -27,9 +27,9 @@ class Root extends Component {
      * @inheritDoc
      */
     render() {
-        const locale = this.state.locale
-            || navigator.language
-            || navigator.browserLanguage;
+        const locale = this.state.locale ||
+            navigator.language ||
+            navigator.browserLanguage;
 
         const intlData = {
             locale,

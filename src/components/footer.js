@@ -22,8 +22,8 @@ const messages = defineMessages({
 
     contactMessage: {
         id: 'footer.contactMessage',
-        defaultMessage: 'If you wish to contact us, please feel free to {contactLink} – We are '
-        + 'happy to answer your questions.',
+        defaultMessage: 'If you wish to contact us, please feel free to {contactLink} – We are ' +
+        'happy to answer your questions.',
     },
 
     contact: {

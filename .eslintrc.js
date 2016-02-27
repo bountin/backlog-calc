@@ -60,7 +60,7 @@ module.exports = {
         // require assignment operator shorthand where possible or prohibit it entirely
         'operator-assignment': [1, 'always'],
         // enforce operators to be placed before or after line breaks
-        'operator-linebreak': [1, 'before'],
+        'operator-linebreak': [1, 'after', { 'overrides': { '?': 'before', ':': 'before'} }],
         // Require or disallow spaces before/after unary operators
         'space-unary-ops': 2,
 
