@@ -83,6 +83,9 @@ module.exports = {
         'react/jsx-closing-bracket-location': 0,
         // Enforce or disallow spaces around JSX attribute assignments
         'react/jsx-equals-spacing': [2, 'never'],
+        // Enforce event handler naming conventions in JSX
+        // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-handler-names.md
+        'react/jsx-handler-names': 2,
         // Validate props indentation in JSX
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-indent-props.md
         'react/jsx-indent-props': [1, 4],
@@ -110,7 +113,30 @@ module.exports = {
                 'everything-else',
                 '/^_?render.+$/',
                 'render'
-            ]
+            ],
+            groups: {
+                lifecycle: [
+                    'displayName',
+                    'propTypes',
+                    'contextTypes',
+                    'childContextTypes',
+                    'mixins',
+                    'statics',
+                    'defaultProps',
+                    'state',
+                    'constructor',
+                    'getDefaultProps',
+                    'getInitialState',
+                    'getChildContext',
+                    'componentWillMount',
+                    'componentDidMount',
+                    'componentWillReceiveProps',
+                    'shouldComponentUpdate',
+                    'componentWillUpdate',
+                    'componentDidUpdate',
+                    'componentWillUnmount'
+                ]
+            }
         }],
         // Prevent missing parentheses around multilines JSX
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md
