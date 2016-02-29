@@ -15,6 +15,7 @@ const TestUtils = {
      */
     mockComponent(componentClass) {
         ReactTestUtils.mockComponent(componentClass);
+        /* eslint no-param-reassign:0 */
         componentClass.prototype.jasmineToString = React.Component.prototype.jasmineToString;
     },
 
@@ -52,6 +53,7 @@ const TestUtils = {
      * @returns {Function} The mocked component method.
      */
     mockComponentMethod(component, methodName) {
+        /* eslint no-param-reassign:0 */
         const mock = component[methodName] = jest.genMockFn();
         component.forceUpdate();
         return mock;

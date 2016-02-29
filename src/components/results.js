@@ -108,7 +108,8 @@ class Results extends Component {
                             year="numeric"
                         />
                     </b>,
-                }} />
+                }}
+                />
 
                 <br />
 
@@ -119,7 +120,8 @@ class Results extends Component {
                             style="percent"
                         />
                     </b>,
-                }} />
+                }}
+                />
 
                 <br />
 
@@ -127,7 +129,8 @@ class Results extends Component {
                     backlogSize: <b>
                         <FormattedNumber value={backlogSize} />
                     </b>,
-                }} />
+                }}
+                />
             </p>
         </div>;
     }

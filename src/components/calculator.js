@@ -243,25 +243,24 @@ export class Calculator extends Component {
             inputs,
             results,
             errors,
-            } = this.state;
+        } = this.state;
 
         return <Container>
             <Row>
                 <Col
                     xs={12} sm={9} md={10} lg={8}
                     smOffset={3} mdOffset={2}
-                    className={Styles.intro}>
-
+                    className={Styles.intro}
+                >
                     <FormattedHTMLMessage {...messages.introMessage} />
-
                 </Col>
             </Row>
 
             <form
                 className="form-horizontal"
                 onSubmit={this.handleFormSubmit}
-                noValidate={true}>
-
+                noValidate
+            >
                 <Input
                     type="text"
                     ref="projectName"
@@ -278,15 +277,14 @@ export class Calculator extends Component {
                     wrapperClassName={WRAPPER_CLASS_NAME}
                     help={<FormattedMultiLine lines={errors.startDate} />}
                     hasFeedback={!!errors.startDate}
-                    bsStyle={errors.startDate ? 'error' : null}>
-
+                    bsStyle={errors.startDate ? 'error' : null}
+                >
                     <DatePicker
                         ref="startDate"
                         className="form-control"
                         selected={inputs.startDate}
                         onChange={this.handleInputChange}
                     />
-
                 </Input>
 
                 <Input
@@ -295,8 +293,8 @@ export class Calculator extends Component {
                     wrapperClassName={WRAPPER_CLASS_NAME}
                     help={<FormattedMultiLine lines={errors.endDate} />}
                     hasFeedback={!!errors.endDate}
-                    bsStyle={errors.endDate ? 'error' : null}>
-
+                    bsStyle={errors.endDate ? 'error' : null}
+                >
                     <DatePicker
                         ref="endDate"
                         locale={intl.locale}
@@ -305,7 +303,6 @@ export class Calculator extends Component {
                         minDate={inputs.startDate}
                         onChange={this.handleInputChange}
                     />
-
                 </Input>
 
                 <Input
@@ -341,24 +338,22 @@ export class Calculator extends Component {
                 <Input
                     label="&nbsp;"
                     labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}>
-
+                    wrapperClassName={WRAPPER_CLASS_NAME}
+                >
                     <Button
                         type="submit"
                         bsStyle="default"
-                        className={classNames('pull-left', Styles.printHide, Styles.action)}>
-
+                        className={classNames('pull-left', Styles.printHide, Styles.action)}
+                    >
                         <FormattedMessage {...messages.submitLabel} />
-
                     </Button>
 
                     {(results != null) && <Button
                         bsStyle="default"
                         className={classNames('pull-right', Styles.printHide, Styles.action)}
-                        onClick={this.handlePrint}>
-
+                        onClick={this.handlePrint}
+                    >
                         <FormattedMessage {...messages.printLabel} />
-
                     </Button>}
 
                     <div className={Styles.nobreak}>

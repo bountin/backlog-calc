@@ -56,17 +56,17 @@ class Footer extends Component {
         return <footer className={Styles.footer}>
             <Container>
                 <Row>
-
                     <Col
                         xs={12} sm={9} md={10} lg={8}
-                        smOffset={3} mdOffset={2}>
-
+                        smOffset={3} mdOffset={2}
+                    >
                         <p>
                             <FormattedMessage {...messages.disclaimerMessage} values={{
                                 disclaimer: <strong>
                                     <FormattedMessage {...messages.disclaimer} />
                                 </strong>,
-                            }} />
+                            }}
+                            />
                         </p>
 
                         <p className={Styles.printHide}>
@@ -74,32 +74,28 @@ class Footer extends Component {
                                 contactLink: <a href={MAILTO_URL}>
                                     <FormattedMessage {...messages.contact} />
                                 </a>,
-                            }} />
+                            }}
+                            />
                         </p>
-
                     </Col>
-
                 </Row>
 
                 <Row className={Styles.floor}>
-
                     <Col xs={4} sm={3} md={2}>
-
                         <img
                             className={Styles.logo}
                             src={logoImage}
                         />
-
                     </Col>
 
                     <Col xs={8} sm={9} md={10} lg={8}>
 
                         <FormattedMessage {...messages.floorMessage} values={{
                             floorLink: <a href={HOMEPAGE_URL} target="_blank">25th-floor</a>,
-                        }} />
+                        }}
+                        />
 
                     </Col>
-
                 </Row>
             </Container>
         </footer>;
