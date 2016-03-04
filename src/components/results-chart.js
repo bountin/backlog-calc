@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import moment from 'moment';
 
 import Axis from './svg/axis';
-import Bar from './svg/bar';
 import Chart from './svg/chart';
 import Styles from './styles/chart.less';
+import ResultsProject from './results-project';
 
 /**
  * Displays a containing the account balance history, events of active
@@ -14,45 +14,56 @@ import Styles from './styles/chart.less';
  * indicator displays additional information to the hovered date.
  */
 export default
-class ResultChart extends Component {
+class ResultsChart extends Component {
 
     static propTypes = {
-        /**
-         * Boolean, whether the project is likely to be finished successfully
-         * in time with the given input data.
-         */
-        isSuccessful: PropTypes.bool.isRequired,
 
-        /**
-         * Likely completion date of the project (moment.js).
-         */
-        completionDate: PropTypes.object.isRequired,
+        results: PropTypes.arrayOf(PropTypes.shape({
 
-        /**
-         * The probability of timely success. Number between 0 and 1.
-         */
-        probability: PropTypes.number.isRequired,
+            /**
+             * Boolean, whether the project is likely to be finished successfully
+             * in time with the given input data.
+             */
+            isSuccessful: PropTypes.bool.isRequired,
 
-        /**
-         * Maximum backlog size that can be completed within the given time
-         * frame. Number greater or equal to zero.
-         */
-        backlogSize: PropTypes.number.isRequired,
+            /**
+             * Likely completion date of the project (moment.js).
+             */
+            completionDate: PropTypes.object.isRequired,
 
-        /**
-         * Start Date of the Project
-         */
-        startDate: PropTypes.object.isRequired,
+            /**
+             * The probability of timely success. Number between 0 and 1.
+             */
+            probability: PropTypes.number.isRequired,
 
-        /**
-         * End Date of the Project
-         */
-        endDate: PropTypes.object.isRequired,
+            /**
+             * Maximum backlog size that can be completed within the given time
+             * frame. Number greater or equal to zero.
+             */
+            backlogSize: PropTypes.number.isRequired,
+
+            /**
+             * Start Date of the Project
+             */
+            startDate: PropTypes.object.isRequired,
+
+            /**
+             * End Date of the Project
+             */
+            endDate: PropTypes.object.isRequired,
+
+            /**
+             * Name of the project
+             */
+            projectName: PropTypes.string,
+
+        })).isRequired,
 
         /**
          * Optional class name for the chart wrapper
          */
         className: PropTypes.string,
+
     };
 
     constructor(props) {
@@ -81,15 +92,16 @@ class ResultChart extends Component {
     }
 
     /**
-     * Recomputes scales which translate domain values into coordinates
-     * on the SVG graph. The scales object contains two components, 'x'
-     * and 'y'.
-     *
-     * @param {{width: number, height: number}} size The size of the chart.
-     * @return {{x: function, y: function}} The new scales object.
-     * @private
+     * 
+     * @param results
+     * @param size
+     * @returns {{x: *, y: *}}
      */
-    computeScales({ startDate, endDate, completionDate }, size) {
+    computeScales(results, size) {
+        const startDate = moment.min(results.map( p => p.startDate ));
+        const endDate = moment.max(results.map( p => p.endDate ));
+        const completionDate = moment.max(results.map( p => p.completionDate ));
+
         const maxDate = moment.max(endDate, completionDate);
         return {
             x: d3.time.scale()
@@ -118,7 +130,7 @@ class ResultChart extends Component {
 
         // quickfix height if we are mounting the component since the graph has
         // not rendered yet.
-        size.height = size.height > 100 ? size.height : 100;
+        size.height = size.height > 100 ? size.height : 100; // @TODO
 
         this.setState({
             size,
@@ -133,26 +145,12 @@ class ResultChart extends Component {
             padding,
         } = this.state;
 
-        const {
-            startDate,
-            endDate,
-            backlogSize,
-            completionDate,
-            probability,
-        } = this.props;
-
         if (!size || !scales) {
             return <div ref={ c => { this.node = c; }} />;
         }
 
         const formatDate = d => moment(d).format('DD.MM');
-
-        const extendedBarLength = scales.x(completionDate) - scales.x(endDate);
-        const renderExtendedBar = completionDate.isAfter(endDate);
-
-        const barEndDate = moment.min(endDate, completionDate);
-        const circleWidth = scales.x(barEndDate) - 30;
-        console.log(barEndDate);
+        // const barEndDate = moment.min(endDate, completionDate);
 
         return <div className={this.props.className} ref={ c => { this.node = c; }}>
             <Chart
@@ -183,42 +181,10 @@ class ResultChart extends Component {
                     clipPath="url(#graph-clip)"
                 />
 
-                {renderExtendedBar &&
-                    <Bar
-                        transform={`translate(${scales.x(endDate)}, ${scales.y('Project')})`}
-                        text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
-                        height={scales.y.rangeBand()}
-                        width={extendedBarLength}
-                        className={Styles.extension}
-                        rx={4}
-                        ry={4}
-                    />
-                }
-
-                <Bar
-                    transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
-                    text={String(backlogSize)}
-                    height={scales.y.rangeBand()}
-                    width={scales.x(barEndDate) - scales.x(startDate)}
-                    className={Styles.project}
-                    rx={4}
-                    ry={4}
-                />
-
-                <circle
-                    transform={`translate(${circleWidth}, ${scales.y('Project')})`}
-                    cx="10"
-                    cy="20"
-                    r="10"
-                    className={classNames({
-                        [Styles.ok]: probability >= 1,
-                        [Styles.warning]: probability >= 0.8 && probability < 1,
-                        [Styles.error]: probability < 0.8,
-                        [Styles.semaphore]: true,
-                    })}
-                />
+                { this.props.results.map(project => <ResultsProject {...project} key={project.id} scales={scales} />) }
 
             </Chart>
+
         </div>;
     }
 

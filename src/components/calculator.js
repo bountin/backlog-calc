@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Button from 'react-bootstrap/lib/Button';
 import Container from './container';
-import Results from './results';
+import ResultsChart from './results-chart';
 import CalculatorForm from './calculator-form';
 
 import Styles from './styles/calculator.less';
@@ -223,8 +223,17 @@ export class Calculator extends Component {
                 </Button>}
 
                 <div className={Styles.nobreak}>
-                    {results.length && <Results {...results[0]} />}
+                    {results.length && <ResultsChart {...results} />}
                 </div>
+
+                <div className={Styles.legend}>
+                    <ul>
+                        <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
+                        <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
+                        <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
+                    </ul>
+                </div>
+
             </Row>
 
         </Container>;

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { defineMessages, FormattedMessage, FormattedNumber, FormattedDate } from 'react-intl';
 import classNames from 'classnames';
 
-import ResultChart from './result-chart';
+import ResultChart from './results-chart';
 
 import Icon from 'react-fontawesome';
 import Styles from './styles/results.less';
@@ -147,13 +147,6 @@ class Results extends Component {
 
             <ResultChart {...this.props} className={Styles.chart} />
 
-            <div className={Styles.legend}>
-                <ul>
-                    <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
-                    <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
-                    <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
-                </ul>
-            </div>
         </div>;
     }
 
