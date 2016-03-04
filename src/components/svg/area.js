@@ -21,6 +21,25 @@ class Area extends Component {
         interpolate: PropTypes.string,
     };
 
+    /**
+     * Resolves all runtime properties that are not specified in
+     * {@link propTypes}. Usually, these properties are passed down to
+     * one of the child elements.
+     *
+     * TODO: Move to utils / mixin
+     *
+     * @returns {object} All properties for forwarding.
+     */
+    forwardProps() {
+        const other = {};
+        for (const key in this.props) {
+            if (!this.constructor.propTypes.hasOwnProperty(key)) {
+                other[key] = this.props[key];
+            }
+        }
+        return other;
+    }
+
     render() {
         const {
             data,
@@ -39,24 +58,5 @@ class Area extends Component {
             d={area(data)}
             {...this.forwardProps()}
         />;
-    }
-
-    /**
-     * Resolves all runtime properties that are not specified in
-     * {@link propTypes}. Usually, these properties are passed down to
-     * one of the child elements.
-     *
-     * TODO: Move to utils / mixin
-     *
-     * @returns {object} All properties for forwarding.
-     */
-    forwardProps() {
-        const other = {};
-        for (const key in this.props) {
-            if (!this.constructor.propTypes.hasOwnProperty(key)) {
-                other[key] = this.props[key];
-            }
-        }
-        return other;
     }
 }

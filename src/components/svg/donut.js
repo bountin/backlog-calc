@@ -7,47 +7,49 @@ import d3 from 'd3';
 export default
 class Donut extends Component {
 
-	static propTypes = {
-		data        : PropTypes.array.isRequired,
-		outerRadius : PropTypes.number.isRequired,
-		innerRadius : PropTypes.number.isRequired,
-		value       : PropTypes.func.isRequired,
-	};
+    static propTypes = {
+        data: PropTypes.array.isRequired,
+        outerRadius: PropTypes.number.isRequired,
+        innerRadius: PropTypes.number.isRequired,
+        value: PropTypes.func.isRequired,
+        color: PropTypes.func.isRequired,
+    };
 
-	render() {
-		const {
-			data,
-			value,
-			outerRadius,
-			innerRadius,
-			color,
-		} = this.props;
+    render() {
+        const {
+            data,
+            value,
+            outerRadius,
+            innerRadius,
+            color,
+        } = this.props;
 
-		const pie = d3.layout.pie()
-			.sort(null);
+        const pie = d3.layout.pie()
+            .sort(null);
 
-		const arc = d3.svg.arc()
-			.innerRadius(innerRadius)
-			.outerRadius(outerRadius);
+        const arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
 
-		const pieces = pie(data.map(value));
+        const pieces = pie(data.map(value));
 
-		return <g transform={`translate(${outerRadius}, ${outerRadius})`}>
-			{pieces.map((d, i) => <path
-				key={i}
-				d={arc(d)}
-				fill={color(i)}
-			/>)}
+        return <g transform={`translate(${outerRadius}, ${outerRadius})`}>
+            {pieces.map((d, i) => <path
+                key={i}
+                d={arc(d)}
+                fill={color(i)}
+            />)}
 
-			{pieces.map((d, i) => <text
-				key={i}
-				textAnchor="middle"
-				transform={`translate(${arc.centroid(d)})`}
-				className="donut-label">
-				{formatCurrency(d.value)}
-			</text>)}
-		</g>;
-	}
+            {pieces.map((d, i) => <text
+                key={i}
+                textAnchor="middle"
+                transform={`translate(${arc.centroid(d)})`}
+                className="donut-label"
+            >
+                {formatCurrency(d.value)}
+            </text>)}
+        </g>;
+    }
 }
 
 /**
@@ -60,6 +62,6 @@ class Donut extends Component {
  * @returns {string} The formatted amount including the currency symbol.
  */
 function formatCurrency(amount) {
-	return amount ? '\u20ac ' + d3.format(',.2f')(amount) : '';
+    return amount ? `\u20ac ${d3.format(',.2f')(amount)}` : '';
 }
 

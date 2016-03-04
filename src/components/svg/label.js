@@ -24,21 +24,11 @@ class Label extends Component {
     };
 
     componentDidMount() {
-        this._updateTextSize();
+        this.updateTextSize();
     }
 
     componentDidUpdate() {
-        this._updateTextSize();
-    }
-
-    render() {
-        const {text, baseline, anchor, rx, ry} = this.props;
-        const style = { textAnchor: anchor, alignmentBaseline: baseline };
-
-        return <g {...this.forwardProps()}>
-            <rect ref={c => this.rect = c} rx={rx} ry={ry} />
-            <text ref={c => this.text = c} children={text} style={style} />
-        </g>;
+        this.updateTextSize();
     }
 
     /**
@@ -52,10 +42,10 @@ class Label extends Component {
      */
     forwardProps() {
         const other = {};
-        for (let key in this.props) {
-	        if (!this.constructor.propTypes.hasOwnProperty(key)) {
-		        other[key] = this.props[key];
-	        }
+        for (const key in this.props) {
+            if (!this.constructor.propTypes.hasOwnProperty(key)) {
+                other[key] = this.props[key];
+            }
         }
         return other;
     }
@@ -64,8 +54,8 @@ class Label extends Component {
      * Resizes the background rect based on the text element.
      * @private
      */
-    _updateTextSize() {
-        const {text, rect} = this;
+    updateTextSize() {
+        const { text, rect } = this;
 
         const size = text.getBBox();
         size.x -= PADDING_X;
@@ -74,6 +64,16 @@ class Label extends Component {
         size.height += 2 * PADDING_Y;
 
         d3.select(rect).attr(size);
+    }
+
+    render() {
+        const { text, baseline, anchor, rx, ry } = this.props;
+        const style = { textAnchor: anchor, alignmentBaseline: baseline };
+
+        return <g {...this.forwardProps()}>
+            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} />
+            <text ref={c => { this.text = c; }} children={text} style={style} />
+        </g>;
     }
 
 }

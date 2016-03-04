@@ -16,14 +16,14 @@ import d3 from 'd3';
 export default
 class Shape extends Component {
 
-	static propTypes = {
-		type : PropTypes.string.isRequired,
-	};
+    static propTypes = {
+        type: PropTypes.string.isRequired,
+    };
 
-	render() {
-		const {type, ...other} = this.props;
-		const d = d3.svg.symbol().type(type)();
-		return <path d={d} {...other} />
-	}
+    render() {
+        const { type, ...other } = this.props;
+        const d = d3.svg.symbol().type(type)();
+        return <path d={d} {...other} />;
+    }
 
 }

@@ -24,47 +24,22 @@ class Axis extends Component {
     };
 
     componentDidMount() {
-        this._renderAxis();
+        this.renderAxis();
     }
 
     componentDidUpdate() {
-        this._renderAxis();
+        this.renderAxis();
     }
 
-    render() {
-        const { orientation, label } = this.props;
-        let x;
-        let y;
-        let transform;
-        let baseline;
-
-        if (orientation === 'left' || orientation === 'right') {
-            x = 0;
-            transform = 'rotate(-90)';
-        } else {
-            x = this._getAxisSize();
-            transform = '';
-        }
-
-        if (orientation === 'left' || orientation === 'top') {
-            y = 6;
-            baseline = 'hanging';
-        } else {
-            y = -6;
-            baseline = 'baseline';
-        }
-
-        return <g ref={c => { this.node = c; }} {...this.forwardProps()}>
-            <text
-                children={label}
-                transform={transform}
-                x={x} y={y}
-                style={{
-                    textAnchor: 'end',
-                    alignmentBaseline: baseline,
-                }}
-            />
-        </g>;
+    /**
+     * Calculates the size of the axis in pixels.
+     *
+     * @returns {number} The size in pixels.
+     * @private
+     */
+    getAxisSize() {
+        const [min, max] = this.props.scale.range();
+        return Math.abs(max - min);
     }
 
     /**
@@ -87,21 +62,10 @@ class Axis extends Component {
     }
 
     /**
-     * Calculates the size of the axis in pixels.
-     *
-     * @returns {number} The size in pixels.
-     * @private
-     */
-    _getAxisSize() {
-        const [min, max] = this.props.scale.range();
-        return Math.abs(max - min);
-    }
-
-    /**
      * Renders the axis into the DOM node using D3.
      * @private
      */
-    _renderAxis() {
+    renderAxis() {
         const axis = d3.svg.axis()
             .scale(this.props.scale)
             .orient(this.props.orientation)
@@ -111,6 +75,42 @@ class Axis extends Component {
             .tickPadding(this.props.tickPadding);
 
         d3.select(this.node).call(axis);
+    }
+
+    render() {
+        const { orientation, label } = this.props;
+        let x;
+        let y;
+        let transform;
+        let baseline;
+
+        if (orientation === 'left' || orientation === 'right') {
+            x = 0;
+            transform = 'rotate(-90)';
+        } else {
+            x = this.getAxisSize();
+            transform = '';
+        }
+
+        if (orientation === 'left' || orientation === 'top') {
+            y = 6;
+            baseline = 'hanging';
+        } else {
+            y = -6;
+            baseline = 'baseline';
+        }
+
+        return <g ref={c => { this.node = c; }} {...this.forwardProps()}>
+            <text
+                children={label}
+                transform={transform}
+                x={x} y={y}
+                style={{
+                    textAnchor: 'end',
+                    alignmentBaseline: baseline,
+                }}
+            />
+        </g>;
     }
 
 }
