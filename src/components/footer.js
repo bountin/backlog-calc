@@ -85,6 +85,8 @@ class Footer extends Component {
                         <img
                             className={Styles.logo}
                             src={logoImage}
+                            width="84"
+                            height="42"
                         />
                     </Col>
 
