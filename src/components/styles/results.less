@@ -1,19 +1,20 @@
 @import './variables';
 
 .result {
-    margin-left: 1em;
+    //margin-left: 1em;
+    clear : both;
 
     @media print {
-        display: block;
-        margin-top: 1em;
-        font-size: 150%;
+        display    : block;
+        margin-top : 1em;
+        font-size  : 150%;
         *, *:before, *:after {
-            color: inherit !important;
+            color : inherit !important;
         }
     }
 
     &.success {
-        color: @highlight-color !important;
+        color : @highlight-color !important;
     }
 
     &.failure {
@@ -21,11 +22,11 @@
 }
 
 .icon {
-    float: left;
-    font-size: 160%;
-    margin-top: 3px;
+    float      : left;
+    font-size  : 160%;
+    margin-top : 3px;
 }
 
 .description {
-    margin-left: 2em;
+    margin-left : 2em;
 }
