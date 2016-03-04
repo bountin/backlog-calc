@@ -10,23 +10,23 @@
     }
 
     &.x path {
-        stroke: @color-separator;
+        stroke: fade(@body-color, 20%);
     }
 
     &.x text {
-        fill: @color-separator;
+        fill: fade(@body-color, 20%);
     }
 
-    &.y path {
-        fill: none;
+    &.y :global(.tick) line {
+        stroke: none;
     }
 
     &.y text {
-        fill: rgba(0, 42, 73, 0.5);
+        fill: @body-color;
     }
 
     :global .tick line {
-        stroke: rgba(0, 42, 73, 0.10);
+        stroke: fade(@body-color, 20%);
     }
 }
 
