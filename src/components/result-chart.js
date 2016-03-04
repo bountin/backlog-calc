@@ -89,13 +89,14 @@ class ResultChart extends Component {
      * @return {{x: function, y: function}} The new scales object.
      * @private
      */
-    computeScales({ startDate, completionDate }, size) {
+    computeScales({ startDate, endDate, completionDate }, size) {
+        const maxDate = moment.max(endDate, completionDate);
         return {
             x: d3.time.scale()
                 .range([0, size.width])
                 .domain([
                     startDate.clone().subtract(1, 'week'),
-                    completionDate.clone().add(1, 'week'),
+                    maxDate.clone().add(1, 'week'),
                 ]),
             y: d3.scale.ordinal()
                 .domain(['Project'])
@@ -146,6 +147,12 @@ class ResultChart extends Component {
 
         const formatDate = d => moment(d).format('WW');
 
+        const extendedBarLength = scales.x(completionDate) - scales.x(endDate) + 10;
+        const renderExtendedBar = completionDate.isAfter(endDate);
+
+        const barEndDate = moment.min(endDate, completionDate);
+        const circleWidth = scales.x(startDate) + scales.x(barEndDate) - 30;
+
         return <div className={this.props.className} ref={ c => { this.node = c; }}>
             <Chart
                 width={size.width}
@@ -175,28 +182,30 @@ class ResultChart extends Component {
                     clipPath="url(#graph-clip)"
                 />
 
-                <Bar
-                    transform={`translate(${scales.x(endDate) - 10}, ${scales.y('Project')})`}
-                    text={String(completionDate.diff(endDate, 'days'))}
-                    height={scales.y.rangeBand()}
-                    width={scales.x(completionDate) - scales.x(endDate) + 10}
-                    className={Styles.extension}
-                    rx={4}
-                    ry={4}
-                />
+                {renderExtendedBar &&
+                    <Bar
+                        transform={`translate(${scales.x(endDate) - 10}, ${scales.y('Project')})`}
+                        text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
+                        height={scales.y.rangeBand()}
+                        width={extendedBarLength}
+                        className={Styles.extension}
+                        rx={4}
+                        ry={4}
+                    />
+                }
 
                 <Bar
                     transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
                     text={String(backlogSize)}
                     height={scales.y.rangeBand()}
-                    width={scales.x(endDate)}
+                    width={scales.x(barEndDate)}
                     className={Styles.project}
                     rx={4}
                     ry={4}
                 />
 
                 <circle
-                    transform={`translate(${scales.x(startDate) + scales.x(endDate) - 30}, ${scales.y('Project')})`}
+                    transform={`translate(${circleWidth}, ${scales.y('Project')})`}
                     cx="10"
                     cy="20"
                     r="10"
