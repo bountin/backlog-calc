@@ -176,12 +176,13 @@ export class Calculator extends Component {
                             <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                         </ul>
                     </div>
-                </Col>
 
-                <CalculatorForm
-                    project={activeProject}
-                    onSave={this.handleSave}
-                />
+                    <CalculatorForm
+                        project={activeProject}
+                        onSave={this.handleSave}
+                    />
+
+                </Col>
 
                 {(results.length) && <Button
                     bsStyle="default"
