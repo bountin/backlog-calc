@@ -1,22 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import d3 from 'd3';
 
-const PADDING_X = 6;
-const PADDING_Y = 3;
-
 /**
- * An label with automatically adjusting background.
+ * An bar with centered text.
  */
 export default
-class Label extends Component {
+class Bar extends Component {
 
     static propTypes = {
-        text: PropTypes.string.isRequired,
-        baseline: PropTypes.string,
-        anchor: PropTypes.string,
+        height: PropTypes.number.isRequired,
+        width: PropTypes.number.isRequired,
         rx: PropTypes.number,
         ry: PropTypes.number,
-        width: PropTypes.number,
+
+        text: PropTypes.string,
+        baseline: PropTypes.string,
+        anchor: PropTypes.string,
     };
 
     static defaultProps = {
@@ -56,24 +55,29 @@ class Label extends Component {
      * @private
      */
     updateTextSize() {
-        const { text, rect } = this;
+        const { text } = this;
+        const { height, width } = this.props;
+
+        if (!this.props.text) {
+            return;
+        }
 
         const size = text.getBBox();
-        size.x -= PADDING_X;
-        size.y -= PADDING_Y;
-        size.width += 2 * PADDING_X;
-        size.height += 2 * PADDING_Y;
-
-        d3.select(rect).attr(size);
+        d3.select(text).attr({
+            x: (width - size.width) / 2,
+            y: height / 2,
+            'alignment-baseline': 'central',
+        });
     }
 
     render() {
         const { text, baseline, anchor, rx, ry } = this.props;
         const style = { textAnchor: anchor, alignmentBaseline: baseline };
+        const { height, width } = this.props;
 
         return <g {...this.forwardProps()}>
-            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={this.props.width} />
-            <text ref={c => { this.text = c; }} children={text} style={style} />
+            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={width} height={height} />
+            {text && <text ref={c => { this.text = c; }} children={text} style={style} />}
         </g>;
     }
 
