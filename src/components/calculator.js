@@ -43,11 +43,6 @@ Your borisgloger-Team
         defaultMessage: 'Print',
     },
 
-    addProjectLabel: {
-        id: 'calculator.addProjectLabel',
-        defaultMessage: 'Add Project',
-    },
-
 });
 
 /**
@@ -192,18 +187,11 @@ export class Calculator extends Component {
                         <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                     </ul>
 
-                    <Button
-                        bsStyle="primary"
-                        className={Styles.action}
-                        onClick={this.handleAddProject}
-                        disabled={activeProject.id === 0}
-                    >
-                        <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
-                    </Button>
-
                     <CalculatorForm
                         project={activeProject}
                         onSave={this.handleSave}
+                        onAdd={this.handleAddProject}
+                        disableAdd={activeProject.id === 0}
                     />
 
                 </Col>
