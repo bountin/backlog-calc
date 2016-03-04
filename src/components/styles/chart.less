@@ -1,1 +1,28 @@
+@import './variables';
+
 .chart {}
+
+.axis {
+    path,
+    line {
+        fill: none;
+        stroke: none;
+    }
+
+    &.x path {
+        stroke: @color-separator;
+    }
+
+    &.x text {
+        fill: @color-separator;
+    }
+
+    &.y text {
+        fill: rgba(0, 42, 73, 0.15);
+        alignment-baseline: before-edge;
+    }
+
+    :global .tick line {
+        stroke: rgba(0, 42, 73, 0.10);
+    }
+}
