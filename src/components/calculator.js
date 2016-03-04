@@ -186,13 +186,11 @@ export class Calculator extends Component {
                 <Col xs={12}>
                     {results.length && <ResultsChart results={results} />}
 
-                    <div className={Styles.legend}>
-                        <ul>
-                            <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
-                            <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
-                            <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
-                        </ul>
-                    </div>
+                    <ul className={Styles.legend}>
+                        <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
+                        <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
+                        <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
+                    </ul>
 
                     <Button
                         bsStyle="primary"

@@ -50,9 +50,14 @@ const messages = defineMessages({
         defaultMessage: 'Total Story Points',
     },
 
-    submitLabel: {
-        id: 'calculator.submitLabel',
-        defaultMessage: 'Save',
+    createLabel: {
+        id: 'calculator.createLabel',
+        defaultMessage: 'Create Project',
+    },
+
+    updateLabel: {
+        id: 'calculator.updateLabel',
+        defaultMessage: 'Update Project',
     },
 
 });
@@ -254,7 +259,7 @@ export class CalculatorForm extends Component {
                     bsStyle="success"
                     className={classNames('pull-left', Styles.printHide, Styles.action)}
                 >
-                    <FormattedMessage {...messages.submitLabel} />
+                    <FormattedMessage {...(inputs.id ? messages.updateLabel : messages.createLabel)} />
                 </Button>
             </Input>
 

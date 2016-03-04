@@ -1,17 +1,37 @@
 @media print {
     .intro {
-        display: none;
+        display : none;
     }
 
     .printHide {
-        display: none;
+        display : none;
     }
 }
 
 .action {
-    margin-bottom: 1em;
+    margin-bottom : 1em;
 }
 
 .chart {
-    clear: both !important;
+    clear : both !important;
+}
+
+.legend {
+    list-style : none;
+    text-align : right;
+
+    li {
+        display      : inline;
+        padding-left : 2em;
+    }
+
+    .ok i {
+        color : #07780b;
+    }
+    .warning i {
+        color : #dea52c;
+    }
+    .error i {
+        color : #9b000b;
+    }
 }
