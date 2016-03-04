@@ -124,6 +124,7 @@ class ResultsChart extends Component {
 
         // quickfix height if we are mounting the component since the graph has
         // not rendered yet.
+
         const minHeight = this.props.results.length * 50;
         size.height = size.height > minHeight ? size.height : minHeight; // @TODO
 
@@ -146,6 +147,7 @@ class ResultsChart extends Component {
 
         const formatDate = d => moment(d).format('WW');
         // const barEndDate = moment.min(endDate, completionDate);
+        const scale = this.computeScales(this.props.results, size);
 
         return <div className={this.props.className} ref={c => { this.node = c; }} >
             <Chart
@@ -178,8 +180,8 @@ class ResultsChart extends Component {
 
                 {this.props.results.map(
                     project =>
-                        <g transform={`translate(0, ${scales.y(project.id)})`} key={project.id}>
-                            <ResultsProject {...project} scales={scales} />
+                        <g transform={`translate(0, ${scale.y(project.id)})`} key={project.id}>
+                            <ResultsProject {...project} scales={scale} />
                         </g>
 
                 )}
