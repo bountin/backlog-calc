@@ -49,7 +49,7 @@ class ResultChart extends Component {
 
     constructor(props) {
         super(props);
-        this._resize = ::this._resize;
+        this.resize = ::this.resize;
 
         this.state = {
             padding: { top: 0, right: 0, bottom: 40, left: 0 },
@@ -57,8 +57,8 @@ class ResultChart extends Component {
     }
 
     componentDidMount() {
-        this._resize();
-        window.addEventListener('resize', this._resize);
+        this.resize();
+        window.addEventListener('resize', this.resize);
     }
 
     componentWillReceiveProps(props) {
@@ -69,7 +69,7 @@ class ResultChart extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this._resize);
+        window.removeEventListener('resize', this.resize);
     }
 
     /**
