@@ -133,6 +133,7 @@ class ResultChart extends Component {
         } = this.state;
 
         const {
+            startDate,
             endDate,
             backlogSize,
             completionDate,
@@ -185,7 +186,7 @@ class ResultChart extends Component {
                 />
 
                 <Label
-                    transform={`translate(0, ${scales.y('Project')})`}
+                    transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
                     text={String(backlogSize)}
                     height={scales.y.rangeBand()}
                     width={scales.x(endDate)}
