@@ -16,6 +16,8 @@ class Bar extends Component {
         text: PropTypes.string,
         baseline: PropTypes.string,
         anchor: PropTypes.string,
+
+        onClick: PropTypes.func,
     };
 
     static defaultProps = {
@@ -76,8 +78,12 @@ class Bar extends Component {
         const { height, width } = this.props;
 
         return <g {...this.forwardProps()}>
-            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={width} height={height} />
-            {text && <text ref={c => { this.text = c; }} children={text} style={style} />}
+            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={width}
+                height={height} onClick={this.props.onClick}
+            />
+            {text && <text ref={c => { this.text = c; }} children={text} style={style}
+                onClick={this.props.onClick}
+            />}
         </g>;
     }
 

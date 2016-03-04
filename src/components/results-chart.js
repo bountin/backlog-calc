@@ -64,6 +64,7 @@ class ResultsChart extends Component {
          */
         className: PropTypes.string,
 
+        onSelect: PropTypes.func,
     };
 
     constructor(props) {
@@ -105,7 +106,7 @@ class ResultsChart extends Component {
                     maxDate.clone().add(1, 'week'),
                 ]),
             y: d3.scale.ordinal()
-                .domain(this.props.results.map(project => (project.projectName || project.id)))
+                .domain(this.props.results.map(project => project.projectName || project.id))
                 .rangeRoundBands([0, results.length * 100], 0.1, 0.2),
         };
     }
@@ -152,6 +153,12 @@ class ResultsChart extends Component {
         const minHeight = this.props.results.length * 100;
         size.height = size.height > minHeight ? size.height : minHeight; // @TODO
 
+        // workaround to bind project to onSelect
+        const onSelect = this.props.onSelect;
+        const onClick = function onClick(a) {
+            return onSelect.bind(this, a);
+        };
+
         return <div className={this.props.className} ref={c => { this.node = c; }} >
             <Chart
                 width={size.width}
@@ -183,8 +190,8 @@ class ResultsChart extends Component {
 
                 {this.props.results.map(
                     project =>
-                        <g transform={`translate(0, ${scale.y(project.id)})`} key={project.id}>
-                            <ResultsProject {...project} scales={scale} />
+                        <g transform={`translate(0, ${scale.y(project.projectName || project.id)})`} key={project.id}>
+                            <ResultsProject {...project} scales={scale} onSelect={ onClick(project) } />
                         </g>
 
                 )}
