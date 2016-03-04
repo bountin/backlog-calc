@@ -33,7 +33,7 @@ class Root extends Component {
 
         const intlData = {
             locale,
-            messages: messages[locale] || messages[locale.match(/\w+/)[0]],
+            messages: messages[locale] || messages[locale.match(/\w+/)[0]] || messages.en,
         };
 
         return <IntlProvider key="intl" {...intlData}>
