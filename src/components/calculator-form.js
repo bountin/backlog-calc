@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/lib/Button';
 import FormattedMultiLine from './formatted-multi-line';
 import { validateInputs } from '../utils/validators';
 
-import Styles from './styles/calculator.less';
+import Styles from './styles/form.less';
 
 const LABEL_CLASS_NAME = 'col-xs-12 col-sm-3 col-md-2';
 const WRAPPER_CLASS_NAME = 'col-xs-12 col-sm-9 col-md-10 col-md-8';
@@ -60,7 +60,7 @@ const messages = defineMessages({
 /**
  * @TODO doc
  */
-class CalculatorForm extends Component {
+export class CalculatorForm extends Component {
 
     static propTypes = {
         /**
@@ -100,10 +100,22 @@ class CalculatorForm extends Component {
         super(props);
         /* eslint react/no-direct-mutation-state:0 */
         this.state.inputs = { ...props.project };
+
+        this.handleFormSubmit = ::this.handleFormSubmit;
+        this.handleInputChange = ::this.handleInputChange;
     }
 
     componentWillReceiveProps(props) {
         this.setState({ inputs: { ...props.project } });
+    }
+
+    /**
+     * Parses all input values and removes results from the state.
+     *
+     * @private
+     */
+    handleInputChange() {
+        this.setState({ inputs: this.getInputs() });
     }
 
     /**
@@ -118,15 +130,14 @@ class CalculatorForm extends Component {
 
         const { inputs } = this.state;
         const errors = validateInputs(inputs);
+        this.setState({ errors });
         if (Object.keys(errors).length) {
-            this.setState({ errors });
             return false;
         }
 
         this.props.onSave(inputs);
         return false;
     }
-
 
     /**
      * Fetch and parse values from all input elements in this component and
@@ -154,7 +165,7 @@ class CalculatorForm extends Component {
         const { inputs, errors } = this.state;
 
         return <form
-            className="form-horizontal"
+            className={classNames('form-horizontal', Styles.form)}
             onSubmit={this.handleFormSubmit}
             noValidate
         >
