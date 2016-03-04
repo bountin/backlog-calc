@@ -56,10 +56,7 @@ class Footer extends Component {
         return <footer className={Styles.footer}>
             <Container>
                 <Row>
-                    <Col
-                        xs={12} sm={9} md={10} lg={8}
-                        smOffset={3} mdOffset={2}
-                    >
+                    <Col xs={12} >
                         <p>
                             <FormattedMessage {...messages.disclaimerMessage} values={{
                                 disclaimer: <strong>

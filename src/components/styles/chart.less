@@ -55,20 +55,20 @@
     text {
         fill: #0baf0f;
     }
-
 }
 
 .project {
 
     rect {
-        fill: #2c91d1;
-        stroke: #2c91d1;
+        fill: #80BDE3;
+        stroke: #80BDE3;
         stroke-width: 3px;
         cursor: pointer;
-        opacity: 0.6;
+        //opacity: 0.6;
 
         &:hover {
-            opacity: 1;
+            fill: #2c91d1;
+            stroke: #2c91d1;
         }
     }
 
@@ -94,8 +94,9 @@
     stroke-width: 1
 }
 
-.active {
-    rect {
-        opacity: 1;
+.active.project {
+     rect {
+        fill: #2c91d1;
+        stroke: #2c91d1;
     }
 }

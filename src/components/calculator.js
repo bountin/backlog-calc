@@ -234,7 +234,7 @@ export class Calculator extends Component {
                 </Col>
 
                 <Col xs={12}>
-                    {results.length && <ResultsChart results={results}
+                    {!!results.length && <ResultsChart results={results}
                         onSelect={this.handleSelect} active={this.state.activeProject.id}
                     />}
 
@@ -255,7 +255,7 @@ export class Calculator extends Component {
 
                 </Col>
 
-                {(results.length) && <Button
+                {(!!results.length) && <Button
                     bsStyle="default"
                     className={classNames('pull-right', Styles.printHide, Styles.action)}
                     onClick={this.handlePrint}

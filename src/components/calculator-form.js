@@ -295,7 +295,7 @@ export class CalculatorForm extends Component {
                     onClick={this.props.onDelete}
                     disabled={this.props.disableDelete}
                 >
-                    <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.deleteProjectLabel} />
+                    <i className="fa fa-trash"></i>&nbsp;<FormattedMessage {...messages.deleteProjectLabel} />
                 </Button>
 
             </Input>
