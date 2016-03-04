@@ -148,9 +148,9 @@ class Results extends Component {
 
                 <div className={Styles.resultChartLegend}>
                     <ul>
-                        <li className={Styles.ok}><i class="fa fa-square"></i>grün: 100%</li>
-                        <li className={Styles.warning}><i class="fa fa-square"></i>gelb: 80 - 100%</li>
-                        <li className={Styles.error}><i class="fa fa-square"></i>rot: &lt;80%</li>
+                        <li className={Styles.ok}><i className="fa fa-square"></i>grün: 100%</li>
+                        <li className={Styles.warning}><i className="fa fa-square"></i>gelb: 80 - 100%</li>
+                        <li className={Styles.error}><i className="fa fa-square"></i>rot: &lt;80%</li>
                     </ul>
                 </div>
             </p>
