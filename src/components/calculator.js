@@ -99,19 +99,21 @@ export class Calculator extends Component {
 
     handleSave(project) {
         const { projects } = this.state;
+        let activeProject = project;
 
-        console.log('handleSave', project);
         if (project.id === 0) {
-            projects.push({
+            activeProject = {
                 ...project,
                 id: ++Calculator.lastProjectId,
-            });
+            };
+
+            projects.push(activeProject);
         } else {
             const index = projects.findIndex(p => (project.id === p.id));
             projects[index] = project;
         }
 
-        this.setState({ activeProject: project });
+        this.setState({ activeProject });
         this.recalculate();
     }
 
@@ -195,6 +197,7 @@ export class Calculator extends Component {
                         bsStyle="primary"
                         className={Styles.action}
                         onClick={this.handleAddProject}
+                        disabled={activeProject.id === 0}
                     >
                         <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
                     </Button>
