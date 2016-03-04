@@ -74,8 +74,8 @@ class Label extends Component {
 
         const size = text.getBBox();
         d3.select(text).attr({
-            rx: (width - size.width) / 2,
-            ry: (height - size.height) / 2,
+            x: (width - size.width) / 2,
+            y: (height - size.height) / 2,
         });
     }
 

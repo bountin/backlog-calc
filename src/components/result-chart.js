@@ -48,6 +48,11 @@ class ResultChart extends Component {
          * End Date of the Project
          */
         endDate: PropTypes.object.isRequired,
+
+        /**
+         * Optional class name for the chart wrapper
+         */
+        className: PropTypes.string,
     };
 
     constructor(props) {
@@ -55,7 +60,7 @@ class ResultChart extends Component {
         this.resize = ::this.resize;
 
         this.state = {
-            padding: { top: 0, right: 0, bottom: 40, left: 0 },
+            padding: { top: 40, right: 0, bottom: 0, left: 100 },
         };
     }
 
@@ -133,6 +138,8 @@ class ResultChart extends Component {
             height: container.clientHeight - padding.top - padding.bottom,
         };
 
+        console.log('HEIGHT', container, size.height, container.clientHeight);
+
         this.setState({
             size,
             scales: this.computeScales(this.props, size),
@@ -144,7 +151,7 @@ class ResultChart extends Component {
             scales,
             size,
             padding,
-            } = this.state;
+        } = this.state;
 
         if (!size || !scales) {
             return <div ref={ c => { this.node = c; }} />;
@@ -152,7 +159,7 @@ class ResultChart extends Component {
 
         const formatDate = d => moment(d).format('WW');
 
-        return <div ref={ c => { this.node = c; }}>
+        return <div className={this.props.className} ref={ c => { this.node = c; }}>
             <Chart
                 width={size.width}
                 height={size.height}
@@ -161,18 +168,17 @@ class ResultChart extends Component {
             >
 
                 <Axis
-                    orientation="bottom"
+                    orientation="top"
                     scale={scales.x}
                     tickFormat={formatDate}
                     tickPadding={15}
                     innerTickSize={-size.height}
                     outerTickSize={0}
-                    transform={`translate(0,${size.height})`}
                     className={classNames(Styles.axis, Styles.x)}
                 />
 
                 <Axis
-                    orientation="right"
+                    orientation="left"
                     scale={scales.y}
                     ticks={4}
                     tickPadding={-size.width + 10}
@@ -185,7 +191,7 @@ class ResultChart extends Component {
                 <Label
                     text={String(this.props.backlogSize)}
                     height={50}
-                    width={300}
+                    width={scales.x(this.props.endDate)}
                 />
 
             </Chart>
