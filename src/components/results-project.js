@@ -67,6 +67,7 @@ class ResultsProject extends Component {
          */
         scales: PropTypes.object,
 
+        onSelect: PropTypes.func,
     };
 
     render() {
@@ -95,6 +96,7 @@ class ResultsProject extends Component {
                 className={Styles.extension}
                 rx={4}
                 ry={4}
+                onClick={this.props.onSelect}
             />
             }
 
@@ -106,6 +108,7 @@ class ResultsProject extends Component {
                 className={Styles.project}
                 rx={4}
                 ry={4}
+                onClick={this.props.onSelect}
             />
 
             <circle

@@ -90,6 +90,7 @@ export class Calculator extends Component {
         this.handleSave = ::this.handleSave;
         this.handlePrint = ::this.handlePrint;
         this.handleAddProject = ::this.handleAddProject;
+        this.handleSelect = ::this.handleSelect;
     }
 
     handleSave(project) {
@@ -125,6 +126,17 @@ export class Calculator extends Component {
         this.setState({
             activeProject: this.createProject(),
         });
+    }
+
+    handleSelect(result) {
+        const { projects } = this.state;
+        const index = projects.findIndex(p => (result.id === p.id));
+
+        if (index >= 0) {
+            this.setState({
+                activeProject: projects[index],
+            });
+        }
     }
 
     recalculateProject(project) {
@@ -180,7 +192,7 @@ export class Calculator extends Component {
                 </Col>
 
                 <Col xs={12}>
-                    {results.length && <ResultsChart results={results} />}
+                    {results.length && <ResultsChart results={results} onSelect={this.handleSelect} />}
 
                     <ul className={Styles.legend}>
                         <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
