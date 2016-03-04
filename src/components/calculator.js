@@ -90,6 +90,7 @@ export class Calculator extends Component {
         this.handleSave = ::this.handleSave;
         this.handlePrint = ::this.handlePrint;
         this.handleAddProject = ::this.handleAddProject;
+        this.handleDeleteProject = ::this.handleDeleteProject;
     }
 
     handleSave(project) {
@@ -109,7 +110,7 @@ export class Calculator extends Component {
         }
 
         this.setState({ activeProject });
-        this.recalculate();
+        this.recalculate(projects);
     }
 
     /**
@@ -125,6 +126,17 @@ export class Calculator extends Component {
         this.setState({
             activeProject: this.createProject(),
         });
+    }
+
+    handleDeleteProject() {
+        const activeProjectId = this.state.activeProject.id;
+        const projects = this.state.projects.filter(p => p.id !== activeProjectId);
+        this.setState({
+            projects,
+            activeProject: this.createProject(),
+        });
+        console.log('delete', projects, this.state.projects);
+        this.recalculate(projects);
     }
 
     recalculateProject(project) {
@@ -147,8 +159,8 @@ export class Calculator extends Component {
      *
      * @private
      */
-    recalculate() {
-        const { projects } = this.state;
+    recalculate(projects) {
+        // const { projects } = this.state;
         const results = projects.map(::this.recalculateProject);
         this.setState({ results });
     }
@@ -192,7 +204,9 @@ export class Calculator extends Component {
                         project={activeProject}
                         onSave={this.handleSave}
                         onAdd={this.handleAddProject}
+                        onDelete={this.handleDeleteProject}
                         disableAdd={activeProject.id === 0}
+                        disableDelete={activeProject.id === 0}
                     />
 
                 </Col>

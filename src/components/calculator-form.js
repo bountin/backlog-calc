@@ -65,6 +65,11 @@ const messages = defineMessages({
         defaultMessage: 'New',
     },
 
+    deleteProjectLabel: {
+        id: 'calculator.deleteProjectLabel',
+        defaultMessage: 'Delete',
+    },
+
 });
 
 /**
@@ -84,7 +89,11 @@ export class CalculatorForm extends Component {
 
         onAdd: PropTypes.func,
 
+        onDelete: PropTypes.func,
+
         disableAdd: PropTypes.bool,
+
+        disableDelete: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -278,6 +287,15 @@ export class CalculatorForm extends Component {
                     disabled={this.props.disableAdd}
                 >
                     <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
+                </Button>
+
+                <Button
+                    bsStyle="danger"
+                    className={classNames('pull-right', Styles.action)}
+                    onClick={this.props.onDelete}
+                    disabled={this.props.disableDelete}
+                >
+                    <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.deleteProjectLabel} />
                 </Button>
 
             </Input>
