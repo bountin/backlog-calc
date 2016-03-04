@@ -139,7 +139,6 @@ export class Calculator extends Component {
 
         this.setState({ activeProject });
         localStorage.setItem('projects', projects);
-        console.log('save', projects, localStorage.getItem('projects', []));
         this.recalculate(projects);
     }
 
@@ -165,7 +164,6 @@ export class Calculator extends Component {
             projects,
             activeProject: this.createProject(),
         });
-        console.log('delete', projects, this.state.projects);
         this.recalculate(projects);
     }
 

@@ -80,6 +80,8 @@ class ResultsChart extends Component {
 
     componentDidMount() {
         this.resize();
+        // ugly this, but it works...
+        setTimeout(this.resize, 50);
         window.addEventListener('resize', this.resize);
     }
 
