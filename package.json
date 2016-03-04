@@ -15,6 +15,7 @@
     "babel-polyfill": "~6.3",
     "bootstrap": "~3.3",
     "classnames": "~2.2",
+    "d3": "^3.5.16",
     "font-awesome": "~4.4",
     "intl": "~1.0",
     "lodash": "~4.0",
