@@ -100,10 +100,22 @@ class CalculatorForm extends Component {
         super(props);
         /* eslint react/no-direct-mutation-state:0 */
         this.state.inputs = { ...props.project };
+
+        this.handleFormSubmit = ::this.handleFormSubmit;
+        this.handleInputChange = ::this.handleInputChange;
     }
 
     componentWillReceiveProps(props) {
         this.setState({ inputs: { ...props.project } });
+    }
+
+    /**
+     * Parses all input values and removes results from the state.
+     *
+     * @private
+     */
+    handleInputChange() {
+        this.setState({ inputs: this.getInputs() });
     }
 
     /**
@@ -126,7 +138,6 @@ class CalculatorForm extends Component {
         this.props.onSave(inputs);
         return false;
     }
-
 
     /**
      * Fetch and parse values from all input elements in this component and

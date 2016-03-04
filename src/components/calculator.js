@@ -87,42 +87,8 @@ export class Calculator extends Component {
 
     constructor(props) {
         super(props);
-        this.handleFormSubmit = ::this.handleFormSubmit;
-        this.handleInputChange = ::this.handleInputChange;
+        this.handleSave = ::this.handleSave;
         this.handlePrint = ::this.handlePrint;
-    }
-
-    createProject() {
-        return {
-            id: ++Calculator.lastProjectId,
-            startDate: moment().startOf('day'),
-            endDate: moment().startOf('day').add(1, 'month'),
-        };
-    }
-
-    /**
-     * Parses all input values and removes results from the state.
-     *
-     * @private
-     */
-    handleInputChange() {
-        this.setState({
-            inputs: this._getInputs(),
-            results: null,
-        });
-    }
-
-    /**
-     * Prevents browser form submission and recalculates the results.
-     *
-     * @param {Event} e - An optional event triggering this action.
-     * @returns {boolean} false.
-     * @private
-     */
-    handleFormSubmit(e) {
-        e.preventDefault();
-        this.recalculate();
-        return false;
     }
 
     handleSave(project) {
@@ -143,27 +109,6 @@ export class Calculator extends Component {
      */
     handlePrint() {
         window.print();
-    }
-
-    /**
-     * Fetch and parse values from all input elements in this component and
-     * maps them to a key equal to the ref. This will yield:
-     *
-     *  - Moments for datepickers
-     *  - Integers for number inputs
-     *  - Strings for all other input types
-     *
-     * @returns {object} An object containing all parsed input values.
-     * @private
-     */
-    _getInputs() {
-        return {
-            projectName: this.refs.projectName.getValue(),
-            startDate: this.refs.startDate.getValue(),
-            endDate: this.refs.endDate.getValue(),
-            velocity: parseInt(this.refs.velocity.getValue(), 10),
-            backlogSize: parseInt(this.refs.backlogSize.getValue(), 10),
-        };
     }
 
     recalculateProject(project) {
@@ -188,6 +133,14 @@ export class Calculator extends Component {
         const { projects } = this.state;
         const results = projects.map(::this.recalculateProject);
         this.setState({ results });
+    }
+
+    createProject() {
+        return {
+            id: ++Calculator.lastProjectId,
+            startDate: moment().startOf('day'),
+            endDate: moment().startOf('day').add(1, 'month'),
+        };
     }
 
     /**
