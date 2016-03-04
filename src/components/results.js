@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { defineMessages, FormattedMessage, FormattedNumber, FormattedDate } from 'react-intl';
 import classNames from 'classnames';
 
+import ResultChart from './result-chart';
+
 import Icon from 'react-fontawesome';
 import Styles from './styles/results.less';
 
@@ -131,6 +133,8 @@ class Results extends Component {
                     </b>,
                 }}
                 />
+
+                <ResultChart />
             </p>
         </div>;
     }
