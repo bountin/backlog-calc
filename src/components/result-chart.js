@@ -158,7 +158,7 @@ class ResultChart extends Component {
                     tickFormat={formatDate}
                     tickPadding={15}
                     innerTickSize={-size.height}
-                    outerTickSize={0}
+                    outerTickSize={0.25}
                     className={classNames(Styles.axis, Styles.x)}
                 />
 
@@ -168,7 +168,7 @@ class ResultChart extends Component {
                     ticks={4}
                     tickPadding={-size.width + 10}
                     innerTickSize={size.width}
-                    outerTickSize={0}
+                    outerTickSize={0.25}
                     className={classNames(Styles.axis, Styles.y)}
                     clipPath="url(#graph-clip)"
                 />
