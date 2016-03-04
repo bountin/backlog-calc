@@ -184,6 +184,7 @@ class ResultChart extends Component {
 
                 <Label
                     text={String(this.props.backlogSize)}
+                    height={50}
                     width={300}
                 />
 

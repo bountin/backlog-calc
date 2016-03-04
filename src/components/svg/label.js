@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import d3 from 'd3';
 
+/*
 const PADDING_X = 6;
 const PADDING_Y = 3;
+*/
 
 /**
  * An label with automatically adjusting background.
@@ -16,6 +18,7 @@ class Label extends Component {
         anchor: PropTypes.string,
         rx: PropTypes.number,
         ry: PropTypes.number,
+        height: PropTypes.number,
         width: PropTypes.number,
     };
 
@@ -56,8 +59,10 @@ class Label extends Component {
      * @private
      */
     updateTextSize() {
-        const { text, rect } = this;
+        const { text } = this;
+        const { height, width } = this.props;
 
+        /*
         const size = text.getBBox();
         size.x -= PADDING_X;
         size.y -= PADDING_Y;
@@ -65,14 +70,22 @@ class Label extends Component {
         size.height += 2 * PADDING_Y;
 
         d3.select(rect).attr(size);
+        */
+
+        const size = text.getBBox();
+        d3.select(text).attr({
+            rx: (width - size.width) / 2,
+            ry: (height - size.height) / 2,
+        });
     }
 
     render() {
         const { text, baseline, anchor, rx, ry } = this.props;
         const style = { textAnchor: anchor, alignmentBaseline: baseline };
+        const { height, width } = this.props;
 
         return <g {...this.forwardProps()}>
-            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={this.props.width} />
+            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={width} height={height} />
             <text ref={c => { this.text = c; }} children={text} style={style} />
         </g>;
     }
