@@ -106,7 +106,7 @@ class ResultsChart extends Component {
                 ]),
             y: d3.scale.ordinal()
                 .domain(this.props.results.map(project => project.id))
-                .rangeRoundBands([0, size.height], 0.1, 0.2),
+                .rangeRoundBands([0, results.length * 100], 0.1, 0.2),
         };
     }
 
@@ -125,7 +125,7 @@ class ResultsChart extends Component {
         // quickfix height if we are mounting the component since the graph has
         // not rendered yet.
 
-        const minHeight = this.props.results.length * 50;
+        const minHeight = this.props.results.length * 100;
         size.height = size.height > minHeight ? size.height : minHeight; // @TODO
 
         this.setState({
@@ -148,6 +148,9 @@ class ResultsChart extends Component {
         const formatDate = d => moment(d).format('WW');
         // const barEndDate = moment.min(endDate, completionDate);
         const scale = this.computeScales(this.props.results, size);
+
+        const minHeight = this.props.results.length * 100;
+        size.height = size.height > minHeight ? size.height : minHeight; // @TODO
 
         return <div className={this.props.className} ref={c => { this.node = c; }} >
             <Chart
