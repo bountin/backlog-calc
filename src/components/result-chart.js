@@ -196,7 +196,7 @@ class ResultChart extends Component {
                 />
 
                 <circle
-                    transform={`translate(${scales.x(endDate) - 30}, ${scales.y('Project')})`}
+                    transform={`translate(${scales.x(startDate) + scales.x(endDate) - 30}, ${scales.y('Project')})`}
                     cx="10"
                     cy="20"
                     r="10"
