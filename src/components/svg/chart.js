@@ -82,7 +82,7 @@ class Chart extends Component {
             height={ height + parsedPadding.top + parsedPadding.bottom }
             {...this.forwardProps()}
         >
-            <g transform={`translate(${parsedPadding.left}, ${parsedPadding.right})`}>
+            <g transform={`translate(${parsedPadding.left}, ${parsedPadding.top})`}>
                 {children}
             </g>
         </svg>;

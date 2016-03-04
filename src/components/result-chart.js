@@ -189,6 +189,7 @@ class ResultChart extends Component {
                 />
 
                 <Label
+                    transform="translate(0, 40)"
                     text={String(this.props.backlogSize)}
                     height={50}
                     width={scales.x(this.props.endDate)}
