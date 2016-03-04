@@ -83,7 +83,7 @@ class ResultsChart extends Component {
     componentWillReceiveProps(props) {
         const { balance } = props;
         if (balance && balance.length) {
-            this.setState({ scales: this.computeScales(props, this.state.size) });
+            this.setState({ scales: this.computeScales(props.results, this.state.size) });
         }
     }
 
@@ -91,16 +91,10 @@ class ResultsChart extends Component {
         window.removeEventListener('resize', this.resize);
     }
 
-    /**
-     * 
-     * @param results
-     * @param size
-     * @returns {{x: *, y: *}}
-     */
     computeScales(results, size) {
-        const startDate = moment.min(results.map( p => p.startDate ));
-        const endDate = moment.max(results.map( p => p.endDate ));
-        const completionDate = moment.max(results.map( p => p.completionDate ));
+        const startDate = moment.min(results.map(p => p.startDate));
+        const endDate = moment.max(results.map(p => p.endDate));
+        const completionDate = moment.max(results.map(p => p.completionDate));
 
         const maxDate = moment.max(endDate, completionDate);
         return {
@@ -134,7 +128,7 @@ class ResultsChart extends Component {
 
         this.setState({
             size,
-            scales: this.computeScales(this.props, size),
+            scales: this.computeScales(this.props.results, size),
         });
     }
 

@@ -100,6 +100,8 @@ export class Calculator extends Component {
         } else {
             projects[index] = project;
         }
+
+        this.recalculate();
     }
 
     /**
@@ -176,7 +178,7 @@ export class Calculator extends Component {
                 </Button>}
 
                 <div className={Styles.nobreak}>
-                    {results.length && <ResultsChart {...results} />}
+                    {results.length && <ResultsChart results={results} />}
                 </div>
 
                 <div className={Styles.legend}>
