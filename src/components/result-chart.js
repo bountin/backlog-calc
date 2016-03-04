@@ -138,7 +138,9 @@ class ResultChart extends Component {
             height: container.clientHeight - padding.top - padding.bottom,
         };
 
-        console.log('HEIGHT', container, size.height, container.clientHeight);
+        // quickfix height if we are mounting the component since the graph has
+        // not rendered yet.
+        size.height = size.height > 100 ? size.height : 100;
 
         this.setState({
             size,
