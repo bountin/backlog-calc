@@ -145,6 +145,14 @@ class Results extends Component {
                 />
 
                 <ResultChart {...this.props} />
+
+                <div>
+                    <ul>
+                        <li>grün: 100%</li>
+                        <li>gelb: 80 - 100%</li>
+                        <li>rot: &lt;80%</li>
+                    </ul>
+                </div>
             </p>
         </div>;
     }
