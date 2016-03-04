@@ -162,7 +162,7 @@ class ResultsChart extends Component {
 
                 <Axis
                     orientation="top"
-                    scale={scales.x}
+                    scale={scale.x}
                     tickFormat={formatDate}
                     tickPadding={15}
                     innerTickSize={-size.height}
