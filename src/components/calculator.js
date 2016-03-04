@@ -204,7 +204,9 @@ export class Calculator extends Component {
                 </Col>
 
                 <Col xs={12}>
-                    {results.length && <ResultsChart results={results} onSelect={this.handleSelect} />}
+                    {results.length && <ResultsChart results={results}
+                        onSelect={this.handleSelect} active={this.state.activeProject.id}
+                    />}
 
                     <ul className={Styles.legend}>
                         <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>

@@ -64,6 +64,8 @@ class ResultsChart extends Component {
          */
         className: PropTypes.string,
 
+        active: PropTypes.number,
+
         onSelect: PropTypes.func,
     };
 
@@ -191,7 +193,9 @@ class ResultsChart extends Component {
                 {this.props.results.map(
                     project =>
                         <g transform={`translate(0, ${scale.y(project.projectName || project.id)})`} key={project.id}>
-                            <ResultsProject {...project} scales={scale} onSelect={ onClick(project) } />
+                            <ResultsProject {...project} scales={scale}
+                                onSelect={ onClick(project) } active={this.props.active === project.id}
+                            />
                         </g>
 
                 )}

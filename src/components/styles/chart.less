@@ -52,10 +52,10 @@
         stroke: #2c91d1;
         stroke-width: 3px;
         cursor: pointer;
+        opacity: 0.6;
 
         &:hover {
-            fill: #a8ebff;
-            stroke: #a8ebff;
+            opacity: 1;
         }
     }
 
@@ -79,4 +79,10 @@
 .semaphore {
     stroke: white;
     stroke-width: 1
+}
+
+.active {
+    rect {
+        opacity: 1;
+    }
 }

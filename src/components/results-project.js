@@ -67,6 +67,8 @@ class ResultsProject extends Component {
          */
         scales: PropTypes.object,
 
+        active: PropTypes.bool,
+
         onSelect: PropTypes.func,
     };
 
@@ -93,7 +95,7 @@ class ResultsProject extends Component {
                 text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
                 height={scales.y.rangeBand()}
                 width={extendedBarLength}
-                className={Styles.extension}
+                className={classNames(Styles.extension, this.props.active && Styles.active)}
                 rx={4}
                 ry={4}
                 onClick={this.props.onSelect}
@@ -105,7 +107,7 @@ class ResultsProject extends Component {
                 text={String(backlogSize)}
                 height={scales.y.rangeBand()}
                 width={scales.x(barEndDate) - scales.x(startDate)}
-                className={Styles.project}
+                className={classNames(Styles.project, this.props.active && Styles.active)}
                 rx={4}
                 ry={4}
                 onClick={this.props.onSelect}
