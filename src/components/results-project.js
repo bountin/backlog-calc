@@ -16,6 +16,11 @@ class ResultsProject extends Component {
     static propTypes = {
 
         /**
+         *  Project ID
+         */
+        id: PropTypes.number.isRequired,
+
+        /**
          * Boolean, whether the project is likely to be finished successfully
          * in time with the given input data.
          */
@@ -83,7 +88,7 @@ class ResultsProject extends Component {
         return <g>
             {renderExtendedBar &&
             <Bar
-                transform={`translate(${scales.x(endDate)}, ${scales.y('Project')})`}
+                transform={`translate(${scales.x(endDate)}, 0)`}
                 text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
                 height={scales.y.rangeBand()}
                 width={extendedBarLength}
@@ -94,7 +99,7 @@ class ResultsProject extends Component {
             }
 
             <Bar
-                transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
+                transform={`translate(${scales.x(startDate)}, 0)`}
                 text={String(backlogSize)}
                 height={scales.y.rangeBand()}
                 width={scales.x(barEndDate) - scales.x(startDate)}
@@ -104,7 +109,7 @@ class ResultsProject extends Component {
             />
 
             <circle
-                transform={`translate(${circleWidth}, ${scales.y('Project')})`}
+                transform={`translate(${circleWidth}, 0)`}
                 cx="10"
                 cy="20"
                 r="10"

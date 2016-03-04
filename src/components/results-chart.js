@@ -105,7 +105,7 @@ class ResultsChart extends Component {
                     maxDate.clone().add(1, 'week'),
                 ]),
             y: d3.scale.ordinal()
-                .domain(['Project'])
+                .domain(this.props.results.map(project => project.id))
                 .rangeRoundBands([0, size.height], 0.1, 0.2),
         };
     }
@@ -176,7 +176,11 @@ class ResultsChart extends Component {
                 />
 
                 {this.props.results.map(
-                    project => <ResultsProject {...project} key={project.id} scales={scales} />
+                    project =>
+                        <g transform={`translate(0, ${scales.y(project.id)})`} key={project.id}>
+                            <ResultsProject {...project} scales={scales} />
+                        </g>
+
                 )}
 
             </Chart>

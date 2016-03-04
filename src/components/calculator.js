@@ -117,7 +117,7 @@ export class Calculator extends Component {
     }
 
     recalculateProject(project) {
-        const { backlogSize, velocity, startDate, endDate } = project;
+        const { backlogSize, velocity, startDate, endDate, id } = project;
         const duration = endDate.diff(startDate, 'days');
         return {
             isSuccessful: isSuccessful(backlogSize, velocity, duration),
@@ -126,6 +126,7 @@ export class Calculator extends Component {
             backlogSize: successBacklogSize(velocity, duration),
             startDate,
             endDate,
+            id,
         };
     }
 
