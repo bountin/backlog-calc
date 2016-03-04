@@ -1,16 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { injectIntl, defineMessages, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import classNames from 'classnames';
 import moment from 'moment';
 
-import DatePicker from 'react-datepicker';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Input from 'react-bootstrap/lib/Input';
 import Button from 'react-bootstrap/lib/Button';
 import Container from './container';
-import FormattedMultiLine from './formatted-multi-line';
 import Results from './results';
+import CalculatorForm from './calculator-form';
 
 import Styles from './styles/calculator.less';
 
@@ -20,7 +18,6 @@ import {
     successProbability,
     successBacklogSize,
 } from '../utils/calculations';
-import { validateInputs } from '../utils/validators';
 
 const messages = defineMessages({
     introMessage: {
@@ -41,54 +38,12 @@ Your borisgloger-Team
 <br />`,
     },
 
-    projectNameLabel: {
-        id: 'calculator.projectNameLabel',
-        defaultMessage: 'Project Name',
-    },
-
-    startDateLabel: {
-        id: 'calculator.startDateLabel',
-        defaultMessage: 'Start Date',
-    },
-
-    endDateLabel: {
-        id: 'calculator.endDateLabel',
-        defaultMessage: 'Target Date',
-    },
-
-    velocityLabel: {
-        id: 'calculator.velocityLabel',
-        defaultMessage: 'Velocity',
-    },
-
-    velocityPlaceholder: {
-        id: 'calculator.velocityPlaceholder',
-        defaultMessage: 'Story Points per week',
-    },
-
-    backlogSizeLabel: {
-        id: 'calculator.backlogSizeLabel',
-        defaultMessage: 'Backlog Size',
-    },
-
-    backlogSizePlaceholder: {
-        id: 'calculator.backlogSizePlaceholder',
-        defaultMessage: 'Total Story Points',
-    },
-
     printLabel: {
         id: 'calculator.printLabel',
         defaultMessage: 'Print',
     },
 
-    submitLabel: {
-        id: 'calculator.submitLabel',
-        defaultMessage: 'Calculate',
-    },
 });
-
-const LABEL_CLASS_NAME = 'col-xs-12 col-sm-3 col-md-2';
-const WRAPPER_CLASS_NAME = 'col-xs-12 col-sm-9 col-md-10 col-md-8';
 
 /**
  * Stateful main component displaying the backlog calculator component.
@@ -115,36 +70,19 @@ const WRAPPER_CLASS_NAME = 'col-xs-12 col-sm-9 col-md-10 col-md-8';
  * This component is not pure.
  */
 export class Calculator extends Component {
-    static propTypes = {
-        /**
-         * Injected internationalization by react-intl's injectIntl().
-         */
-        intl: PropTypes.object.isRequired,
-    };
+
+    static lastProjectId = 0;
 
     state = {
-        /**
-         * Parsed values of inputs entered into this component.
-         * The inputs are parsed in _getInputs.
-         */
-        inputs: {
-            startDate: moment().startOf('day'),
-            endDate: moment().startOf('day').add(1, 'month'),
-        },
+        projects: [],
 
-        /**
-         * Validation errors that occurred during the latest submit. The errors
-         * are recomputed on every submit and displayed subsequently.
-         *
-         * This object must never be null!
-         */
-        errors: {},
+        activeProject: this.createProject(),
 
         /**
          * Results of the last computation, if validation succeeds, otherwise
          * null.
          */
-        results: null,
+        results: [],
     };
 
     constructor(props) {
@@ -152,6 +90,14 @@ export class Calculator extends Component {
         this.handleFormSubmit = ::this.handleFormSubmit;
         this.handleInputChange = ::this.handleInputChange;
         this.handlePrint = ::this.handlePrint;
+    }
+
+    createProject() {
+        return {
+            id: ++Calculator.lastProjectId,
+            startDate: moment().startOf('day'),
+            endDate: moment().startOf('day').add(1, 'month'),
+        };
     }
 
     /**
@@ -175,8 +121,19 @@ export class Calculator extends Component {
      */
     handleFormSubmit(e) {
         e.preventDefault();
-        this._recalculate();
+        this.recalculate();
         return false;
+    }
+
+    handleSave(project) {
+        const { projects } = this.state;
+        const index = projects.findIndex(p => (project.id === p.id));
+
+        if (index < 0) {
+            projects.push(project);
+        } else {
+            projects[index] = project;
+        }
     }
 
     /**
@@ -209,22 +166,10 @@ export class Calculator extends Component {
         };
     }
 
-    /**
-     * Recalculates the results based on current inputs.
-     *
-     * @private
-     */
-    _recalculate() {
-        const inputs = this._getInputs();
-        const errors = validateInputs(inputs);
-        if (Object.keys(errors).length) {
-            this.setState({ errors });
-            return;
-        }
-
-        const { backlogSize, velocity, startDate, endDate } = inputs;
+    recalculateProject(project) {
+        const { backlogSize, velocity, startDate, endDate } = project;
         const duration = endDate.diff(startDate, 'days');
-        const results = {
+        return {
             isSuccessful: isSuccessful(backlogSize, velocity, duration),
             probability: successProbability(backlogSize, velocity, duration),
             completionDate: startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
@@ -232,19 +177,26 @@ export class Calculator extends Component {
             startDate,
             endDate,
         };
+    }
 
-        this.setState({ results, errors });
+    /**
+     * Recalculates the results based on current inputs.
+     *
+     * @private
+     */
+    recalculate() {
+        const { projects } = this.state;
+        const results = projects.map(::this.recalculateProject);
+        this.setState({ results });
     }
 
     /**
      * @inheritDoc
      */
     render() {
-        const { intl } = this.props;
         const {
-            inputs,
+            activeProject,
             results,
-            errors,
         } = this.state;
 
         return <Container>
@@ -256,115 +208,25 @@ export class Calculator extends Component {
                 >
                     <FormattedHTMLMessage {...messages.introMessage} />
                 </Col>
+
+                <CalculatorForm
+                    project={activeProject}
+                    onSave={this.handleSave}
+                />
+
+                {(results.length) && <Button
+                    bsStyle="default"
+                    className={classNames('pull-right', Styles.printHide, Styles.action)}
+                    onClick={this.handlePrint}
+                >
+                    <FormattedMessage {...messages.printLabel} />
+                </Button>}
+
+                <div className={Styles.nobreak}>
+                    {results.length && <Results {...results[0]} />}
+                </div>
             </Row>
 
-            <form
-                className="form-horizontal"
-                onSubmit={this.handleFormSubmit}
-                noValidate
-            >
-                <Input
-                    type="text"
-                    ref="projectName"
-                    value={inputs.projectName}
-                    label={intl.formatMessage(messages.projectNameLabel)}
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={this.handleInputChange}
-                />
-
-                <Input
-                    label={intl.formatMessage(messages.startDateLabel)}
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                    help={<FormattedMultiLine lines={errors.startDate} />}
-                    hasFeedback={!!errors.startDate}
-                    bsStyle={errors.startDate ? 'error' : null}
-                >
-                    <DatePicker
-                        ref="startDate"
-                        className="form-control"
-                        selected={inputs.startDate}
-                        onChange={this.handleInputChange}
-                    />
-                </Input>
-
-                <Input
-                    label={intl.formatMessage(messages.endDateLabel)}
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                    help={<FormattedMultiLine lines={errors.endDate} />}
-                    hasFeedback={!!errors.endDate}
-                    bsStyle={errors.endDate ? 'error' : null}
-                >
-                    <DatePicker
-                        ref="endDate"
-                        locale={intl.locale}
-                        className="form-control"
-                        selected={inputs.endDate}
-                        minDate={inputs.startDate}
-                        onChange={this.handleInputChange}
-                    />
-                </Input>
-
-                <Input
-                    type="number"
-                    ref="velocity"
-                    value={inputs.velocity}
-                    label={intl.formatMessage(messages.velocityLabel)}
-                    placeholder={intl.formatMessage(messages.velocityPlaceholder)}
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={this.handleInputChange}
-                    min="0"
-                    help={<FormattedMultiLine lines={errors.velocity} />}
-                    hasFeedback={!!errors.velocity}
-                    bsStyle={errors.velocity ? 'error' : null}
-                />
-
-                <Input
-                    type="number"
-                    ref="backlogSize"
-                    value={inputs.backlogSize}
-                    label={intl.formatMessage(messages.backlogSizeLabel)}
-                    placeholder={intl.formatMessage(messages.backlogSizePlaceholder)}
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                    onChange={this.handleInputChange}
-                    min="0"
-                    help={<FormattedMultiLine lines={errors.backlogSize} />}
-                    hasFeedback={!!errors.backlogSize}
-                    bsStyle={errors.backlogSize ? 'error' : null}
-                />
-
-                <Input
-                    label="&nbsp;"
-                    labelClassName={LABEL_CLASS_NAME}
-                    wrapperClassName={WRAPPER_CLASS_NAME}
-                >
-                    <Button
-                        type="submit"
-                        bsStyle="default"
-                        className={classNames('pull-left', Styles.printHide, Styles.action)}
-                    >
-                        <FormattedMessage {...messages.submitLabel} />
-                    </Button>
-
-                    {(results != null) && <Button
-                        bsStyle="default"
-                        className={classNames('pull-right', Styles.printHide, Styles.action)}
-                        onClick={this.handlePrint}
-                    >
-                        <FormattedMessage {...messages.printLabel} />
-                    </Button>}
-
-                    <div className={Styles.nobreak}>
-                        {results && <Results {...results} />}
-                    </div>
-
-                </Input>
-
-            </form>
         </Container>;
     }
 }

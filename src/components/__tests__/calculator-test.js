@@ -105,7 +105,7 @@ describe('Calculator component', () => {
     });
 
     it('should recalculate when submitting the form', () => {
-        const recalculate = TestUtils.mockComponentMethod(calculator, '_recalculate');
+        const recalculate = TestUtils.mockComponentMethod(calculator, 'recalculate');
 
         const form = TestUtils.findRenderedDOMComponentWithTag(calculator, 'form');
         TestUtils.Simulate.submit(form);
@@ -124,7 +124,7 @@ describe('Calculator component', () => {
 
         validateInputs.mockReturnValue({});
         calculator.setState({ inputs });
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(validateInputs).lastCalledWith(inputs);
     });
@@ -140,7 +140,7 @@ describe('Calculator component', () => {
 
         validateInputs.mockReturnValue({});
         calculator.setState({ inputs });
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(isSuccessful).toBeCalledWith(21, 17, 42);
         expect(successProbability).toBeCalledWith(21, 17, 42);
@@ -155,7 +155,7 @@ describe('Calculator component', () => {
         successDuration.mockReturnValue(21);
         successBacklogSize.mockReturnValue(100);
 
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         const { results, inputs } = calculator.state;
         expect(results.isSuccessful).toBe(true);
@@ -182,7 +182,7 @@ describe('Calculator component', () => {
         TestUtils.enterTextIntoComponentInput(calculator.refs.startDate, startDate.format('YYYY-MM-DD'));
 
         validateInputs.mockReturnValue({});
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(isSuccessful).toBeCalledWith(NaN, NaN, 42);
         expect(successProbability).toBeCalledWith(NaN, NaN, 42);
@@ -193,7 +193,7 @@ describe('Calculator component', () => {
         TestUtils.enterTextIntoComponentInput(calculator.refs.endDate, endDate.format('YYYY-MM-DD'));
 
         validateInputs.mockReturnValue({});
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(isSuccessful).toBeCalledWith(NaN, NaN, 42);
         expect(successProbability).toBeCalledWith(NaN, NaN, 42);
@@ -209,7 +209,7 @@ describe('Calculator component', () => {
         });
 
         calculator.setState({ inputs: {} });
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(isSuccessful).not.toBeCalled();
         expect(successDuration).not.toBeCalled();
@@ -228,7 +228,7 @@ describe('Calculator component', () => {
 
         validateInputs.mockReturnValue(errors);
         calculator.setState({ inputs: {} });
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(calculator.state.errors).toEqual(errors);
     });
@@ -244,7 +244,7 @@ describe('Calculator component', () => {
 
         calculator.setState({ errors });
         validateInputs.mockReturnValue({});
-        calculator._recalculate(new Event(''));
+        calculator.recalculate(new Event(''));
 
         expect(calculator.state.errors).toBeEmptyObject();
     });
