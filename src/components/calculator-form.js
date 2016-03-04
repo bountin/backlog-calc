@@ -130,8 +130,8 @@ export class CalculatorForm extends Component {
 
         const { inputs } = this.state;
         const errors = validateInputs(inputs);
+        this.setState({ errors });
         if (Object.keys(errors).length) {
-            this.setState({ errors });
             return false;
         }
 

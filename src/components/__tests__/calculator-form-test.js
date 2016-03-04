@@ -21,7 +21,9 @@ describe('Calculator Form component', () => {
 
         validateInputs.mockClear();
 
-        decorator = TestUtils.renderIntoDocument(<CalculatorForm.default project={{}}/>);
+        const onSave = jest.genMockFunction();
+
+        decorator = TestUtils.renderIntoDocument(<CalculatorForm.default project={{}} onSave={onSave}/>);
         calculatorForm = TestUtils.findRenderedComponentWithType(decorator, CalculatorForm.CalculatorForm);
         node = ReactDOM.findDOMNode(calculatorForm);
     });
@@ -61,7 +63,6 @@ describe('Calculator Form component', () => {
         expect(calculatorForm.state.inputs.backlogSize).toBe(15);
     });
 
-    /*
     it('should handleFormSubmit when submitting the form', () => {
         const handleFormSubmit = TestUtils.mockComponentMethod(calculatorForm, 'handleFormSubmit');
 
@@ -82,11 +83,13 @@ describe('Calculator Form component', () => {
 
         validateInputs.mockReturnValue({});
         calculatorForm.setState({ inputs });
+        const form = TestUtils.findRenderedDOMComponentWithTag(calculatorForm, 'form');
+        TestUtils.Simulate.submit(form);
 
         expect(validateInputs).lastCalledWith(inputs);
     });
 
-    it('should calculate results if validation succeeds', () => {
+    it('should save results if validation succeeds', () => {
         const inputs = {
             projectName: 'Test project',
             startDate: moment().add(42, 'days'),
@@ -97,48 +100,14 @@ describe('Calculator Form component', () => {
 
         validateInputs.mockReturnValue({});
         calculatorForm.setState({ inputs });
+
+        const form = TestUtils.findRenderedDOMComponentWithTag(calculatorForm, 'form');
+        TestUtils.Simulate.submit(form);
+
+        expect(calculatorForm.props.onSave).toBeCalled();
     });
 
-    it('should display results after recalculating successfully', () => {
-        validateInputs.mockReturnValue({});
-
-        calculatorForm.recalculate(new Event(''));
-
-        const { results, inputs } = calculatorForm.state;
-        expect(results.isSuccessful).toBe(true);
-        expect(results.probability).toBe(0.9);
-        expect(inputs.startDate.diff(results.completionDate, 'days')).toBe(-21);
-        expect(results.backlogSize).toBe(100);
-    });
-
-    it('should pass results properly to the results component', () => {
-        const results = {
-            isSuccessful: true,
-            probability: 0.9,
-            completionDate: moment(),
-            backlogSize: 100,
-        };
-
-        calculatorForm.setState({ results });
-        const resultsComponent = TestUtils.findRenderedComponentWithType(calculatorForm, Results);
-        expect(resultsComponent.props).toEqual(results);
-    });
-
-    it('should calculate the proper project duration when changing the start date', () => {
-        const startDate = calculatorForm.state.inputs.endDate.clone().subtract(42, 'days');
-        TestUtils.enterTextIntoComponentInput(calculatorForm.refs.startDate, startDate.format('YYYY-MM-DD'));
-
-        validateInputs.mockReturnValue({});
-    });
-
-    it('should calculate the proper project duration when changing the end date', () => {
-        const endDate = calculatorForm.state.inputs.startDate.clone().add(42, 'days');
-        TestUtils.enterTextIntoComponentInput(calculatorForm.refs.endDate, endDate.format('YYYY-MM-DD'));
-
-        validateInputs.mockReturnValue({});
-    });
-
-    it('should not calculate results if validation fails', () => {
+    it('should not save results if validation fails', () => {
         const errorMessage = { id: 'foo', defaultMessage: 'bar' };
         validateInputs.mockReturnValue({
             startDate: [errorMessage],
@@ -148,6 +117,11 @@ describe('Calculator Form component', () => {
         });
 
         calculatorForm.setState({ inputs: {} });
+
+        const form = TestUtils.findRenderedDOMComponentWithTag(calculatorForm, 'form');
+        TestUtils.Simulate.submit(form);
+
+        expect(calculatorForm.props.onSave).not.toBeCalled();
     });
 
     it('should carry over error messages if validation fails', () => {
@@ -161,6 +135,9 @@ describe('Calculator Form component', () => {
 
         validateInputs.mockReturnValue(errors);
         calculatorForm.setState({ inputs: {} });
+
+        const form = TestUtils.findRenderedDOMComponentWithTag(calculatorForm, 'form');
+        TestUtils.Simulate.submit(form);
 
         expect(calculatorForm.state.errors).toEqual(errors);
     });
@@ -177,7 +154,10 @@ describe('Calculator Form component', () => {
         calculatorForm.setState({ errors });
         validateInputs.mockReturnValue({});
 
+        const form = TestUtils.findRenderedDOMComponentWithTag(calculatorForm, 'form');
+        TestUtils.Simulate.submit(form);
+
         expect(calculatorForm.state.errors).toBeEmptyObject();
     });
-*/
+
 });
