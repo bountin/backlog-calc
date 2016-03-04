@@ -146,11 +146,11 @@ class Results extends Component {
 
                 <ResultChart {...this.props} />
 
-                <div>
+                <div className={Styles.resultChartLegend}>
                     <ul>
-                        <li>grün: 100%</li>
-                        <li>gelb: 80 - 100%</li>
-                        <li>rot: &lt;80%</li>
+                        <li className={Styles.ok}><i class="fa fa-square"></i>grün: 100%</li>
+                        <li className={Styles.warning}><i class="fa fa-square"></i>gelb: 80 - 100%</li>
+                        <li className={Styles.error}><i class="fa fa-square"></i>rot: &lt;80%</li>
                     </ul>
                 </div>
             </p>
