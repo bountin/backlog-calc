@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import moment from 'moment';
 
 import Axis from './svg/axis';
+import Bar from './svg/bar';
 import Chart from './svg/chart';
-import Label from './svg/label';
 import Styles from './styles/chart.less';
 
 /**
@@ -175,7 +175,7 @@ class ResultChart extends Component {
                     clipPath="url(#graph-clip)"
                 />
 
-                <Label
+                <Bar
                     transform={`translate(${scales.x(endDate) - 10}, ${scales.y('Project')})`}
                     text={String(completionDate.diff(endDate, 'days'))}
                     height={scales.y.rangeBand()}
@@ -185,7 +185,7 @@ class ResultChart extends Component {
                     ry={4}
                 />
 
-                <Label
+                <Bar
                     transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
                     text={String(backlogSize)}
                     height={scales.y.rangeBand()}
