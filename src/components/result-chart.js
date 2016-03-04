@@ -98,8 +98,8 @@ class ResultChart extends Component {
                     completionDate.clone().add(1, 'week'),
                 ]),
             y: d3.scale.ordinal()
-                .range([size.height, 0])
-                .domain(['Project']),
+                .domain(['Project'])
+                .rangeRoundBands([0, size.height], 0.1, 0.2),
         };
     }
 
@@ -174,9 +174,9 @@ class ResultChart extends Component {
                 />
 
                 <Label
-                    transform={`translate(${scales.x(endDate) - 10}, 40)`}
+                    transform={`translate(${scales.x(endDate) - 10}, ${scales.y('Project')})`}
                     text={String(completionDate.diff(endDate, 'days'))}
-                    height={50}
+                    height={scales.y.rangeBand()}
                     width={scales.x(completionDate) - scales.x(endDate) + 10}
                     className={Styles.extension}
                     rx={4}
@@ -184,9 +184,9 @@ class ResultChart extends Component {
                 />
 
                 <Label
-                    transform="translate(0, 40)"
+                    transform={`translate(0, ${scales.y('Project')})`}
                     text={String(backlogSize)}
-                    height={50}
+                    height={scales.y.rangeBand()}
                     width={scales.x(endDate)}
                     className={Styles.project}
                     rx={4}
