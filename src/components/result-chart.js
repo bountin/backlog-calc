@@ -136,6 +136,7 @@ class ResultChart extends Component {
             endDate,
             backlogSize,
             completionDate,
+            probability,
         } = this.props;
 
         if (!size || !scales) {
@@ -191,6 +192,19 @@ class ResultChart extends Component {
                     className={Styles.project}
                     rx={4}
                     ry={4}
+                />
+
+                <circle
+                    transform={`translate(${scales.x(endDate) - 30}, ${scales.y('Project')})`}
+                    cx="10"
+                    cy="20"
+                    r="10"
+                    className={classNames({
+                        [Styles.ok]: probability >= 1,
+                        [Styles.warning]: probability >= 0.8 && probability < 1,
+                        [Styles.error]: probability < 0.8,
+                        [Styles.semaphore]: true,
+                    })}
                 />
 
             </Chart>
