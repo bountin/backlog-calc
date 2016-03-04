@@ -16,6 +16,7 @@ class Label extends Component {
         anchor: PropTypes.string,
         rx: PropTypes.number,
         ry: PropTypes.number,
+        width: PropTypes.number,
     };
 
     static defaultProps = {
@@ -71,7 +72,7 @@ class Label extends Component {
         const style = { textAnchor: anchor, alignmentBaseline: baseline };
 
         return <g {...this.forwardProps()}>
-            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} />
+            <rect ref={c => { this.rect = c; }} rx={rx} ry={ry} width={this.props.width} />
             <text ref={c => { this.text = c; }} children={text} style={style} />
         </g>;
     }

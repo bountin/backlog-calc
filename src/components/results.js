@@ -143,7 +143,9 @@ class Results extends Component {
                     </b>,
                 }}
                 />
+            </p>
 
+            <div style={{ width: '200px', height: '200px' }}>
                 <ResultChart {...this.props} />
 
                 <div className={Styles.resultChartLegend}>
@@ -153,7 +155,7 @@ class Results extends Component {
                         <li className={Styles.error}><i className="fa fa-square"></i>rot: &lt;80%</li>
                     </ul>
                 </div>
-            </p>
+            </div>
         </div>;
     }
 

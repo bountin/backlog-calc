@@ -1,8 +1,11 @@
 import d3 from 'd3';
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
 
+import Axis from './svg/axis';
 import Chart from './svg/chart';
+import Label from './svg/label';
 import Styles from './styles/chart.less';
 
 /**
@@ -112,9 +115,9 @@ class ResultChart extends Component {
             x: d3.time.scale()
                 .range([0, size.width])
                 .domain([startDate, endDate]),
-            y: d3.scale.linear()
+            y: d3.scale.ordinal()
                 .range([size.height, 0])
-                .domain(d3.scale.ordinal().domain('Project')),
+                .domain(['Project']),
         };
     }
 
@@ -141,11 +144,13 @@ class ResultChart extends Component {
             scales,
             size,
             padding,
-        } = this.state;
+            } = this.state;
 
         if (!size || !scales) {
             return <div ref={ c => { this.node = c; }} />;
         }
+
+        const formatDate = d => moment(d).format('WW');
 
         return <div ref={ c => { this.node = c; }}>
             <Chart
@@ -153,7 +158,36 @@ class ResultChart extends Component {
                 height={size.height}
                 padding={padding}
                 className={classNames(Styles.chart)}
-            />
+            >
+
+                <Axis
+                    orientation="bottom"
+                    scale={scales.x}
+                    tickFormat={formatDate}
+                    tickPadding={15}
+                    innerTickSize={-size.height}
+                    outerTickSize={0}
+                    transform={`translate(0,${size.height})`}
+                    className={classNames(Styles.axis, Styles.x)}
+                />
+
+                <Axis
+                    orientation="right"
+                    scale={scales.y}
+                    ticks={4}
+                    tickPadding={-size.width + 10}
+                    innerTickSize={size.width}
+                    outerTickSize={0}
+                    className={classNames(Styles.axis, Styles.y)}
+                    clipPath="url(#graph-clip)"
+                />
+
+                <Label
+                    text={String(this.props.backlogSize)}
+                    width={300}
+                />
+
+            </Chart>
         </div>;
     }
 
