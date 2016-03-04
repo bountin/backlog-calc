@@ -52,12 +52,17 @@ const messages = defineMessages({
 
     createLabel: {
         id: 'calculator.createLabel',
-        defaultMessage: 'Create Project',
+        defaultMessage: 'Save',
     },
 
     updateLabel: {
         id: 'calculator.updateLabel',
-        defaultMessage: 'Update Project',
+        defaultMessage: 'Save',
+    },
+
+    addProjectLabel: {
+        id: 'calculator.addProjectLabel',
+        defaultMessage: 'New',
     },
 
 });
@@ -76,6 +81,10 @@ export class CalculatorForm extends Component {
         project: PropTypes.object.isRequired,
 
         onSave: PropTypes.func,
+
+        onAdd: PropTypes.func,
+
+        disableAdd: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -261,6 +270,16 @@ export class CalculatorForm extends Component {
                 >
                     <FormattedMessage {...(inputs.id ? messages.updateLabel : messages.createLabel)} />
                 </Button>
+
+                <Button
+                    bsStyle="primary"
+                    className={classNames('pull-right', Styles.action)}
+                    onClick={this.props.onAdd}
+                    disabled={this.props.disableAdd}
+                >
+                    <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
+                </Button>
+
             </Input>
 
         </form>;
