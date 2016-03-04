@@ -43,6 +43,11 @@ Your borisgloger-Team
         defaultMessage: 'Print',
     },
 
+    addProjectLabel: {
+        id: 'calculator.addProjectLabel',
+        defaultMessage: 'Add Project',
+    },
+
 });
 
 /**
@@ -89,11 +94,13 @@ export class Calculator extends Component {
         super(props);
         this.handleSave = ::this.handleSave;
         this.handlePrint = ::this.handlePrint;
+        this.handleAddProject = ::this.handleAddProject;
     }
 
     handleSave(project) {
         const { projects } = this.state;
 
+        console.log('handleSave', project);
         if (project.id === 0) {
             projects.push({
                 ...project,
@@ -104,6 +111,7 @@ export class Calculator extends Component {
             projects[index] = project;
         }
 
+        this.setState({ activeProject: project });
         this.recalculate();
     }
 
@@ -114,6 +122,12 @@ export class Calculator extends Component {
      */
     handlePrint() {
         window.print();
+    }
+
+    handleAddProject() {
+        this.setState({
+            activeProject: this.createProject(),
+        });
     }
 
     recalculateProject(project) {
@@ -176,6 +190,14 @@ export class Calculator extends Component {
                             <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                         </ul>
                     </div>
+
+                    <Button
+                        bsStyle="primary"
+                        className={Styles.action}
+                        onClick={this.handleAddProject}
+                    >
+                        <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
+                    </Button>
 
                     <CalculatorForm
                         project={activeProject}
