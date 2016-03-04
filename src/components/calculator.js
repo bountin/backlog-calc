@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { injectIntl, defineMessages, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import classNames from 'classnames';
 import moment from 'moment';
+import _ from 'lodash';
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -11,6 +12,8 @@ import ResultsChart from './results-chart';
 import CalculatorForm from './calculator-form';
 
 import Styles from './styles/calculator.less';
+
+import localStorage from '../utils/localStorage';
 
 import {
     isSuccessful,
@@ -45,6 +48,30 @@ Your borisgloger-Team
 
 });
 
+function injectMomentIntoProjects(projects) {
+    return projects.map(p => {
+        const start = moment(p.startDate);
+        const end = moment(p.endDate);
+        return {
+            ...p,
+            startDate: start,
+            endDate: end,
+        };
+    });
+}
+
+function injectMomentIntoResults(results) {
+    return injectMomentIntoProjects(results).map(r => {
+        const completion = moment(r.completionDate);
+        return {
+            ...r,
+            completionDate: completion,
+        };
+    });
+}
+
+const savedProjects = injectMomentIntoProjects(localStorage.getItem('projects', []));
+
 /**
  * Stateful main component displaying the backlog calculator component.
  *
@@ -74,15 +101,15 @@ export class Calculator extends Component {
     static lastProjectId = 0;
 
     state = {
-        projects: [],
+        projects: savedProjects,
 
-        activeProject: this.createProject(),
+        activeProject: savedProjects.length === 0 ? this.createProject() : _.values(savedProjects)[0],
 
         /**
          * Results of the last computation, if validation succeeds, otherwise
          * null.
          */
-        results: [],
+        results: injectMomentIntoResults(localStorage.getItem('results', [])),
     };
 
     constructor(props) {
@@ -111,6 +138,8 @@ export class Calculator extends Component {
         }
 
         this.setState({ activeProject });
+        localStorage.setItem('projects', projects);
+        console.log('save', projects, localStorage.getItem('projects', []));
         this.recalculate(projects);
     }
 
@@ -175,6 +204,7 @@ export class Calculator extends Component {
         // const { projects } = this.state;
         const results = projects.map(::this.recalculateProject);
         this.setState({ results });
+        localStorage.setItem('results', results);
     }
 
     createProject() {
