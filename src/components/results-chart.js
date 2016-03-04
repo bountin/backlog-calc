@@ -92,15 +92,14 @@ class ResultsChart extends Component {
     }
 
     /**
-     * 
      * @param results
      * @param size
      * @returns {{x: *, y: *}}
      */
     computeScales(results, size) {
-        const startDate = moment.min(results.map( p => p.startDate ));
-        const endDate = moment.max(results.map( p => p.endDate ));
-        const completionDate = moment.max(results.map( p => p.completionDate ));
+        const startDate = moment.min(results.map(p => p.startDate));
+        const endDate = moment.max(results.map(p => p.endDate));
+        const completionDate = moment.max(results.map(p => p.completionDate));
 
         const maxDate = moment.max(endDate, completionDate);
         return {
@@ -152,7 +151,7 @@ class ResultsChart extends Component {
         const formatDate = d => moment(d).format('DD.MM');
         // const barEndDate = moment.min(endDate, completionDate);
 
-        return <div className={this.props.className} ref={ c => { this.node = c; }}>
+        return <div className={this.props.className} ref={c => { this.node = c; }} >
             <Chart
                 width={size.width}
                 height={size.height}
@@ -181,7 +180,9 @@ class ResultsChart extends Component {
                     clipPath="url(#graph-clip)"
                 />
 
-                { this.props.results.map(project => <ResultsProject {...project} key={project.id} scales={scales} />) }
+                {this.props.results.map(
+                    project => <ResultsProject {...project} key={project.id} scales={scales} />
+                )}
 
             </Chart>
 

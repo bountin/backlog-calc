@@ -52,7 +52,7 @@ const messages = defineMessages({
 
     submitLabel: {
         id: 'calculator.submitLabel',
-        defaultMessage: 'Calculate',
+        defaultMessage: 'Save',
     },
 
 });
