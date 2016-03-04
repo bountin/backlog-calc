@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/lib/Button';
 import FormattedMultiLine from './formatted-multi-line';
 import { validateInputs } from '../utils/validators';
 
-import Styles from './styles/calculator.less';
+import Styles from './styles/form.less';
 
 const LABEL_CLASS_NAME = 'col-xs-12 col-sm-3 col-md-2';
 const WRAPPER_CLASS_NAME = 'col-xs-12 col-sm-9 col-md-10 col-md-8';
@@ -154,7 +154,7 @@ class CalculatorForm extends Component {
         const { inputs, errors } = this.state;
 
         return <form
-            className="form-horizontal"
+            className={classNames('form-horizontal', Styles.form)}
             onSubmit={this.handleFormSubmit}
             noValidate
         >
