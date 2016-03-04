@@ -229,6 +229,8 @@ export class Calculator extends Component {
             probability: successProbability(backlogSize, velocity, duration),
             completionDate: startDate.clone().add(successDuration(backlogSize, velocity), 'days'),
             backlogSize: successBacklogSize(velocity, duration),
+            startDate,
+            endDate,
         };
 
         this.setState({ results, errors });

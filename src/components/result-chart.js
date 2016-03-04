@@ -42,6 +42,16 @@ class ResultChart extends Component {
          * frame. Number greater or equal to zero.
          */
         backlogSize: PropTypes.number.isRequired,
+        
+        /**
+         * Start Date of the Project
+         */
+        startDate: PropTypes.object.isRequired,
+
+        /**
+         * End Date of the Project
+         */
+        endDate: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
