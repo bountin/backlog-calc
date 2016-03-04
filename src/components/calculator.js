@@ -160,21 +160,14 @@ export class Calculator extends Component {
         return <Container>
             <Row>
                 <Col
-                    xs={12} sm={9} md={10} lg={8}
-                    smOffset={3} mdOffset={2}
+                    xs={12}
                     className={Styles.intro}
                 >
                     <FormattedHTMLMessage {...messages.introMessage} />
                 </Col>
 
-                <Col
-                    xs={12} sm={9} md={10} lg={8}
-                    smOffset={3} mdOffset={2}
-                    className={Styles.chart}
-                >
-                    <div className={Styles.chart}>
-                        {results.length && <ResultsChart results={results} />}
-                    </div>
+                <Col xs={12}>
+                    {results.length && <ResultsChart results={results} />}
 
                     <div className={Styles.legend}>
                         <ul>
@@ -183,7 +176,6 @@ export class Calculator extends Component {
                             <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                         </ul>
                     </div>
-
                 </Col>
 
                 <CalculatorForm

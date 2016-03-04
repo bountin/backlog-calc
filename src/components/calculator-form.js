@@ -152,6 +152,7 @@ export class CalculatorForm extends Component {
      */
     getInputs() {
         return {
+            id: this.state.inputs.id,
             projectName: this.refs.projectName.getValue(),
             startDate: this.refs.startDate.getValue(),
             endDate: this.refs.endDate.getValue(),

@@ -143,7 +143,7 @@ class ResultsChart extends Component {
             return <div ref={ c => { this.node = c; }} />;
         }
 
-        const formatDate = d => moment(d).format('DD.MM');
+        const formatDate = d => moment(d).format('WW');
         // const barEndDate = moment.min(endDate, completionDate);
 
         return <div className={this.props.className} ref={c => { this.node = c; }} >
