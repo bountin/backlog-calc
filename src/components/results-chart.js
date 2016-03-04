@@ -172,7 +172,7 @@ class ResultsChart extends Component {
 
                 <Axis
                     orientation="left"
-                    scale={scales.y}
+                    scale={scale.y}
                     ticks={4}
                     tickPadding={-size.width + 10}
                     innerTickSize={size.width}
