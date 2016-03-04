@@ -81,32 +81,6 @@ class ResultChart extends Component {
     }
 
     /**
-     * Computes a nicer domain for the y-axis. It takes into account
-     * minimum and maximum account balances, as well as jitter in the
-     * history to scale the graph to a nice size.
-     *
-     * TODO: improve quality of the computed range.
-     *
-     * @param {Array} data The full balance history.
-     * @return {number[]} An array containing the domain boundaries.
-     * @private
-     */
-    computeDomain(data) {
-        const value = d => d.pct50;
-
-        const min = d3.min(data, value);
-        const max = d3.max(data, value);
-        const mean = d3.mean(data, value);
-        const median = d3.median(data, value);
-
-        const lower = Math.min(median - mean, min);
-        const upper = Math.max(median + mean, max);
-        const diff = upper - lower;
-
-        return [lower - diff * 0.15, upper + diff * 0.15];
-    }
-
-    /**
      * Recomputes scales which translate domain values into coordinates
      * on the SVG graph. The scales object contains two components, 'x'
      * and 'y'.
@@ -115,11 +89,14 @@ class ResultChart extends Component {
      * @return {{x: function, y: function}} The new scales object.
      * @private
      */
-    computeScales({ startDate, endDate }, size) {
+    computeScales({ startDate, completionDate }, size) {
         return {
             x: d3.time.scale()
                 .range([0, size.width])
-                .domain([startDate, endDate]),
+                .domain([
+                    startDate.clone().subtract(1, 'week'),
+                    completionDate.clone().add(1, 'week'),
+                ]),
             y: d3.scale.ordinal()
                 .range([size.height, 0])
                 .domain(['Project']),
@@ -154,6 +131,12 @@ class ResultChart extends Component {
             size,
             padding,
         } = this.state;
+
+        const {
+            endDate,
+            backlogSize,
+            completionDate,
+        } = this.props;
 
         if (!size || !scales) {
             return <div ref={ c => { this.node = c; }} />;
@@ -191,10 +174,23 @@ class ResultChart extends Component {
                 />
 
                 <Label
-                    transform="translate(0, 40)"
-                    text={String(this.props.backlogSize)}
+                    transform={`translate(${scales.x(endDate) - 10}, 40)`}
+                    text={String(completionDate.diff(endDate, 'days'))}
                     height={50}
-                    width={scales.x(this.props.endDate)}
+                    width={scales.x(completionDate) - scales.x(endDate) + 10}
+                    className={Styles.extension}
+                    rx={4}
+                    ry={4}
+                />
+
+                <Label
+                    transform="translate(0, 40)"
+                    text={String(backlogSize)}
+                    height={50}
+                    width={scales.x(endDate)}
+                    className={Styles.project}
+                    rx={4}
+                    ry={4}
                 />
 
             </Chart>

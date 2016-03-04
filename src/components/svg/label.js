@@ -75,7 +75,8 @@ class Label extends Component {
         const size = text.getBBox();
         d3.select(text).attr({
             x: (width - size.width) / 2,
-            y: (height - size.height) / 2,
+            y: height / 2,
+            'alignment-baseline': 'central',
         });
     }
 
