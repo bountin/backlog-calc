@@ -145,13 +145,14 @@ class ResultChart extends Component {
             return <div ref={ c => { this.node = c; }} />;
         }
 
-        const formatDate = d => moment(d).format('WW');
+        const formatDate = d => moment(d).format('DD.MM');
 
-        const extendedBarLength = scales.x(completionDate) - scales.x(endDate) + 10;
+        const extendedBarLength = scales.x(completionDate) - scales.x(endDate);
         const renderExtendedBar = completionDate.isAfter(endDate);
 
         const barEndDate = moment.min(endDate, completionDate);
-        const circleWidth = scales.x(startDate) + scales.x(barEndDate) - 30;
+        const circleWidth = scales.x(barEndDate) - 30;
+        console.log(barEndDate);
 
         return <div className={this.props.className} ref={ c => { this.node = c; }}>
             <Chart
@@ -184,7 +185,7 @@ class ResultChart extends Component {
 
                 {renderExtendedBar &&
                     <Bar
-                        transform={`translate(${scales.x(endDate) - 10}, ${scales.y('Project')})`}
+                        transform={`translate(${scales.x(endDate)}, ${scales.y('Project')})`}
                         text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
                         height={scales.y.rangeBand()}
                         width={extendedBarLength}
@@ -198,7 +199,7 @@ class ResultChart extends Component {
                     transform={`translate(${scales.x(startDate)}, ${scales.y('Project')})`}
                     text={String(backlogSize)}
                     height={scales.y.rangeBand()}
-                    width={scales.x(barEndDate)}
+                    width={scales.x(barEndDate) - scales.x(startDate)}
                     className={Styles.project}
                     rx={4}
                     ry={4}
