@@ -43,6 +43,11 @@ Your borisgloger-Team
         defaultMessage: 'Print',
     },
 
+    addProjectLabel: {
+        id: 'calculator.addProjectLabel',
+        defaultMessage: 'Add Project',
+    },
+
 });
 
 /**
@@ -89,21 +94,26 @@ export class Calculator extends Component {
         super(props);
         this.handleSave = ::this.handleSave;
         this.handlePrint = ::this.handlePrint;
+        this.handleAddProject = ::this.handleAddProject;
     }
 
     handleSave(project) {
         const { projects } = this.state;
+        let activeProject = project;
 
         if (project.id === 0) {
-            projects.push({
+            activeProject = {
                 ...project,
                 id: ++Calculator.lastProjectId,
-            });
+            };
+
+            projects.push(activeProject);
         } else {
             const index = projects.findIndex(p => (project.id === p.id));
             projects[index] = project;
         }
 
+        this.setState({ activeProject });
         this.recalculate();
     }
 
@@ -114,6 +124,12 @@ export class Calculator extends Component {
      */
     handlePrint() {
         window.print();
+    }
+
+    handleAddProject() {
+        this.setState({
+            activeProject: this.createProject(),
+        });
     }
 
     recalculateProject(project) {
@@ -177,12 +193,22 @@ export class Calculator extends Component {
                             <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                         </ul>
                     </div>
-                </Col>
 
-                <CalculatorForm
-                    project={activeProject}
-                    onSave={this.handleSave}
-                />
+                    <Button
+                        bsStyle="primary"
+                        className={Styles.action}
+                        onClick={this.handleAddProject}
+                        disabled={activeProject.id === 0}
+                    >
+                        <i className="fa fa-plus-circle"></i>&nbsp;<FormattedMessage {...messages.addProjectLabel} />
+                    </Button>
+
+                    <CalculatorForm
+                        project={activeProject}
+                        onSave={this.handleSave}
+                    />
+
+                </Col>
 
                 {(results.length) && <Button
                     bsStyle="default"

@@ -251,7 +251,7 @@ export class CalculatorForm extends Component {
             >
                 <Button
                     type="submit"
-                    bsStyle="default"
+                    bsStyle="success"
                     className={classNames('pull-left', Styles.printHide, Styles.action)}
                 >
                     <FormattedMessage {...messages.submitLabel} />
