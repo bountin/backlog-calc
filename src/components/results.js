@@ -149,9 +149,9 @@ class Results extends Component {
 
             <div className={Styles.legend}>
                 <ul>
-                    <li className={Styles.ok}><i className="fa fa-square"></i>grün: 100%</li>
-                    <li className={Styles.warning}><i className="fa fa-square"></i>gelb: 80 - 100%</li>
-                    <li className={Styles.error}><i className="fa fa-square"></i>rot: &lt;80%</li>
+                    <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
+                    <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
+                    <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
                 </ul>
             </div>
         </div>;
