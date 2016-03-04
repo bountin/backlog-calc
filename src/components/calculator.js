@@ -93,11 +93,14 @@ export class Calculator extends Component {
 
     handleSave(project) {
         const { projects } = this.state;
-        const index = projects.findIndex(p => (project.id === p.id));
 
-        if (index < 0) {
-            projects.push(project);
+        if (project.id === 0) {
+            projects.push({
+                ...project,
+                id: ++Calculator.lastProjectId,
+            });
         } else {
+            const index = projects.findIndex(p => (project.id === p.id));
             projects[index] = project;
         }
 
@@ -139,7 +142,7 @@ export class Calculator extends Component {
 
     createProject() {
         return {
-            id: ++Calculator.lastProjectId,
+            id: 0,
             startDate: moment().startOf('day'),
             endDate: moment().startOf('day').add(1, 'month'),
         };
@@ -164,6 +167,25 @@ export class Calculator extends Component {
                     <FormattedHTMLMessage {...messages.introMessage} />
                 </Col>
 
+                <Col
+                    xs={12} sm={9} md={10} lg={8}
+                    smOffset={3} mdOffset={2}
+                    className={Styles.chart}
+                >
+                    <div className={Styles.chart}>
+                        {results.length && <ResultsChart results={results} />}
+                    </div>
+
+                    <div className={Styles.legend}>
+                        <ul>
+                            <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
+                            <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
+                            <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
+                        </ul>
+                    </div>
+
+                </Col>
+
                 <CalculatorForm
                     project={activeProject}
                     onSave={this.handleSave}
@@ -176,18 +198,6 @@ export class Calculator extends Component {
                 >
                     <FormattedMessage {...messages.printLabel} />
                 </Button>}
-
-                <div className={Styles.nobreak}>
-                    {results.length && <ResultsChart results={results} />}
-                </div>
-
-                <div className={Styles.legend}>
-                    <ul>
-                        <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
-                        <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
-                        <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
-                    </ul>
-                </div>
 
             </Row>
 
