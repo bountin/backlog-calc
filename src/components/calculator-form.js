@@ -60,7 +60,7 @@ const messages = defineMessages({
 /**
  * @TODO doc
  */
-class CalculatorForm extends Component {
+export class CalculatorForm extends Component {
 
     static propTypes = {
         /**
