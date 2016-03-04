@@ -80,8 +80,9 @@ class ResultsProject extends Component {
             scales,
         } = this.props;
 
-        const extendedBarLength = scales.x(completionDate) - scales.x(endDate);
-        const renderExtendedBar = completionDate.isAfter(endDate);
+        const extendedBarLength = Math.abs(scales.x(completionDate) - scales.x(endDate));
+        const renderExtendedBar = !completionDate.isSame(endDate);
+        const isPositive = completionDate.isBefore(endDate);
 
         const barEndDate = moment.min(endDate, completionDate);
         const circleWidth = scales.x(barEndDate) - 30;
@@ -89,11 +90,11 @@ class ResultsProject extends Component {
         return <g>
             {renderExtendedBar &&
             <Bar
-                transform={`translate(${scales.x(endDate)}, 0)`}
-                text={ `+ ${String(completionDate.diff(endDate, 'days'))} d` }
+                transform={`translate(${scales.x(barEndDate)}, 0)`}
+                text={ `${String(completionDate.diff(endDate, 'days'))} d` }
                 height={scales.y.rangeBand()}
                 width={extendedBarLength}
-                className={Styles.extension}
+                className={classNames(Styles.extension, isPositive && Styles.positiveExtension)}
                 rx={4}
                 ry={4}
                 onClick={this.props.onSelect}
