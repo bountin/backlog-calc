@@ -113,8 +113,6 @@ const savedProjects = injectMomentIntoProjects(localStorage.getItem('projects', 
  */
 export class Calculator extends Component {
 
-    static lastProjectId = 0;
-
     state = {
         projects: savedProjects,
 
@@ -141,9 +139,10 @@ export class Calculator extends Component {
         let activeProject = project;
 
         if (project.id === 0) {
+            let lastProjectId = Math.max(... projects.map(p => p.id)) || 0;
             activeProject = {
                 ...project,
-                id: ++Calculator.lastProjectId,
+                id: ++lastProjectId,
             };
 
             projects.push(activeProject);
