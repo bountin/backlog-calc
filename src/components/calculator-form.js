@@ -277,6 +277,7 @@ export class CalculatorForm extends Component {
                     bsStyle="success"
                     className={classNames('pull-left', Styles.printHide, Styles.action, Styles.actionLeft)}
                 >
+                    <i className="fa fa-floppy-o"></i>&nbsp;
                     <FormattedMessage {...(inputs.id ? messages.updateLabel : messages.createLabel)} />
                 </Button>
 
