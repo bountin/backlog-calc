@@ -46,6 +46,21 @@ Your borisgloger-Team
         defaultMessage: 'Print',
     },
 
+    legendGreen: {
+        id: 'calculator.legendGreen',
+        defaultMessage: 'green',
+    },
+
+    legendYellow: {
+        id: 'calculator.legendYellow',
+        defaultMessage: 'yellow',
+    },
+
+    legendRed: {
+        id: 'calculator.legendRed',
+        defaultMessage: 'red',
+    },
+
 });
 
 function injectMomentIntoProjects(projects) {
@@ -237,9 +252,16 @@ export class Calculator extends Component {
                     />}
 
                     <ul className={Styles.legend}>
-                        <li className={Styles.ok}><i className="fa fa-square"></i>&nbsp;grün: 100%</li>
-                        <li className={Styles.warning}><i className="fa fa-square"></i>&nbsp;gelb: 80 - 100%</li>
-                        <li className={Styles.error}><i className="fa fa-square"></i>&nbsp;rot: &lt;80%</li>
+                        <li className={Styles.ok}>
+                            <i className="fa fa-square"></i>
+                            &nbsp;<FormattedHTMLMessage {...messages.legendGreen} />: 100%
+                        </li>
+                        <li className={Styles.warning}>
+                            <i className="fa fa-square"></i>&nbsp;
+                            <FormattedHTMLMessage {...messages.legendYellow} />: 80 - 100%</li>
+                        <li className={Styles.error}>
+                            <i className="fa fa-square"></i>&nbsp;
+                            <FormattedHTMLMessage {...messages.legendRed} />: &lt;80%</li>
                     </ul>
 
                     <CalculatorForm
