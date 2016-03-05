@@ -108,14 +108,14 @@ class ResultsProjectText extends Component {
             ? <FormattedMessage {...messages.statusSuccess} />
             : <FormattedMessage {...messages.statusFailure} />;
 
-        return <div className={classNames(resultClass, Styles.screenHide)}>
+        return <div className={Styles.screenHide}>
 
-            <Icon
-                className={Styles.icon}
-                name={isSuccessful ? 'check-circle' : 'times-circle'}
-            />
-
-            <p className={Styles.projectName}>{projectName || messages.unnamedProject.defaultMessage}</p>
+            <div className={classNames(resultClass, Styles.projectHead)}>
+                <Icon className={Styles.icon} name={isSuccessful ? 'check-circle' : 'times-circle'} />
+                <p className={Styles.name}>
+                    <span>{projectName || messages.unnamedProject.defaultMessage}</span>
+                </p>
+            </div>
             <p className={Styles.description}>
                 {statusMessage}
 
