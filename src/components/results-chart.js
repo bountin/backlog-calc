@@ -102,6 +102,8 @@ class ResultsChart extends Component {
         const completionDate = moment.max(results.map(p => p.completionDate));
 
         const maxDate = moment.max(endDate, completionDate);
+        const height = results.length * 100;
+        const padding = 0.15;
         return {
             x: d3.time.scale()
                 .range([0, size.width])
@@ -110,8 +112,11 @@ class ResultsChart extends Component {
                     maxDate.clone().add(1, 'week'),
                 ]),
             y: d3.scale.ordinal()
+                .domain(this.props.results.map(project => project.id))
+                .rangeRoundBands([0, height], padding, padding * 2),
+            yLabels: d3.scale.ordinal()
                 .domain(this.props.results.map(project => project.projectName || project.id))
-                .rangeRoundBands([0, results.length * 100], 0.1, 0.2),
+                .rangeRoundBands([0, height], padding, padding * 2),
         };
     }
 
@@ -183,18 +188,18 @@ class ResultsChart extends Component {
 
                 <Axis
                     orientation="left"
-                    scale={scale.y}
+                    scale={scale.yLabels}
                     ticks={4}
-                    tickPadding={-size.width + 10}
-                    innerTickSize={size.width}
-                    outerTickSize={0.25}
+                    tickPadding={10}
+                    innerTickSize={0}
+                    outerTickSize={0}
                     className={classNames(Styles.axis, Styles.y)}
                     clipPath="url(#graph-clip)"
                 />
 
                 {this.props.results.map(
                     project =>
-                        <g transform={`translate(0, ${scale.y(project.projectName || project.id)})`} key={project.id}>
+                        <g transform={`translate(0, ${scale.y(project.id)})`} key={project.id}>
                             <ResultsProject {...project} scales={scale}
                                 onSelect={ onClick(project) } active={this.props.active === project.id}
                             />
