@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/lib/Col';
 import Button from 'react-bootstrap/lib/Button';
 import Container from './container';
 import ResultsChart from './results-chart';
+import ResultsProjectText from './results-project-text';
 import CalculatorForm from './calculator-form';
 
 import Styles from './styles/calculator.less';
@@ -208,11 +209,6 @@ export class Calculator extends Component {
         };
     }
 
-    /**
-     * Recalculates the results based on current inputs.
-     *
-     * @private
-     */
     recalculate(projects) {
         // const { projects } = this.state;
         const results = projects.map(::this.recalculateProject);
@@ -263,7 +259,9 @@ export class Calculator extends Component {
                             <i className="fa fa-square"></i>&nbsp;
                             <FormattedHTMLMessage {...messages.legendRed} />: &lt;80%</li>
                     </ul>
+                </Col>
 
+                <Col xs={12} className={Styles.printHide}>
                     <CalculatorForm
                         project={activeProject}
                         onSave={this.handleSave}
@@ -285,6 +283,14 @@ export class Calculator extends Component {
 
             </Row>
 
+            <Row>
+                {results.map(
+                    project =>
+                        <Col xs={6} key={project.id}>
+                            <ResultsProjectText {...project} />
+                        </Col>
+                )}
+            </Row>
         </Container>;
     }
 }

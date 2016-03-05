@@ -25,6 +25,7 @@
 	"results.completion": "Expected project completion on {date}",
 	"results.probability": "Probability of success: {probability}",
 	"results.backlogSize": "Maximum successful backlog size: {backlogSize}",
+	"results.unnamedProject": "Unnamed project",
 	"validators.startDateRequired": "Please choose a project start date.",
 	"validators.endDateRequired": "Please choose a project target date.",
 	"validators.endDate": "The project target date must be after the start date.",

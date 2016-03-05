@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { defineMessages, FormattedMessage, FormattedNumber, FormattedDate } from 'react-intl';
 import classNames from 'classnames';
 
-import ResultChart from './results-chart';
-
 import Icon from 'react-fontawesome';
 import Styles from './styles/results.less';
 
@@ -32,6 +30,11 @@ const messages = defineMessages({
         id: 'results.backlogSize',
         defaultMessage: 'Maximum successful backlog size: {backlogSize}',
     },
+
+    unnamedProject: {
+        id: 'results.unnamedProject',
+        defaultMessage: 'Unnamed project',
+    },
 });
 
 /**
@@ -43,9 +46,14 @@ const messages = defineMessages({
  * This component is pure.
  */
 export default
-class Results extends Component {
+class ResultsProjectText extends Component {
 
     static propTypes = {
+        /**
+         * Name of the project
+         */
+        projectName: PropTypes.string,
+
         /**
          * Boolean, whether the project is likely to be finished successfully
          * in time with the given input data.
@@ -84,6 +92,7 @@ class Results extends Component {
      */
     render() {
         const {
+            projectName,
             isSuccessful,
             completionDate,
             probability,
@@ -99,13 +108,14 @@ class Results extends Component {
             ? <FormattedMessage {...messages.statusSuccess} />
             : <FormattedMessage {...messages.statusFailure} />;
 
-        return <div className={resultClass}>
+        return <div className={classNames(resultClass, Styles.screenHide)}>
 
             <Icon
                 className={Styles.icon}
                 name={isSuccessful ? 'check-circle' : 'times-circle'}
             />
 
+            <p className={Styles.projectName}>{projectName || messages.unnamedProject.defaultMessage}</p>
             <p className={Styles.description}>
                 {statusMessage}
 
@@ -144,9 +154,6 @@ class Results extends Component {
                 }}
                 />
             </p>
-
-            <ResultChart {...this.props} className={Styles.chart} />
-
         </div>;
     }
 

@@ -10,7 +10,7 @@ const moment = require('moment');
 
 const Calculator = require('../calculator');
 const CalculatorForm = require('../calculator-form').default;
-const Results = require('../results').default;
+const Results = require('../results-project-text').default;
 const Container = require('../container').default;
 const FormattedMultiLine = require('../formatted-multi-line').default;
 const { validateInputs } = require('../../utils/validators');
