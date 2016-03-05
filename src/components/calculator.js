@@ -179,6 +179,7 @@ export class Calculator extends Component {
             projects,
             activeProject: this.createProject(),
         });
+        localStorage.setItem('projects', projects);
         this.recalculate(projects);
     }
 
