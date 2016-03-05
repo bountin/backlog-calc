@@ -275,14 +275,14 @@ export class CalculatorForm extends Component {
                 <Button
                     type="submit"
                     bsStyle="success"
-                    className={classNames('pull-left', Styles.printHide, Styles.action)}
+                    className={classNames('pull-left', Styles.printHide, Styles.action, Styles.actionLeft)}
                 >
                     <FormattedMessage {...(inputs.id ? messages.updateLabel : messages.createLabel)} />
                 </Button>
 
                 <Button
                     bsStyle="primary"
-                    className={classNames('pull-right', Styles.action)}
+                    className={classNames('pull-left', Styles.printHide, Styles.action, Styles.actionLeft)}
                     onClick={this.props.onAdd}
                     disabled={this.props.disableAdd}
                 >
@@ -291,7 +291,7 @@ export class CalculatorForm extends Component {
 
                 <Button
                     bsStyle="danger"
-                    className={classNames('pull-right', Styles.action)}
+                    className={classNames('pull-right', Styles.printHide, Styles.action)}
                     onClick={this.props.onDelete}
                     disabled={this.props.disableDelete}
                 >
