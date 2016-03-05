@@ -33,14 +33,14 @@
 .extension {
 
     rect {
-        stroke: #9b000b;
+        stroke: @color-failure;
         stroke-width: 3px;
         stroke-dasharray: 10;
-        fill: fade(#9b000b, 10%);
+        fill: fade(@color-failure, 10%);
     }
 
     text {
-        fill: #9b000b;
+        fill: @color-failure;
         font-size: 2em;
     }
 
@@ -48,27 +48,27 @@
 
 .positiveExtension {
     rect {
-        stroke: #0baf0f;
-        fill: fade(#0baf0f, 10%);
+        stroke: @color-ok-light;
+        fill: fade(@color-ok-light, 10%);
     }
 
     text {
-        fill: #0baf0f;
+        fill: @color-ok-light;
     }
 }
 
 .project {
 
     rect {
-        fill: #80BDE3;
-        stroke: #80BDE3;
+        fill: @color-bar-light;
+        stroke: @color-bar-light;
         stroke-width: 3px;
         cursor: pointer;
         //opacity: 0.6;
 
         &:hover {
-            fill: #2c91d1;
-            stroke: #2c91d1;
+            fill: @color-bar;
+            stroke: @color-bar;
         }
     }
 
@@ -80,13 +80,13 @@
 }
 
 .ok  {
-    fill: #07780b;
+    fill: @color-ok;
 }
 .warning  {
-    fill: #dea52c;
+    fill: @color-warning;
 }
 .error  {
-    fill: #9b000b;
+    fill: @color-failure;
 }
 
 .semaphore {
@@ -96,7 +96,7 @@
 
 .active.project {
      rect {
-        fill: #2c91d1;
-        stroke: #2c91d1;
+        fill: @color-bar;
+        stroke: @color-bar;
     }
 }
