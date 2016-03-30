@@ -3,6 +3,7 @@
 const path = require('path');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const mapValues = require('lodash/mapValues');
 
 const PORT = 3000;
@@ -44,6 +45,7 @@ module.exports = {
     plugins: [
         new Webpack.NoErrorsPlugin(),
         new Webpack.HotModuleReplacementPlugin(),
+        new CopyWebpackPlugin([{ from: 'assets' }]),
         new HtmlWebpackPlugin({ template: 'assets/index.html', favicon: 'assets/favicon.ico', inject: 'body' }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
     ],

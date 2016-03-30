@@ -3,9 +3,10 @@
 const path = require('path');
 const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const TeamCityWebpackPlugin = require('./teamcity-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const xt = ExtractTextPlugin.extract.bind(ExtractTextPlugin);
 
 const ASSETS_PATH = path.resolve(__dirname, 'build');
@@ -39,6 +40,7 @@ module.exports = {
         new Webpack.optimize.OccurenceOrderPlugin(),
         new Webpack.optimize.UglifyJsPlugin({ compressor: { warnings: false } }),
         new ExtractTextPlugin('[name].css?[hash]', { allChunks: true }),
+		new CopyWebpackPlugin([{ from: 'assets' }]),
         new HtmlWebpackPlugin({ template: 'assets/index.html', favicon: 'assets/favicon.ico', inject: 'body' }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new TeamCityWebpackPlugin(),
