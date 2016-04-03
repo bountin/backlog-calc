@@ -61,4 +61,6 @@ module.exports = {
         historyApiFallback: true,
     },
 
+    eslint: { emitWarning: true },
+
 };
