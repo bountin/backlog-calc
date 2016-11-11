@@ -1,0 +1,4 @@
+FROM mantigma/base-node-builder:5
+
+FROM mantigma/base-static
+TAG 25th/backlogcalculator
